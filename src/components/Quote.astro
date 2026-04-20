@@ -15,7 +15,7 @@
 
   .quote {
     position: relative;
-    background-color: #3a3530;
+    background-color: $color-charcoal;
     min-height: 50vh;
     display: flex;
     align-items: center;
@@ -26,28 +26,28 @@
     &__overlay {
       position: absolute;
       inset: 0;
-      background: radial-gradient(ellipse at center, rgba(80, 70, 55, 0.4) 0%, rgba(30, 25, 20, 0.9) 100%);
+      background: radial-gradient(ellipse at center, rgba(80, 70, 55, 0.4) 0%, $overlay-dark 100%);
       pointer-events: none;
     }
 
     &__content {
       position: relative;
-      z-index: 1;
+      z-index: $z-base;
       text-align: center;
       max-width: 800px;
     }
 
     &__text {
       font-family: $font-heading;
-      font-size: clamp(2rem, 5vw, 3.5rem);
-      font-weight: 400;
+      font-size: $text-4xl;
+      font-weight: $weight-regular;
       font-style: italic;
-      color: $color-text-light;
+      color: $color-text-on-dark;
       line-height: 1.3;
       letter-spacing: 0.02em;
     }
 
-    @media (max-width: $bp-md) {
+    @include breakpoint-down($bp-md) {
       min-height: 40vh;
       padding: $section-padding-mobile;
     }

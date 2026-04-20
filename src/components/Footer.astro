@@ -93,30 +93,30 @@ const socials = [
 
   .footer {
     background-color: $color-bg-dark;
-    color: $color-text-light;
+    color: $color-text-on-dark;
   }
 
   .footer__newsletter {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    gap: 3rem;
-    padding: 3rem 4rem;
-    border-bottom: 1px solid rgba(255, 255, 255, 0.08);
-    max-width: $bp-xl;
+    gap: $grid-gap-lg;
+    padding: $space-3xl $space-4xl;
+    border-bottom: 1px solid $overlay-border-light;
+    max-width: $max-width;
     margin: 0 auto;
 
     h3 {
       font-family: $font-heading;
-      font-size: 1.25rem;
-      font-weight: 500;
+      font-size: $text-xl;
+      font-weight: $weight-medium;
       margin-bottom: 0.4rem;
-      color: $color-text-light;
+      color: $color-text-on-dark;
     }
 
     p {
       font-family: $font-body;
-      font-size: 0.9rem;
+      font-size: $text-base;
       opacity: 0.6;
     }
   }
@@ -128,42 +128,42 @@ const socials = [
 
     input {
       font-family: $font-body;
-      font-size: 0.95rem;
-      padding: 0.85rem 1.5rem;
-      border: 1px solid rgba(255, 255, 255, 0.15);
+      font-size: $text-base;
+      padding: 0.85rem $space-lg;
+      border: 1px solid $overlay-border-medium;
       border-right: none;
-      border-radius: 3rem 0 0 3rem;
+      border-radius: $radius-full 0 0 $radius-full;
       background: transparent;
-      color: $color-text-light;
+      color: $color-text-on-dark;
       width: 280px;
       outline: none;
-      transition: border-color 0.3s ease;
+      transition: border-color $transition-base;
 
       &::placeholder {
         color: rgba(255, 255, 255, 0.35);
       }
 
       &:focus {
-        border-color: $color-accent-gold;
+        border-color: $color-accent;
       }
     }
 
     button {
       font-family: $font-accent;
-      font-size: 0.8rem;
-      font-weight: 500;
-      letter-spacing: 0.1em;
-      padding: 0.85rem 2rem;
+      font-size: $text-sm;
+      font-weight: $weight-medium;
+      letter-spacing: $tracking-wide;
+      padding: 0.85rem $space-xl;
       border: none;
-      border-radius: 0 3rem 3rem 0;
-      background: $color-accent-gold;
+      border-radius: 0 $radius-full $radius-full 0;
+      background: $color-accent;
       color: $color-bg-dark;
       cursor: pointer;
-      transition: background 0.3s ease, transform 0.2s ease;
+      transition: background $transition-base, transform $transition-fast;
       white-space: nowrap;
 
       &:hover {
-        background: lighten($color-accent-gold, 8%);
+        background: $color-gold-light;
         transform: translateX(2px);
       }
     }
@@ -172,11 +172,11 @@ const socials = [
   .footer__main {
     display: grid;
     grid-template-columns: 1.2fr 2fr;
-    gap: 4rem;
-    padding: 4rem;
-    max-width: $bp-xl;
+    gap: $grid-gap-xl;
+    padding: $space-4xl;
+    max-width: $max-width;
     margin: 0 auto;
-    border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+    border-bottom: 1px solid $overlay-border-light;
   }
 
   .footer__brand {
@@ -186,27 +186,25 @@ const socials = [
 
   .footer__logo {
     font-family: $font-heading;
-    font-size: clamp(2.5rem, 5vw, 3.5rem);
-    font-weight: 600;
-    line-height: 1.05;
-    color: $color-text-light;
-    letter-spacing: -0.01em;
+    font-size: $text-4xl;
+    font-weight: $weight-semibold;
+    line-height: $leading-tight;
+    color: $color-text-on-dark;
+    letter-spacing: $tracking-tight;
   }
 
   .footer__links {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
-    gap: 2rem;
+    gap: $grid-gap-md;
   }
 
   .footer__column-title {
-    font-family: $font-accent;
-    font-size: 0.75rem;
-    font-weight: 600;
-    letter-spacing: 0.15em;
-    text-transform: uppercase;
-    color: $color-accent-gold;
-    margin-bottom: 1.25rem;
+    @include label-text;
+    font-weight: $weight-semibold;
+    letter-spacing: $tracking-wider;
+    color: $color-accent;
+    margin-bottom: $space-xl;
   }
 
   .footer__column-list {
@@ -216,11 +214,11 @@ const socials = [
 
     a {
       font-family: $font-body;
-      font-size: 0.95rem;
-      font-weight: 400;
-      color: $color-text-light;
+      font-size: $text-base;
+      font-weight: $weight-regular;
+      color: $color-text-on-dark;
       opacity: 0.6;
-      transition: opacity 0.3s ease;
+      transition: opacity $transition-base;
 
       &:hover {
         opacity: 1;
@@ -232,19 +230,19 @@ const socials = [
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 1.5rem 4rem;
-    max-width: $bp-xl;
+    padding: $space-lg $space-4xl;
+    max-width: $max-width;
     margin: 0 auto;
 
     p {
       font-family: $font-accent;
-      font-size: 0.7rem;
-      letter-spacing: 0.08em;
+      font-size: $text-xs;
+      letter-spacing: $tracking-wide;
       opacity: 0.4;
 
       a {
         opacity: 0.7;
-        transition: opacity 0.3s ease;
+        transition: opacity $transition-base;
 
         &:hover {
           opacity: 1;
@@ -254,18 +252,18 @@ const socials = [
   }
 
   .footer__bottom-sep {
-    margin: 0 0.5rem;
+    margin: 0 $space-xs;
   }
 
   .footer__socials {
     display: flex;
-    gap: 1rem;
+    gap: $space-md;
   }
 
   .footer__social-icon {
-    color: $color-text-light;
+    color: $color-text-on-dark;
     opacity: 0.4;
-    transition: opacity 0.3s ease, transform 0.3s ease;
+    transition: opacity $transition-base, transform $transition-base;
 
     &:hover {
       opacity: 1;
@@ -277,8 +275,8 @@ const socials = [
     .footer__newsletter {
       flex-direction: column;
       align-items: flex-start;
-      padding: 3rem 2rem;
-      gap: 1.5rem;
+      padding: $space-3xl $space-xl;
+      gap: $space-lg;
     }
 
     .footer__newsletter-form {
@@ -291,8 +289,8 @@ const socials = [
 
     .footer__main {
       grid-template-columns: 1fr;
-      gap: 3rem;
-      padding: 3rem 2rem;
+      gap: $grid-gap-lg;
+      padding: $space-3xl $space-xl;
     }
 
     .footer__brand {
@@ -307,14 +305,14 @@ const socials = [
   @media (max-width: $bp-md) {
     .footer__links {
       grid-template-columns: 1fr;
-      gap: 2rem;
+      gap: $grid-gap-md;
       text-align: center;
     }
 
     .footer__bottom {
       flex-direction: column;
-      gap: 1.25rem;
-      padding: 1.5rem 2rem;
+      gap: $space-xl;
+      padding: $space-lg $space-xl;
       text-align: center;
     }
   }

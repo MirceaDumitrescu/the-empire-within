@@ -22,39 +22,34 @@
     top: 0;
     left: 0;
     right: 0;
-    z-index: 100;
-    padding: 1.5rem 2rem;
+    z-index: $z-header;
+    padding: $space-lg $space-xl;
 
     &__nav {
       display: flex;
       justify-content: space-between;
       align-items: center;
-      max-width: $bp-xl;
+      max-width: $max-width;
       margin: 0 auto;
     }
 
     &__logo-text {
-      font-family: $font-accent;
-      font-size: 0.75rem;
-      font-weight: 500;
+      @include label-text;
       letter-spacing: 0.3em;
-      text-transform: uppercase;
-      color: $color-text-light;
+      color: $color-text-on-dark;
     }
 
     &__links {
       display: flex;
-      gap: 2.5rem;
+      gap: $space-2xl;
 
       a {
-        font-family: $font-accent;
-        font-size: 0.75rem;
-        font-weight: 400;
-        letter-spacing: 0.2em;
-        text-transform: uppercase;
-        color: $color-text-light;
+        @include label-text;
+        font-weight: $weight-regular;
+        letter-spacing: $tracking-wider;
+        color: $color-text-on-dark;
         opacity: 0.8;
-        transition: opacity 0.3s ease;
+        transition: opacity $transition-base;
 
         &:hover {
           opacity: 1;
@@ -62,11 +57,11 @@
       }
     }
 
-    @media (max-width: $bp-md) {
-      padding: 1rem 1.5rem;
+    @include breakpoint-down($bp-md) {
+      padding: $space-md $space-lg;
 
       &__links {
-        gap: 1.5rem;
+        gap: $space-lg;
 
         a {
           font-size: 0.65rem;

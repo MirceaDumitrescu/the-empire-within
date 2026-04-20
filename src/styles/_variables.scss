@@ -1,24 +1,224 @@
-// Colors
-$color-bg-dark: #1a1a1a;
-$color-bg-cream: #f5f0eb;
-$color-bg-warm: #d4c5b0;
-$color-text-light: #f5f0eb;
-$color-text-dark: #2a2a2a;
-$color-text-muted: #6b6b6b;
-$color-accent-gold: #c4a86b;
-$color-overlay: rgba(42, 36, 28, 0.7);
+// ============================================
+// DESIGN SYSTEM — The Empire Within
+// ============================================
 
-// Typography
+// --------------------------------------------
+// COLOR PALETTE
+// --------------------------------------------
+
+// Brand
+$color-gold: #c4a86b;
+$color-gold-light: #d4bc85;
+$color-gold-dark: #a8904f;
+
+// Neutrals
+$color-black: #1a1a1a;
+$color-dark: #2a2a2a;
+$color-charcoal: #3a3530;
+$color-body: #4a4a4a;
+$color-muted: #6b6b6b;
+$color-warm-gray: #8b7d6b;
+$color-cream: #f5f0eb;
+$color-white: #ffffff;
+
+// Semantic
+$color-bg-dark: $color-black;
+$color-bg-light: $color-cream;
+$color-bg-warm: #d4c5b0;
+$color-text-primary: $color-dark;
+$color-text-body: $color-body;
+$color-text-muted: $color-muted;
+$color-text-on-dark: $color-cream;
+$color-accent: $color-gold;
+
+// Overlays
+$overlay-dark: rgba(30, 25, 20, 0.9);
+$overlay-medium: rgba(42, 36, 28, 0.7);
+$overlay-light: rgba(60, 50, 40, 0.3);
+$overlay-border-light: rgba(255, 255, 255, 0.08);
+$overlay-border-medium: rgba(255, 255, 255, 0.15);
+
+// --------------------------------------------
+// TYPOGRAPHY
+// --------------------------------------------
+
+// Font families
 $font-heading: 'Playfair Display', Georgia, serif;
 $font-body: 'Cormorant Garamond', Georgia, serif;
 $font-accent: 'Montserrat', Helvetica, sans-serif;
 
-// Spacing
-$section-padding: 6rem 2rem;
-$section-padding-mobile: 4rem 1.5rem;
+// Font sizes — modular scale
+$text-xs: 0.7rem;
+$text-sm: 0.8rem;
+$text-base: 1rem;
+$text-md: 1.05rem;
+$text-lg: 1.15rem;
+$text-xl: 1.25rem;
+$text-2xl: clamp(1.6rem, 3.5vw, 2.4rem);
+$text-3xl: clamp(1.8rem, 4vw, 2.8rem);
+$text-4xl: clamp(2.5rem, 5vw, 3.5rem);
+$text-5xl: clamp(3rem, 6vw, 4.5rem);
 
-// Breakpoints
+// Font weights
+$weight-light: 300;
+$weight-regular: 400;
+$weight-medium: 500;
+$weight-semibold: 600;
+$weight-bold: 700;
+
+// Line heights
+$leading-tight: 1.05;
+$leading-snug: 1.2;
+$leading-normal: 1.6;
+$leading-relaxed: 1.75;
+$leading-loose: 1.8;
+
+// Letter spacing
+$tracking-tight: -0.01em;
+$tracking-normal: 0;
+$tracking-wide: 0.08em;
+$tracking-wider: 0.15em;
+$tracking-widest: 0.35em;
+
+// Label style (reusable uppercase small text)
+$label-size: 0.75rem;
+$label-weight: $weight-medium;
+$label-tracking: $tracking-widest;
+
+// --------------------------------------------
+// SPACING
+// --------------------------------------------
+
+$space-xs: 0.5rem;
+$space-sm: 0.75rem;
+$space-md: 1rem;
+$space-lg: 1.5rem;
+$space-xl: 2rem;
+$space-2xl: 2.5rem;
+$space-3xl: 3rem;
+$space-4xl: 4rem;
+$space-5xl: 6rem;
+
+// Section padding
+$section-padding-y: $space-5xl;
+$section-padding-x: $space-xl;
+$section-padding: $section-padding-y $section-padding-x;
+
+$section-padding-y-mobile: $space-4xl;
+$section-padding-x-mobile: $space-lg;
+$section-padding-mobile: $section-padding-y-mobile $section-padding-x-mobile;
+
+// Grid gaps
+$grid-gap-sm: $space-sm;
+$grid-gap-md: $space-xl;
+$grid-gap-lg: $space-3xl;
+$grid-gap-xl: $space-4xl;
+
+// --------------------------------------------
+// BREAKPOINTS
+// --------------------------------------------
+
 $bp-sm: 576px;
 $bp-md: 768px;
 $bp-lg: 1024px;
 $bp-xl: 1280px;
+$bp-2xl: 1440px;
+
+// --------------------------------------------
+// LAYOUT
+// --------------------------------------------
+
+$max-width: $bp-xl;
+$max-width-narrow: 720px;
+$max-width-content: 1000px;
+$max-width-wide: $bp-2xl;
+
+// Container
+$container-padding: $space-xl;
+
+// --------------------------------------------
+// BORDERS & RADII
+// --------------------------------------------
+
+$radius-sm: 0.5rem;
+$radius-md: 0.75rem;
+$radius-lg: 1rem;
+$radius-full: 3rem;
+
+// --------------------------------------------
+// TRANSITIONS
+// --------------------------------------------
+
+$ease-out: cubic-bezier(0.22, 1, 0.36, 1);
+$ease-in-out: cubic-bezier(0.4, 0, 0.2, 1);
+
+$transition-fast: 0.2s $ease-in-out;
+$transition-base: 0.3s ease;
+$transition-slow: 0.6s $ease-out;
+$transition-reveal: 0.9s $ease-out;
+
+// --------------------------------------------
+// SHADOWS
+// --------------------------------------------
+
+$shadow-text: 0 1px 8px rgba(0, 0, 0, 0.5);
+$shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.1);
+$shadow-md: 0 4px 12px rgba(0, 0, 0, 0.15);
+$shadow-lg: 0 8px 30px rgba(0, 0, 0, 0.2);
+
+// --------------------------------------------
+// Z-INDEX
+// --------------------------------------------
+
+$z-base: 1;
+$z-overlay: 10;
+$z-header: 100;
+$z-modal: 1000;
+
+// --------------------------------------------
+// MIXINS
+// --------------------------------------------
+
+// Responsive breakpoint
+@mixin breakpoint-down($bp) {
+  @media (max-width: $bp) {
+    @content;
+  }
+}
+
+@mixin breakpoint-up($bp) {
+  @media (min-width: $bp) {
+    @content;
+  }
+}
+
+// Section container
+@mixin section-container($max: $max-width) {
+  max-width: $max;
+  margin: 0 auto;
+  padding: 0 $container-padding;
+}
+
+// Label / uppercase accent text
+@mixin label-text {
+  font-family: $font-accent;
+  font-size: $label-size;
+  font-weight: $label-weight;
+  letter-spacing: $label-tracking;
+  text-transform: uppercase;
+}
+
+// Hover lift effect
+@mixin hover-lift($amount: -2px) {
+  transition: transform $transition-base, opacity $transition-base;
+  &:hover {
+    transform: translateY($amount);
+  }
+}
+
+// Image card style
+@mixin image-card {
+  border-radius: $radius-lg;
+  overflow: hidden;
+  cursor: pointer;
+}
