@@ -1,0 +1,77 @@
+---
+---
+
+<header class="header">
+  <nav class="header__nav">
+    <a href="/" class="header__logo">
+      <span class="header__logo-text">The Empire Within</span>
+    </a>
+    <ul class="header__links">
+      <li><a href="#about">About</a></li>
+      <li><a href="#experience">Experience</a></li>
+      <li><a href="#contact">Contact</a></li>
+    </ul>
+  </nav>
+</header>
+
+<style lang="scss">
+  @use '../styles/variables' as *;
+
+  .header {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 100;
+    padding: 1.5rem 2rem;
+
+    &__nav {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      max-width: $bp-xl;
+      margin: 0 auto;
+    }
+
+    &__logo-text {
+      font-family: $font-accent;
+      font-size: 0.75rem;
+      font-weight: 500;
+      letter-spacing: 0.3em;
+      text-transform: uppercase;
+      color: $color-text-light;
+    }
+
+    &__links {
+      display: flex;
+      gap: 2.5rem;
+
+      a {
+        font-family: $font-accent;
+        font-size: 0.75rem;
+        font-weight: 400;
+        letter-spacing: 0.2em;
+        text-transform: uppercase;
+        color: $color-text-light;
+        opacity: 0.8;
+        transition: opacity 0.3s ease;
+
+        &:hover {
+          opacity: 1;
+        }
+      }
+    }
+
+    @media (max-width: $bp-md) {
+      padding: 1rem 1.5rem;
+
+      &__links {
+        gap: 1.5rem;
+
+        a {
+          font-size: 0.65rem;
+        }
+      }
+    }
+  }
+</style>

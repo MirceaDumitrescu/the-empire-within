@@ -1,0 +1,84 @@
+---
+const pillars = [
+  {
+    title: 'Expect Seclusion',
+    description: 'No crowds, no timelines, only the private space to become. A gated sanctuary designed for those who need distance from the world they lead.',
+  },
+  {
+    title: 'Expect Depth',
+    description: 'Personally facilitated sessions, breathwork, somatic healing, and intentional silence. Every element is chosen to go beyond surface-level relaxation.',
+  },
+  {
+    title: 'Expect Yourself',
+    description: 'The Vessel Within Retreat is not Guidance. It\'s not Coaching. It\'s deep Emotional and Somatic Mastery. Everything We Pursue Passes Through Who We Are First.',
+  },
+];
+---
+
+<section class="expect" id="experience">
+  <h2 class="expect__heading">
+    Expect Seclusion. Expect Depth. Expect Yourself
+  </h2>
+
+  <div class="expect__pillars">
+    {pillars.map((pillar) => (
+      <div class="expect__pillar">
+        <h3 class="expect__pillar-title">{pillar.title}</h3>
+        <p class="expect__pillar-desc">{pillar.description}</p>
+      </div>
+    ))}
+  </div>
+</section>
+
+<style lang="scss">
+  @use '../styles/variables' as *;
+
+  .expect {
+    background-color: $color-bg-cream;
+    padding: $section-padding;
+    text-align: center;
+
+    &__heading {
+      font-family: $font-heading;
+      font-size: clamp(1.6rem, 3.5vw, 2.4rem);
+      font-weight: 500;
+      color: $color-text-dark;
+      margin-bottom: 3.5rem;
+      letter-spacing: 0.02em;
+    }
+
+    &__pillars {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 3rem;
+      max-width: 1000px;
+      margin: 0 auto;
+    }
+
+    &__pillar-title {
+      font-family: $font-heading;
+      font-size: 1rem;
+      font-weight: 600;
+      color: $color-text-dark;
+      margin-bottom: 1rem;
+      font-style: italic;
+    }
+
+    &__pillar-desc {
+      font-family: $font-body;
+      font-size: 0.95rem;
+      font-weight: 300;
+      color: $color-text-muted;
+      line-height: 1.7;
+    }
+
+    @media (max-width: $bp-md) {
+      padding: $section-padding-mobile;
+
+      &__pillars {
+        grid-template-columns: 1fr;
+        gap: 2.5rem;
+      }
+    }
+  }
+</style>

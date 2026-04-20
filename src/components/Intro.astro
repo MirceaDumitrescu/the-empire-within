@@ -1,0 +1,81 @@
+---
+---
+
+<section class="intro" id="about">
+  <div class="intro__content">
+    <h1 class="intro__heading">
+      7-Day Immersive Sanctuary<br />
+      for Emotional and Somatic Mastery
+    </h1>
+
+    <div class="intro__body">
+      <p>
+        This season in Bali, a private immersion unfolds.
+      </p>
+      <p>
+        The Retreat — Empire Within<br />
+        a personally non-negotiably entry<br />
+        for leaders and creators who hold great worlds in their hands<br />
+        yet wish to reclaim their own center.
+      </p>
+      <p>
+        A restoration chamber.<br />
+        Silence, sensory centering, ancient Balinese rituals,<br />
+        breathwork, somatic intelligence, ocean and volcanic<br />
+        waters together to rebuild<br />
+        the internal code that sustains external power.
+      </p>
+      <p class="intro__tagline">
+        When the mind rests, the empire rises.
+      </p>
+    </div>
+  </div>
+</section>
+
+<style lang="scss">
+  @use '../styles/variables' as *;
+
+  .intro {
+    background-color: $color-bg-cream;
+    padding: $section-padding;
+    text-align: center;
+
+    &__content {
+      max-width: 720px;
+      margin: 0 auto;
+    }
+
+    &__heading {
+      font-family: $font-heading;
+      font-size: clamp(1.8rem, 4vw, 2.8rem);
+      font-weight: 400;
+      font-style: italic;
+      color: $color-text-dark;
+      margin-bottom: 3rem;
+      line-height: 1.3;
+    }
+
+    &__body {
+      p {
+        font-family: $font-body;
+        font-size: clamp(0.95rem, 1.5vw, 1.1rem);
+        font-weight: 300;
+        color: $color-text-muted;
+        margin-bottom: 1.5rem;
+        line-height: 1.8;
+      }
+    }
+
+    &__tagline {
+      font-family: $font-heading;
+      font-style: italic;
+      font-size: clamp(1.1rem, 2vw, 1.3rem) !important;
+      color: $color-text-dark !important;
+      margin-top: 2.5rem !important;
+    }
+
+    @media (max-width: $bp-md) {
+      padding: $section-padding-mobile;
+    }
+  }
+</style>
