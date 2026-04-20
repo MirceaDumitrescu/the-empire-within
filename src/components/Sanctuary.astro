@@ -167,7 +167,7 @@ const gridItems = [
       }
 
       &__item--large .sanctuary__placeholder {
-        min-height: 260px;
+        min-height: 220px;
       }
 
       &__stack {
@@ -175,7 +175,7 @@ const gridItems = [
       }
 
       &__item--medium .sanctuary__placeholder {
-        min-height: 160px;
+        min-height: 140px;
       }
 
       &__bottom {
@@ -183,7 +183,25 @@ const gridItems = [
       }
 
       &__item--small .sanctuary__placeholder {
-        min-height: 150px;
+        min-height: 120px;
+      }
+    }
+
+    @include breakpoint-down($bp-sm) {
+      &__stack {
+        flex-direction: column;
+      }
+
+      &__item--large .sanctuary__placeholder {
+        min-height: 180px;
+      }
+
+      &__item--medium .sanctuary__placeholder {
+        min-height: 120px;
+      }
+
+      &__item--small .sanctuary__placeholder {
+        min-height: 100px;
       }
     }
   }

@@ -125,6 +125,7 @@ const socials = [
     display: flex;
     gap: 0;
     flex-shrink: 0;
+    min-width: 0;
 
     input {
       font-family: $font-body;
@@ -135,7 +136,7 @@ const socials = [
       border-radius: $radius-full 0 0 $radius-full;
       background: transparent;
       color: $color-text-on-dark;
-      width: 280px;
+      width: min(280px, 100%);
       outline: none;
       transition: border-color $transition-base;
 

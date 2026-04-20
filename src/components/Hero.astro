@@ -117,14 +117,29 @@
       &__grid {
         grid-template-columns: repeat(2, 1fr);
         gap: $space-xs;
+        max-width: 100%;
       }
 
       &__placeholder {
-        min-height: 100px;
+        min-height: 80px;
+        border-radius: $radius-md;
       }
 
       &__grid-item--tall .hero__placeholder {
-        min-height: 210px;
+        min-height: 170px;
+      }
+    }
+
+    @include breakpoint-down($bp-sm) {
+      padding: 4rem $space-md $space-xl;
+      min-height: 50vh;
+
+      &__placeholder {
+        min-height: 60px;
+      }
+
+      &__grid-item--tall .hero__placeholder {
+        min-height: 130px;
       }
     }
   }
