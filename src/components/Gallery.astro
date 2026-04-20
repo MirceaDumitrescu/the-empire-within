@@ -9,14 +9,14 @@ const features = [
 ---
 
 <section class="gallery">
-  <div class="gallery__strip">
+  <div class="gallery__strip reveal-fade">
     <div class="gallery__image"><div class="gallery__placeholder"></div></div>
     <div class="gallery__image"><div class="gallery__placeholder"></div></div>
     <div class="gallery__image gallery__image--wide"><div class="gallery__placeholder"></div></div>
     <div class="gallery__image"><div class="gallery__placeholder"></div></div>
   </div>
 
-  <div class="gallery__features">
+  <div class="gallery__features reveal">
     {features.map((feature) => (
       <p class="gallery__feature">{feature}</p>
     ))}
@@ -56,11 +56,11 @@ const features = [
 
     &__feature {
       font-family: $font-body;
-      font-size: 0.9rem;
-      font-weight: 300;
-      color: $color-text-muted;
+      font-size: 1rem;
+      font-weight: 400;
+      color: #4a4a4a;
       font-style: italic;
-      line-height: 1.6;
+      line-height: 1.7;
     }
 
     @media (max-width: $bp-md) {

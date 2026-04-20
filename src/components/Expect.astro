@@ -16,13 +16,13 @@ const pillars = [
 ---
 
 <section class="expect" id="experience">
-  <h2 class="expect__heading">
+  <h2 class="expect__heading reveal">
     Expect Seclusion. Expect Depth. Expect Yourself
   </h2>
 
-  <div class="expect__pillars">
+  <div class="expect__pillars reveal">
     {pillars.map((pillar) => (
-      <div class="expect__pillar">
+      <div class="expect__pillar reveal-stagger">
         <h3 class="expect__pillar-title">{pillar.title}</h3>
         <p class="expect__pillar-desc">{pillar.description}</p>
       </div>
@@ -57,7 +57,7 @@ const pillars = [
 
     &__pillar-title {
       font-family: $font-heading;
-      font-size: 1rem;
+      font-size: 1.2rem;
       font-weight: 600;
       color: $color-text-dark;
       margin-bottom: 1rem;
@@ -66,10 +66,10 @@ const pillars = [
 
     &__pillar-desc {
       font-family: $font-body;
-      font-size: 0.95rem;
-      font-weight: 300;
-      color: $color-text-muted;
-      line-height: 1.7;
+      font-size: 1.05rem;
+      font-weight: 400;
+      color: #4a4a4a;
+      line-height: 1.75;
     }
 
     @media (max-width: $bp-md) {
