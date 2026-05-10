@@ -18,6 +18,8 @@ interface Props {
   intro?: string[];
   sections: LegalSection[];
   contactEmail?: string;
+  /** Skip rendering the internal title header (when a PageHero precedes this section). */
+  hideHeader?: boolean;
 }
 
 const {
@@ -27,18 +29,24 @@ const {
   intro = [],
   sections,
   contactEmail = 'hello@theempirewithin.com',
+  hideHeader = false,
 } = Astro.props;
 ---
 
 <section class="legal">
   <div class="legal__inner">
-    <header class="legal__header reveal">
-      <p class="legal__eyebrow">{eyebrow}</p>
-      <h1 class="legal__title">{title}</h1>
-      {lastUpdated && (
-        <p class="legal__updated">Last updated: {lastUpdated}</p>
-      )}
-    </header>
+    {!hideHeader && (
+      <header class="legal__header reveal">
+        <p class="legal__eyebrow">{eyebrow}</p>
+        <h1 class="legal__title">{title}</h1>
+        {lastUpdated && (
+          <p class="legal__updated">Last updated: {lastUpdated}</p>
+        )}
+      </header>
+    )}
+    {hideHeader && lastUpdated && (
+      <p class="legal__updated legal__updated--standalone">Last updated: {lastUpdated}</p>
+    )}
 
     <div class="legal__layout">
       <aside class="legal__toc-wrap" aria-label="Table of contents">
@@ -172,6 +180,11 @@ const {
       letter-spacing: $tracking-wide;
       text-transform: uppercase;
       color: $color-text-muted;
+
+      &--standalone {
+        text-align: center;
+        margin-bottom: $space-3xl;
+      }
     }
 
     &__layout {

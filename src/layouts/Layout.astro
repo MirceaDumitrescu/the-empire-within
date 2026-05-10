@@ -101,6 +101,52 @@ const {
   }
   requestAnimationFrame(raf);
 
+  /**
+   * Global anchor-link smooth scrolling.
+   * Intercepts clicks on same-page <a href="#id"> links and routes them
+   * through Lenis so the smooth-scroll library actually moves the page
+   * (a default click would jump instantly past Lenis). Honours each
+   * target's CSS scroll-margin-top, so sections that compensate for the
+   * sticky header (e.g. legal TOC, retreat sections) land in the right place.
+   */
+  const HEADER_OFFSET_PX = 96;
+
+  document.addEventListener('click', (event) => {
+    // A more specific handler (e.g. footer newsletter focus) may have already handled this.
+    if (event.defaultPrevented) return;
+
+    const target = event.target as Element | null;
+    if (!target) return;
+
+    const link = target.closest('a[href^="#"]') as HTMLAnchorElement | null;
+    if (!link) return;
+
+    const href = link.getAttribute('href');
+    if (!href || href === '#') return;
+
+    // Same-document only (e.g. don't hijack `/blog#x` from a different page;
+    // those will navigate normally and the browser will land near the anchor).
+    if (link.pathname && link.pathname !== window.location.pathname) return;
+
+    const id = href.slice(1);
+    const dest = document.getElementById(id);
+    if (!dest) return;
+
+    event.preventDefault();
+
+    // Prefer the element's scroll-margin-top if defined, else use a header-safe offset.
+    const cs = window.getComputedStyle(dest);
+    const scrollMarginTop = parseFloat(cs.scrollMarginTop || '0');
+    const offset = -(scrollMarginTop || HEADER_OFFSET_PX);
+
+    lenis.scrollTo(dest, { offset, duration: 1.1 });
+
+    // Update URL hash without causing a jump.
+    if (history.replaceState) {
+      history.replaceState(null, '', href);
+    }
+  });
+
   // Scroll reveal with IntersectionObserver
   const revealElements = document.querySelectorAll('.reveal, .reveal-fade, .reveal-stagger');
 

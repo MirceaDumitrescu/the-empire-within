@@ -7,6 +7,7 @@
 
 import Layout from '../layouts/Layout.astro';
 import Header from '../components/Header.astro';
+import PageHero from '../components/PageHero.astro';
 import Footer from '../components/Footer.astro';
 import LegalDocument from '../components/LegalDocument.astro';
 import type { LegalSection } from '../components/LegalDocument.astro';
@@ -193,7 +194,14 @@ const sections: LegalSection[] = [
 >
   <Header />
   <main>
+    <PageHero
+      eyebrow="Legal"
+      title="Terms & Conditions"
+      tagline="The rules for using our Website and the conditions that apply to applications, bookings, and participation."
+      size="sm"
+    />
     <LegalDocument
+      hideHeader
       eyebrow="Legal"
       title="Terms & Conditions"
       lastUpdated="May 10, 2026"
