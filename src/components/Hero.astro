@@ -8,25 +8,14 @@
   <div class="hero__overlay"></div>
   <p class="hero__welcome reveal-fade">Welcome to</p>
 
-  <div class="hero__grid reveal">
-    <div class="hero__grid-item hero__grid-item--tall">
-      <div class="hero__placeholder"></div>
-    </div>
-    <div class="hero__grid-item">
-      <div class="hero__placeholder"></div>
-    </div>
-    <div class="hero__grid-item">
-      <div class="hero__placeholder"></div>
-    </div>
-    <div class="hero__grid-item hero__grid-item--tall">
-      <div class="hero__placeholder"></div>
-    </div>
-    <div class="hero__grid-item">
-      <div class="hero__placeholder"></div>
-    </div>
-    <div class="hero__grid-item">
-      <div class="hero__placeholder"></div>
-    </div>
+  <div class="hero__logo-frame reveal">
+    <img
+      class="hero__logo"
+      src="/empire-within-logo.png"
+      alt="The Empire Within"
+      width="1563"
+      height="1563"
+    />
   </div>
 </section>
 
@@ -80,53 +69,29 @@
       margin-bottom: $space-xl;
     }
 
-    &__grid {
+    &__logo-frame {
       position: relative;
       z-index: $z-base;
-      display: grid;
-      grid-template-columns: repeat(4, 1fr);
-      grid-template-rows: auto auto;
-      gap: $grid-gap-sm;
-      max-width: 800px;
+      width: min(30vw, 340px);
+      max-width: 100%;
+      aspect-ratio: 1;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    &__logo {
       width: 100%;
-    }
-
-    &__grid-item {
-      &--tall {
-        grid-row: span 2;
-      }
-    }
-
-    &__placeholder {
-      width: 100%;
-      height: 100%;
-      min-height: 140px;
-      background: linear-gradient(135deg, $color-charcoal 0%, #2a2520 100%);
-      border-radius: $radius-lg;
-      overflow: hidden;
-    }
-
-    &__grid-item--tall .hero__placeholder {
-      min-height: 296px;
+      height: auto;
+      filter: drop-shadow(0 18px 35px rgba($color-black, 0.45));
     }
 
     @include breakpoint-down($bp-md) {
       padding: 5rem $space-lg $space-3xl;
       min-height: 60vh;
 
-      &__grid {
-        grid-template-columns: repeat(2, 1fr);
-        gap: $space-xs;
-        max-width: 100%;
-      }
-
-      &__placeholder {
-        min-height: 80px;
-        border-radius: $radius-md;
-      }
-
-      &__grid-item--tall .hero__placeholder {
-        min-height: 170px;
+      &__logo-frame {
+        width: min(58vw, 300px);
       }
     }
 
@@ -134,12 +99,8 @@
       padding: 4rem $space-md $space-xl;
       min-height: 50vh;
 
-      &__placeholder {
-        min-height: 60px;
-      }
-
-      &__grid-item--tall .hero__placeholder {
-        min-height: 130px;
+      &__logo-frame {
+        width: min(68vw, 240px);
       }
     }
   }
