@@ -1,0 +1,155 @@
+---
+import ImagePlaceholder from './ImagePlaceholder.astro';
+
+interface Props {
+  category?: string;
+  title: string;
+  excerpt?: string;
+  date?: string;
+  readingTime?: string;
+  imageSrc?: string;
+  imageAlt?: string;
+  imageLabel?: string;
+}
+
+const {
+  category,
+  title,
+  excerpt,
+  date,
+  readingTime,
+  imageSrc,
+  imageAlt = '',
+  imageLabel = 'Article',
+} = Astro.props;
+
+const meta = [date, readingTime].filter(Boolean) as string[];
+---
+
+<section class="article-hero">
+  <div class="article-hero__inner">
+    <nav class="article-hero__crumbs reveal-fade" aria-label="Breadcrumb">
+      <a href="/blog">← Back to Journal</a>
+    </nav>
+
+    <header class="article-hero__head reveal">
+      {category && <p class="article-hero__category">{category}</p>}
+      <h1 class="article-hero__title">{title}</h1>
+      {excerpt && <p class="article-hero__excerpt">{excerpt}</p>}
+
+      {meta.length > 0 && (
+        <div class="article-hero__meta">
+          {meta.map((item, i) => (
+            <>
+              {i > 0 && <span class="article-hero__meta-sep" aria-hidden="true">·</span>}
+              <span>{item}</span>
+            </>
+          ))}
+        </div>
+      )}
+    </header>
+
+    <div class="article-hero__media reveal-fade">
+      <ImagePlaceholder
+        src={imageSrc}
+        alt={imageAlt}
+        label={imageLabel}
+        aspectRatio="21 / 9"
+        rounded={false}
+      />
+    </div>
+  </div>
+</section>
+
+<style lang="scss">
+  @use '../styles/variables' as *;
+
+  .article-hero {
+    background-color: $color-bg-light;
+    padding: 8rem $space-xl $space-3xl;
+
+    &__inner {
+      max-width: 960px;
+      margin: 0 auto;
+    }
+
+    &__crumbs {
+      margin-bottom: $space-xl;
+
+      a {
+        font-family: $font-accent;
+        font-size: $text-xs;
+        font-weight: $weight-regular;
+        letter-spacing: $tracking-wide;
+        text-transform: uppercase;
+        color: $color-text-muted;
+        transition: color $transition-base;
+
+        &:hover {
+          color: $color-accent;
+        }
+      }
+    }
+
+    &__head {
+      max-width: 720px;
+      margin: 0 auto $space-3xl;
+      text-align: center;
+    }
+
+    &__category {
+      @include label-text;
+      color: $color-accent;
+      margin-bottom: $space-md;
+    }
+
+    &__title {
+      font-family: $font-heading;
+      font-size: clamp(2rem, 5vw, 3.4rem);
+      font-style: italic;
+      font-weight: $weight-regular;
+      color: $color-text-primary;
+      line-height: $leading-tight;
+      letter-spacing: $tracking-tight;
+      margin-bottom: $space-lg;
+    }
+
+    &__excerpt {
+      font-family: $font-body;
+      font-size: $text-lg;
+      font-weight: $weight-light;
+      color: $color-text-body;
+      line-height: $leading-relaxed;
+      margin-bottom: $space-xl;
+      max-width: 36rem;
+      margin-left: auto;
+      margin-right: auto;
+    }
+
+    &__meta {
+      display: inline-flex;
+      align-items: center;
+      gap: $space-sm;
+      font-family: $font-accent;
+      font-size: $text-xs;
+      font-weight: $weight-regular;
+      letter-spacing: $tracking-wide;
+      text-transform: uppercase;
+      color: $color-text-muted;
+    }
+
+    &__meta-sep {
+      opacity: 0.6;
+    }
+
+    &__media {
+      width: 100%;
+      border-radius: $radius-md;
+      overflow: hidden;
+    }
+
+    @include breakpoint-down($bp-md) {
+      padding: 6rem $space-lg $space-2xl;
+    }
+  }
+</style>

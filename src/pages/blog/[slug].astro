@@ -1,0 +1,200 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import Header from '../../components/Header.astro';
+import Footer from '../../components/Footer.astro';
+import ArticleHero from '../../components/ArticleHero.astro';
+import ArticleBody from '../../components/ArticleBody.astro';
+import BlogCard from '../../components/BlogCard.astro';
+import BookingCta from '../../components/BookingCta.astro';
+import { posts, type Post } from '../../data/posts';
+
+export function getStaticPaths() {
+  return posts.map((p) => ({
+    params: { slug: p.slug },
+    props: { post: p },
+  }));
+}
+
+interface Props {
+  post: Post;
+}
+
+const { post } = Astro.props;
+
+const related = posts
+  .filter((p) => p.slug !== post.slug)
+  .filter((p) => p.category === post.category || (p.tags ?? []).some((t) => (post.tags ?? []).includes(t)))
+  .slice(0, 3);
+---
+
+<Layout
+  title={`${post.title} — The Empire Within`}
+  description={post.excerpt}
+>
+  <Header />
+  <main>
+    <ArticleHero
+      category={post.category}
+      title={post.title}
+      excerpt={post.excerpt}
+      date={post.date}
+      readingTime={post.readingTime}
+      imageSrc={post.imageSrc}
+      imageAlt={post.imageAlt}
+      imageLabel={post.imageLabel}
+    />
+
+    <ArticleBody blocks={post.body} />
+
+    {post.tags && post.tags.length > 0 && (
+      <section class="article-tags">
+        <div class="article-tags__inner">
+          <p class="article-tags__label">Tags</p>
+          <ul class="article-tags__list">
+            {post.tags.map((tag) => (
+              <li class="article-tags__tag">{tag}</li>
+            ))}
+          </ul>
+        </div>
+      </section>
+    )}
+
+    {related.length > 0 && (
+      <section class="article-related">
+        <div class="article-related__inner">
+          <header class="article-related__header reveal">
+            <p class="article-related__eyebrow">Continue reading</p>
+            <h2 class="article-related__heading">More from the journal.</h2>
+          </header>
+
+          <div class="article-related__grid">
+            {related.map((p) => (
+              <BlogCard
+                title={p.title}
+                excerpt={p.excerpt}
+                category={p.category}
+                date={p.date}
+                href={`/blog/${p.slug}`}
+                imageSrc={p.imageSrc}
+                imageAlt={p.imageAlt}
+                imageLabel={p.imageLabel}
+              />
+            ))}
+          </div>
+        </div>
+      </section>
+    )}
+
+    <BookingCta
+      eyebrow="Stay close"
+      heading="Receive the next note."
+      description="Occasional, slow letters from the practice. No marketing, no urgency — just the writing as it lands."
+      ctaLabel="Subscribe"
+      ctaHref="#newsletter"
+      secondaryLabel="See all writing"
+      secondaryHref="/blog"
+    />
+  </main>
+  <Footer />
+</Layout>
+
+<style lang="scss">
+  @use '../../styles/variables' as *;
+
+  .article-tags {
+    background-color: $color-bg-light;
+    padding: 0 $space-xl $space-3xl;
+
+    &__inner {
+      max-width: 680px;
+      margin: 0 auto;
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: $space-md;
+      padding-top: $space-xl;
+      border-top: 1px solid rgba($color-charcoal, 0.12);
+    }
+
+    &__label {
+      @include label-text;
+      color: $color-text-muted;
+      margin: 0;
+    }
+
+    &__list {
+      list-style: none;
+      margin: 0;
+      padding: 0;
+      display: flex;
+      flex-wrap: wrap;
+      gap: $space-sm;
+    }
+
+    &__tag {
+      font-family: $font-accent;
+      font-size: $text-xs;
+      font-weight: $weight-regular;
+      letter-spacing: $tracking-wide;
+      text-transform: uppercase;
+      color: $color-text-primary;
+      padding: 0.4rem 0.85rem;
+      border: 1px solid rgba($color-charcoal, 0.15);
+      border-radius: $radius-full;
+      background: rgba($color-charcoal, 0.04);
+    }
+
+    @include breakpoint-down($bp-md) {
+      padding: 0 $space-lg $space-2xl;
+    }
+  }
+
+  .article-related {
+    background-color: $color-bg-warm;
+    padding: $section-padding;
+
+    &__inner {
+      max-width: $max-width;
+      margin: 0 auto;
+    }
+
+    &__header {
+      max-width: $max-width-narrow;
+      margin: 0 auto $space-3xl;
+      text-align: center;
+    }
+
+    &__eyebrow {
+      @include label-text;
+      color: $color-accent;
+      margin-bottom: $space-md;
+    }
+
+    &__heading {
+      font-family: $font-heading;
+      font-size: $text-3xl;
+      font-style: italic;
+      font-weight: $weight-regular;
+      color: $color-text-primary;
+      line-height: $leading-snug;
+    }
+
+    &__grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: $space-xl;
+
+      @include breakpoint-down($bp-lg) {
+        grid-template-columns: repeat(2, 1fr);
+      }
+
+      @include breakpoint-down($bp-md) {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    @include breakpoint-down($bp-md) {
+      padding: $section-padding-mobile;
+    }
+  }
+</style>

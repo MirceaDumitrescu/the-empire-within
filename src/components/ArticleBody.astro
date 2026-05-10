@@ -1,0 +1,181 @@
+---
+import type { PostBlock } from '../data/posts';
+import ImagePlaceholder from './ImagePlaceholder.astro';
+
+interface Props {
+  blocks: PostBlock[];
+}
+
+const { blocks } = Astro.props;
+---
+
+<article class="article-body">
+  <div class="article-body__inner">
+    {blocks.map((block) => {
+      if (block.type === 'paragraph') {
+        return <p class="article-body__p reveal-stagger">{block.text}</p>;
+      }
+      if (block.type === 'heading') {
+        const level = block.level ?? 2;
+        if (level === 3) {
+          return <h3 class="article-body__h3 reveal-stagger">{block.text}</h3>;
+        }
+        return <h2 class="article-body__h2 reveal-stagger">{block.text}</h2>;
+      }
+      if (block.type === 'quote') {
+        return (
+          <blockquote class="article-body__quote reveal-stagger">
+            <p>{block.text}</p>
+            {block.attribution && <cite>{block.attribution}</cite>}
+          </blockquote>
+        );
+      }
+      if (block.type === 'list') {
+        return (
+          <ul class="article-body__list reveal-stagger">
+            {block.items.map((item) => (
+              <li>{item}</li>
+            ))}
+          </ul>
+        );
+      }
+      if (block.type === 'image') {
+        return (
+          <figure class="article-body__figure reveal-stagger">
+            <ImagePlaceholder
+              src={block.src}
+              alt={block.alt ?? ''}
+              label="Image"
+              aspectRatio="16 / 9"
+              rounded={false}
+            />
+            {block.caption && <figcaption>{block.caption}</figcaption>}
+          </figure>
+        );
+      }
+      return null;
+    })}
+  </div>
+</article>
+
+<style lang="scss">
+  @use '../styles/variables' as *;
+
+  .article-body {
+    background-color: $color-bg-light;
+    padding: $space-3xl $space-xl $space-5xl;
+
+    &__inner {
+      max-width: 680px;
+      margin: 0 auto;
+      display: flex;
+      flex-direction: column;
+      gap: $space-lg;
+    }
+
+    &__p {
+      font-family: $font-body;
+      font-size: $text-md;
+      font-weight: $weight-regular;
+      color: $color-text-body;
+      line-height: $leading-loose;
+      margin: 0;
+    }
+
+    &__h2 {
+      font-family: $font-heading;
+      font-size: $text-2xl;
+      font-style: italic;
+      font-weight: $weight-regular;
+      color: $color-text-primary;
+      line-height: $leading-snug;
+      margin: $space-2xl 0 0;
+    }
+
+    &__h3 {
+      font-family: $font-heading;
+      font-size: $text-xl;
+      font-weight: $weight-medium;
+      color: $color-text-primary;
+      line-height: $leading-snug;
+      margin: $space-xl 0 0;
+    }
+
+    &__quote {
+      margin: $space-xl 0;
+      padding: $space-xl $space-2xl;
+      border-left: 3px solid $color-accent;
+      background: rgba($color-gold, 0.06);
+      border-radius: 0 $radius-sm $radius-sm 0;
+
+      p {
+        font-family: $font-heading;
+        font-size: $text-xl;
+        font-style: italic;
+        font-weight: $weight-regular;
+        color: $color-text-primary;
+        line-height: $leading-snug;
+        margin: 0;
+      }
+
+      cite {
+        display: block;
+        margin-top: $space-md;
+        font-family: $font-accent;
+        font-size: $text-xs;
+        font-weight: $weight-regular;
+        letter-spacing: $tracking-wide;
+        text-transform: uppercase;
+        font-style: normal;
+        color: $color-text-muted;
+      }
+    }
+
+    &__list {
+      list-style: none;
+      margin: 0;
+      padding: 0;
+      display: flex;
+      flex-direction: column;
+      gap: $space-sm;
+
+      li {
+        position: relative;
+        padding-left: 1.4rem;
+        font-family: $font-body;
+        font-size: $text-md;
+        color: $color-text-body;
+        line-height: $leading-relaxed;
+
+        &::before {
+          content: '';
+          position: absolute;
+          left: 0;
+          top: 0.7em;
+          width: 6px;
+          height: 6px;
+          border-radius: 50%;
+          background: $color-accent;
+        }
+      }
+    }
+
+    &__figure {
+      margin: $space-xl 0;
+
+      figcaption {
+        margin-top: $space-sm;
+        font-family: $font-accent;
+        font-size: $text-xs;
+        letter-spacing: $tracking-wide;
+        text-transform: uppercase;
+        color: $color-text-muted;
+        text-align: center;
+      }
+    }
+
+    @include breakpoint-down($bp-md) {
+      padding: $space-2xl $space-lg $space-4xl;
+    }
+  }
+</style>

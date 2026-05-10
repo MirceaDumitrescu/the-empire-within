@@ -1,0 +1,36 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import Header from '../../components/Header.astro';
+import PageHero from '../../components/PageHero.astro';
+import BlogGrid from '../../components/BlogGrid.astro';
+import Footer from '../../components/Footer.astro';
+import { posts } from '../../data/posts';
+
+const gridPosts = posts.map((p) => ({
+  title: p.title,
+  excerpt: p.excerpt,
+  category: p.category,
+  date: p.date,
+  href: `/blog/${p.slug}`,
+  imageSrc: p.imageSrc,
+  imageAlt: p.imageAlt,
+  imageLabel: p.imageLabel,
+  featured: p.featured,
+}));
+---
+
+<Layout
+  title="Journal — The Empire Within"
+  description="Reflections, field notes, and writings on somatic mastery, ceremony, and the slow practice of returning to center."
+>
+  <Header />
+  <main>
+    <PageHero
+      eyebrow="Journal"
+      title="Field Notes & Reflections"
+      tagline="Writings from the practice — on stillness, ceremony, and the slow work of returning to center."
+    />
+    <BlogGrid posts={gridPosts} />
+  </main>
+  <Footer />
+</Layout>
