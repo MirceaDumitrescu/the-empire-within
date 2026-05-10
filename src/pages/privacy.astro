@@ -1,0 +1,214 @@
+---
+// LEGAL TEMPLATE — review with a qualified lawyer / DPO before relying on
+// this document, particularly the GDPR (Articles 6, 13, 15-22), data
+// transfer (SCCs), and retention sections, which depend on where the
+// company is registered, where data is stored, and which third-party
+// processors are used.
+
+import Layout from '../layouts/Layout.astro';
+import Header from '../components/Header.astro';
+import Footer from '../components/Footer.astro';
+import LegalDocument from '../components/LegalDocument.astro';
+import type { LegalSection } from '../components/LegalDocument.astro';
+
+const sections: LegalSection[] = [
+  {
+    id: 'introduction',
+    title: 'Introduction',
+    paragraphs: [
+      'This Privacy Policy explains how The Empire Within ("we", "us", or "our") collects, uses, and protects personal information when you visit theempirewithin.com (the "Website") or interact with us as an applicant, participant, or correspondent.',
+      'We are the controller of the personal information we hold about you. If you have any questions about this Policy or how we handle your data, please write to hello@theempirewithin.com.',
+    ],
+  },
+  {
+    id: 'information-we-collect',
+    title: 'Information We Collect',
+    subSections: [
+      {
+        title: 'Information you provide directly',
+        list: {
+          intro: 'When you contact us, apply for a Retreat, book a 1:1 Immersion, or subscribe to our newsletter, we may collect:',
+          items: [
+            'Identification details such as your name and date of birth (where relevant to a Booking).',
+            'Contact details such as your email address, phone number, and postal address.',
+            'Application content — what is drawing you to the work, your experience, and any goals you wish to share.',
+            'Health information you choose to disclose where relevant to participation, such as conditions, allergies, or medications. We treat this as sensitive personal data.',
+            'Payment information processed through our payment provider. We do not store full card numbers.',
+          ],
+        },
+      },
+      {
+        title: 'Information collected automatically',
+        list: {
+          intro: 'When you visit the Website, our hosting provider and analytics tools may automatically collect:',
+          items: [
+            'IP address, approximate geographic region, device type, browser, and operating system.',
+            'Pages visited, the time spent on each, and the referring URL.',
+            'Cookies and similar identifiers — see "Cookies & Similar Technologies" below.',
+          ],
+        },
+      },
+    ],
+  },
+  {
+    id: 'how-we-use',
+    title: 'How We Use Your Information',
+    list: {
+      intro: 'We use the information we collect to:',
+      items: [
+        'Respond to inquiries and process applications and bookings.',
+        'Tailor and deliver Retreats and 1:1 Immersions safely, including responding to disclosed health considerations.',
+        'Send transactional messages (booking confirmations, pre-arrival information, integration follow-ups).',
+        'Send newsletters and updates where you have explicitly subscribed — you may unsubscribe at any time.',
+        'Operate, secure, and improve the Website.',
+        'Comply with our legal and regulatory obligations.',
+      ],
+    },
+  },
+  {
+    id: 'legal-basis',
+    title: 'Legal Basis for Processing',
+    paragraphs: [
+      'Where the EU/UK General Data Protection Regulation applies, we rely on the following legal bases for processing your personal information:',
+    ],
+    list: {
+      items: [
+        'Performance of a contract — to fulfil applications, bookings, and the services you have engaged us for.',
+        'Consent — for newsletter subscription, optional marketing, and the use of non-essential cookies.',
+        'Legitimate interests — to operate and secure the Website, communicate with applicants, and improve our offerings, balanced against your rights and expectations.',
+        'Legal obligation — where we are required by law to retain or disclose information.',
+        'Vital interests — where processing is necessary to protect life or health, for example in a medical emergency during a Retreat.',
+      ],
+    },
+  },
+  {
+    id: 'sharing',
+    title: 'How We Share Your Information',
+    paragraphs: [
+      'We do not sell your personal information. We share it only with the following categories of recipients, and only as needed:',
+    ],
+    list: {
+      items: [
+        'Service providers we engage to operate the Website and our services — for example, hosting, email delivery, scheduling, payment processing, and analytics. These providers act on our instructions and are bound by appropriate confidentiality and security obligations.',
+        'On-the-ground partners in Bali (such as venue staff and local ceremonial elders) where this is necessary to deliver a Retreat safely and respectfully.',
+        'Professional advisors (lawyers, accountants, auditors) where reasonably necessary.',
+        'Authorities, regulators, or other parties where we are legally obligated to disclose information, or where disclosure is necessary to protect our rights or those of our participants.',
+      ],
+    },
+  },
+  {
+    id: 'cookies',
+    title: 'Cookies & Similar Technologies',
+    paragraphs: [
+      'We use cookies and similar technologies to operate the Website and, with your consent, to understand how it is used. Strictly necessary cookies do not require consent. Analytics and any marketing cookies are loaded only after you have given consent through the cookie banner where applicable.',
+      'You can control cookies through your browser settings. Disabling some cookies may affect Website functionality.',
+    ],
+  },
+  {
+    id: 'third-party',
+    title: 'Third-Party Services',
+    paragraphs: [
+      'We currently work with, or anticipate working with, the following categories of third-party providers. Each operates under its own privacy policy:',
+    ],
+    list: {
+      items: [
+        'Hosting and CDN — to deliver the Website.',
+        'Email and newsletter delivery — to send transactional and subscribed messages.',
+        'Backend and database — for storing applications, bookings, and operational data.',
+        'Scheduling and calendaring — for booking discovery calls.',
+        'Payment processing — for handling deposits and balances.',
+        'Analytics — for understanding aggregate Website usage.',
+      ],
+    },
+  },
+  {
+    id: 'retention',
+    title: 'Data Retention',
+    paragraphs: [
+      'We retain personal information only as long as necessary for the purposes described in this Policy, or as required by law. In practice this means:',
+    ],
+    list: {
+      items: [
+        'Application and inquiry data — typically up to twenty-four (24) months after our last interaction, unless deleted earlier on request.',
+        'Booking and participation records — typically up to seven (7) years for accounting and legal purposes.',
+        'Newsletter subscription — until you unsubscribe.',
+        'Website analytics — typically up to twenty-six (26) months in aggregated form.',
+      ],
+    },
+  },
+  {
+    id: 'security',
+    title: 'Data Security',
+    paragraphs: [
+      'We use reasonable technical and organisational measures to protect personal information, including encryption in transit, access controls, and regular review of our processing arrangements. No method of transmission or storage is fully secure, however, and we cannot guarantee absolute security.',
+    ],
+  },
+  {
+    id: 'transfers',
+    title: 'International Data Transfers',
+    paragraphs: [
+      'Some of our service providers are based outside your country of residence. Where personal information is transferred outside the EU/UK, we rely on appropriate safeguards such as Standard Contractual Clauses, adequacy decisions, or comparable mechanisms.',
+    ],
+  },
+  {
+    id: 'rights',
+    title: 'Your Rights',
+    paragraphs: [
+      'Subject to applicable law, you have the right to:',
+    ],
+    list: {
+      items: [
+        'Access the personal information we hold about you and receive a copy of it.',
+        'Request correction of information that is inaccurate or incomplete.',
+        'Request deletion of your information where it is no longer needed and there is no overriding legal basis to retain it.',
+        'Restrict or object to certain processing of your information.',
+        'Withdraw consent at any time where consent is the basis for processing — without affecting the lawfulness of prior processing.',
+        'Receive your information in a portable format, where technically feasible.',
+        'Lodge a complaint with your local data-protection authority. We would, however, appreciate the chance to address your concerns directly first.',
+      ],
+    },
+  },
+  {
+    id: 'children',
+    title: "Children's Privacy",
+    paragraphs: [
+      'The Website and our services are intended for adults. We do not knowingly collect personal information from anyone under 18. If you believe a minor has provided us with personal information, please contact us so we can delete it.',
+    ],
+  },
+  {
+    id: 'changes',
+    title: 'Changes to This Policy',
+    paragraphs: [
+      'We may update this Policy from time to time. The date at the top of this page reflects the latest revision. Material changes will be communicated via the Website or by email where appropriate.',
+    ],
+  },
+  {
+    id: 'contact',
+    title: 'Contact',
+    paragraphs: [
+      'To exercise any of your rights, ask questions, or raise concerns about this Policy, please write to hello@theempirewithin.com. We aim to respond within thirty (30) days.',
+    ],
+  },
+];
+---
+
+<Layout
+  title="Privacy Policy — The Empire Within"
+  description="How The Empire Within collects, uses, and protects your personal information."
+>
+  <Header />
+  <main>
+    <LegalDocument
+      eyebrow="Legal"
+      title="Privacy Policy"
+      lastUpdated="May 10, 2026"
+      intro={[
+        'We collect only what we need, use it only for the purposes described here, and keep it only as long as necessary. Where we work with third parties to deliver our services, we choose providers that handle personal information with the same care.',
+        'This Policy explains, in plain language, how that works in practice.',
+      ]}
+      sections={sections}
+      contactEmail="hello@theempirewithin.com"
+    />
+  </main>
+  <Footer />
+</Layout>

@@ -1,0 +1,136 @@
+---
+import type { ScheduleDay } from '../data/retreats';
+
+interface Props {
+  eyebrow?: string;
+  heading?: string;
+  schedule: ScheduleDay[];
+}
+
+const {
+  eyebrow = 'The Arc',
+  heading = 'How the days unfold.',
+  schedule,
+} = Astro.props;
+---
+
+<section class="schedule">
+  <div class="schedule__inner">
+    <header class="schedule__header reveal">
+      <p class="schedule__eyebrow">{eyebrow}</p>
+      <h2 class="schedule__heading">{heading}</h2>
+    </header>
+
+    <ol class="schedule__list">
+      {schedule.map((day, index) => (
+        <li class="schedule__item reveal-stagger">
+          <span class="schedule__index" aria-hidden="true">{String(index + 1).padStart(2, '0')}</span>
+          <div class="schedule__body">
+            <p class="schedule__day">{day.day}</p>
+            <h3 class="schedule__title">{day.title}</h3>
+            <p class="schedule__desc">{day.description}</p>
+          </div>
+        </li>
+      ))}
+    </ol>
+  </div>
+</section>
+
+<style lang="scss">
+  @use '../styles/variables' as *;
+
+  .schedule {
+    background-color: $color-bg-warm;
+    padding: $section-padding;
+
+    &__inner {
+      max-width: $max-width-content;
+      margin: 0 auto;
+    }
+
+    &__header {
+      text-align: center;
+      max-width: $max-width-narrow;
+      margin: 0 auto $space-3xl;
+    }
+
+    &__eyebrow {
+      @include label-text;
+      color: $color-accent;
+      margin-bottom: $space-md;
+    }
+
+    &__heading {
+      font-family: $font-heading;
+      font-size: $text-3xl;
+      font-style: italic;
+      font-weight: $weight-regular;
+      color: $color-text-primary;
+      line-height: $leading-snug;
+    }
+
+    &__list {
+      list-style: none;
+      margin: 0;
+      padding: 0;
+      display: flex;
+      flex-direction: column;
+    }
+
+    &__item {
+      display: grid;
+      grid-template-columns: 5rem 1fr;
+      gap: $space-xl;
+      padding: $space-xl 0;
+      border-bottom: 1px solid rgba($color-charcoal, 0.12);
+
+      &:first-child {
+        padding-top: $space-md;
+      }
+
+      &:last-child {
+        border-bottom: none;
+      }
+
+      @include breakpoint-down($bp-md) {
+        grid-template-columns: 1fr;
+        gap: $space-sm;
+      }
+    }
+
+    &__index {
+      font-family: $font-heading;
+      font-size: $text-3xl;
+      font-style: italic;
+      color: $color-accent;
+      line-height: 1;
+    }
+
+    &__day {
+      @include label-text;
+      color: $color-text-muted;
+      margin-bottom: 0.4rem;
+    }
+
+    &__title {
+      font-family: $font-heading;
+      font-size: $text-xl;
+      font-weight: $weight-medium;
+      color: $color-text-primary;
+      line-height: $leading-snug;
+      margin-bottom: $space-sm;
+    }
+
+    &__desc {
+      font-family: $font-body;
+      font-size: $text-md;
+      color: $color-text-body;
+      line-height: $leading-relaxed;
+      max-width: 56ch;
+    }
+
+    @include breakpoint-down($bp-md) {
+      padding: $section-padding-mobile;
+    }
+  }
+</style>

@@ -1,0 +1,145 @@
+---
+interface Props {
+  eyebrow?: string;
+  heading?: string;
+  description?: string;
+  inclusions?: string[];
+}
+
+const {
+  eyebrow = 'The Container',
+  heading = 'A private week, shaped around one practitioner.',
+  description = 'Each immersion is built from the same architecture but never delivered the same way twice. The arc is fixed; the contents are tuned to who is in front of us.',
+  inclusions = [
+    'Private sanctuary stay in Bali — accommodation, meals, and full hospitality.',
+    'Daily 1:1 sessions across somatic intelligence, breathwork, and integration.',
+    'Bespoke water temple ceremony, held with local elders in full context.',
+    'Quiet hours, body-led pacing, and unstructured time built into every day.',
+    'A pre-arrival call to clarify intention, and a post-immersion integration call.',
+    'Carefully curated reading, journaling prompts, and recordings to take home.',
+  ],
+} = Astro.props;
+---
+
+<section class="private-offering">
+  <div class="private-offering__inner">
+    <header class="private-offering__header reveal">
+      <p class="private-offering__eyebrow">{eyebrow}</p>
+      <h2 class="private-offering__heading">{heading}</h2>
+      <p class="private-offering__description">{description}</p>
+    </header>
+
+    <ul class="private-offering__list">
+      {inclusions.map((item) => (
+        <li class="private-offering__item reveal-stagger">
+          <span class="private-offering__bullet" aria-hidden="true">
+            <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
+              <path d="M2 7.5L5.5 11L12 4" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" />
+            </svg>
+          </span>
+          <span class="private-offering__text">{item}</span>
+        </li>
+      ))}
+    </ul>
+  </div>
+</section>
+
+<style lang="scss">
+  @use '../styles/variables' as *;
+
+  .private-offering {
+    background-color: $color-bg-light;
+    padding: $section-padding;
+
+    &__inner {
+      display: grid;
+      grid-template-columns: 5fr 7fr;
+      gap: $space-4xl;
+      align-items: start;
+      max-width: $max-width;
+      margin: 0 auto;
+
+      @include breakpoint-down($bp-md) {
+        grid-template-columns: 1fr;
+        gap: $space-2xl;
+      }
+    }
+
+    &__header {
+      position: sticky;
+      top: 6rem;
+
+      @include breakpoint-down($bp-md) {
+        position: static;
+      }
+    }
+
+    &__eyebrow {
+      @include label-text;
+      color: $color-accent;
+      margin-bottom: $space-md;
+    }
+
+    &__heading {
+      font-family: $font-heading;
+      font-size: $text-3xl;
+      font-style: italic;
+      font-weight: $weight-regular;
+      color: $color-text-primary;
+      line-height: $leading-snug;
+      margin-bottom: $space-lg;
+    }
+
+    &__description {
+      font-family: $font-body;
+      font-size: $text-md;
+      color: $color-text-body;
+      line-height: $leading-relaxed;
+    }
+
+    &__list {
+      list-style: none;
+      margin: 0;
+      padding: 0;
+      display: flex;
+      flex-direction: column;
+      gap: $space-lg;
+    }
+
+    &__item {
+      display: flex;
+      gap: $space-md;
+      padding-bottom: $space-lg;
+      border-bottom: 1px solid rgba($color-charcoal, 0.1);
+
+      &:last-child {
+        padding-bottom: 0;
+        border-bottom: none;
+      }
+    }
+
+    &__bullet {
+      flex-shrink: 0;
+      width: 28px;
+      height: 28px;
+      border-radius: 50%;
+      background: rgba($color-gold, 0.15);
+      color: $color-accent;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-top: 0.15rem;
+    }
+
+    &__text {
+      font-family: $font-body;
+      font-size: $text-md;
+      color: $color-text-body;
+      line-height: $leading-relaxed;
+    }
+
+    @include breakpoint-down($bp-md) {
+      padding: $section-padding-mobile;
+    }
+  }
+</style>

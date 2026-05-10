@@ -1,0 +1,177 @@
+---
+interface Feature {
+  label: string;
+  description: string;
+  bullets?: string[];
+}
+
+interface Props {
+  eyebrow?: string;
+  heading?: string;
+  features?: Feature[];
+}
+
+const {
+  eyebrow = 'What You Will Receive',
+  heading = 'Three threads, woven across the immersion.',
+  features = [
+    {
+      label: 'A Container Built for One',
+      description: 'The arc is shaped to one practitioner only.',
+      bullets: [
+        'Private accommodation in the sanctuary',
+        'A schedule paced to your nervous system',
+        'Full discretion and confidentiality',
+      ],
+    },
+    {
+      label: 'Direct, Considered Work',
+      description: 'Daily one-to-one sessions, deliberate and unhurried.',
+      bullets: [
+        'Somatic, breath, and ceremony in sequence',
+        'Quiet hours and silence built into the rhythm',
+        'No group dynamics — no hiding, either',
+      ],
+    },
+    {
+      label: 'Integration That Lasts',
+      description: 'The week is not the work. The work is what comes after.',
+      bullets: [
+        'Pre-arrival call to clarify intention',
+        'Take-home recordings, prompts, and references',
+        'A follow-up integration call after return',
+      ],
+    },
+  ],
+} = Astro.props;
+---
+
+<section class="private-features">
+  <div class="private-features__inner">
+    <header class="private-features__header reveal">
+      <p class="private-features__eyebrow">{eyebrow}</p>
+      <h2 class="private-features__heading">{heading}</h2>
+    </header>
+
+    <div class="private-features__grid">
+      {features.map((feature) => (
+        <article class="private-features__card reveal-stagger">
+          <h3 class="private-features__card-label">{feature.label}</h3>
+          <p class="private-features__card-desc">{feature.description}</p>
+          {feature.bullets && (
+            <ul class="private-features__bullets">
+              {feature.bullets.map((b) => (
+                <li>
+                  <span class="private-features__dot" aria-hidden="true"></span>
+                  <span>{b}</span>
+                </li>
+              ))}
+            </ul>
+          )}
+        </article>
+      ))}
+    </div>
+  </div>
+</section>
+
+<style lang="scss">
+  @use '../styles/variables' as *;
+
+  .private-features {
+    background-color: $color-bg-light;
+    padding: $section-padding;
+
+    &__inner {
+      max-width: $max-width;
+      margin: 0 auto;
+    }
+
+    &__header {
+      text-align: center;
+      max-width: $max-width-narrow;
+      margin: 0 auto $space-4xl;
+    }
+
+    &__eyebrow {
+      @include label-text;
+      color: $color-accent;
+      margin-bottom: $space-md;
+    }
+
+    &__heading {
+      font-family: $font-heading;
+      font-size: $text-3xl;
+      font-style: italic;
+      font-weight: $weight-regular;
+      color: $color-text-primary;
+      line-height: $leading-snug;
+    }
+
+    &__grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: $space-xl;
+
+      @include breakpoint-down($bp-md) {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    &__card {
+      padding: $space-xl;
+      border-top: 2px solid $color-accent;
+      background: $color-white;
+      border-radius: 0 0 $radius-md $radius-md;
+      box-shadow: $shadow-sm;
+    }
+
+    &__card-label {
+      font-family: $font-heading;
+      font-size: $text-xl;
+      font-weight: $weight-medium;
+      color: $color-text-primary;
+      line-height: $leading-snug;
+      margin-bottom: $space-sm;
+    }
+
+    &__card-desc {
+      font-family: $font-body;
+      font-size: $text-sm;
+      color: $color-text-body;
+      line-height: $leading-relaxed;
+      margin-bottom: $space-lg;
+    }
+
+    &__bullets {
+      list-style: none;
+      margin: 0;
+      padding: 0;
+      display: flex;
+      flex-direction: column;
+      gap: $space-sm;
+
+      li {
+        display: flex;
+        gap: $space-sm;
+        align-items: flex-start;
+        font-family: $font-body;
+        font-size: $text-sm;
+        color: $color-text-body;
+        line-height: $leading-relaxed;
+      }
+    }
+
+    &__dot {
+      flex-shrink: 0;
+      width: 5px;
+      height: 5px;
+      border-radius: 50%;
+      background: $color-accent;
+      margin-top: 0.55rem;
+    }
+
+    @include breakpoint-down($bp-md) {
+      padding: $section-padding-mobile;
+    }
+  }
+</style>

@@ -1,30 +1,27 @@
 ---
 const linkColumns = [
   {
-    title: 'The Journey',
+    title: 'Explore',
     links: [
-      { label: 'Retreat Overview', href: '#about' },
-      { label: 'Somatic Mastery', href: '#experience' },
-      { label: 'Healing Modalities', href: '#experience' },
-      { label: 'Water Temple Rituals', href: '#experience' },
-    ],
-  },
-  {
-    title: 'The Sanctuary',
-    links: [
-      { label: 'Accommodation', href: '#' },
-      { label: 'The Environment', href: '#' },
-      { label: 'Gallery', href: '#' },
-      { label: 'Location', href: '#' },
+      { label: 'Home', href: '/' },
+      { label: 'About', href: '/about' },
+      { label: 'Retreats & Services', href: '/retreats' },
+      { label: 'Blog', href: '/blog' },
     ],
   },
   {
     title: 'Connect',
     links: [
-      { label: 'Contact Us', href: '#contact' },
-      { label: 'Apply Now', href: '#' },
-      { label: 'FAQ', href: '#' },
-      { label: 'Press & Media', href: '#' },
+      { label: 'Contact Us', href: '/contact' },
+      { label: '1:1 Appointment', href: '/one-on-one' },
+      { label: 'Newsletter', href: '#newsletter' },
+    ],
+  },
+  {
+    title: 'Legal',
+    links: [
+      { label: 'Terms & Conditions', href: '/terms' },
+      { label: 'Privacy Policy', href: '/privacy' },
     ],
   },
 ];
@@ -37,7 +34,7 @@ const socials = [
 ];
 ---
 
-<footer class="footer" id="contact">
+<footer class="footer" id="newsletter">
   <!-- Newsletter bar -->
   <div class="footer__newsletter reveal">
     <div class="footer__newsletter-text">
@@ -45,7 +42,14 @@ const socials = [
       <p>Stay up to date with the latest retreat offerings and transformative insights.</p>
     </div>
     <form class="footer__newsletter-form" onsubmit="return false;">
-      <input type="email" placeholder="Enter your email address" required />
+      <input
+        type="email"
+        name="email"
+        placeholder="Enter your email address"
+        autocomplete="email"
+        data-newsletter-input
+        required
+      />
       <button type="submit">Subscribe</button>
     </form>
   </div>
@@ -72,7 +76,7 @@ const socials = [
 
   <!-- Bottom bar -->
   <div class="footer__bottom">
-    <p>Copyright &copy; {new Date().getFullYear()} The Empire Within. All rights reserved. <span class="footer__bottom-sep">&middot;</span> <a href="#">Terms</a> <span class="footer__bottom-sep">&middot;</span> <a href="#">Privacy</a></p>
+    <p>Copyright &copy; {new Date().getFullYear()} The Empire Within. All rights reserved. <span class="footer__bottom-sep">&middot;</span> <a href="/terms">Terms</a> <span class="footer__bottom-sep">&middot;</span> <a href="/privacy">Privacy</a></p>
     <div class="footer__socials">
       {socials.map((s) => (
         <a href={s.href} aria-label={s.label} class="footer__social-icon">
@@ -318,3 +322,51 @@ const socials = [
     }
   }
 </style>
+
+<script>
+  /**
+   * Newsletter link UX:
+   * Clicking any a[href="#newsletter"] (e.g. the Connect column link)
+   * smooth-scrolls to the footer signup bar and focuses the email input,
+   * so the user lands ready to type rather than hunting for the field.
+   */
+  type LenisLike = {
+    scrollTo: (
+      target: string | HTMLElement,
+      opts?: { offset?: number; duration?: number; onComplete?: () => void },
+    ) => void;
+  };
+
+  function focusNewsletterInput() {
+    const input = document.querySelector<HTMLInputElement>('[data-newsletter-input]');
+    if (!input) return;
+    // preventScroll because Lenis (or scrollIntoView) has already handled position.
+    input.focus({ preventScroll: true });
+  }
+
+  function scrollAndFocus(target: HTMLElement) {
+    const lenis = (window as unknown as { lenis?: LenisLike }).lenis;
+
+    if (lenis) {
+      lenis.scrollTo(target, {
+        offset: 0,
+        duration: 1.2,
+        onComplete: focusNewsletterInput,
+      });
+      return;
+    }
+
+    target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    // Fallback: focus once the smooth scroll has had time to settle.
+    window.setTimeout(focusNewsletterInput, 800);
+  }
+
+  document.querySelectorAll<HTMLAnchorElement>('a[href="#newsletter"]').forEach((link) => {
+    link.addEventListener('click', (event) => {
+      const target = document.getElementById('newsletter');
+      if (!target) return;
+      event.preventDefault();
+      scrollAndFocus(target);
+    });
+  });
+</script>

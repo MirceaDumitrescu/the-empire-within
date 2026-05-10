@@ -1,0 +1,166 @@
+---
+interface Pillar {
+  label: string;
+  description: string;
+}
+
+interface Props {
+  eyebrow?: string;
+  heading?: string;
+  pillars?: Pillar[];
+}
+
+const {
+  eyebrow = 'What We Work With',
+  heading = 'Six pillars, met in sequence and depth.',
+  pillars = [
+    {
+      label: 'Stillness',
+      description:
+        'Silence and sensory centering as the foundation — the unhurried opening that everything else rests on.',
+    },
+    {
+      label: 'Somatic Mastery',
+      description:
+        'Body-led work to regulate, release, and rebuild the felt sense of being in your own life.',
+    },
+    {
+      label: 'Breathwork',
+      description:
+        'Conscious breath as ritual — used to open, regulate, and integrate states throughout the week.',
+    },
+    {
+      label: 'Ceremony',
+      description:
+        'Held space for the practices that mark transitions, including the Balinese water temple work.',
+    },
+    {
+      label: 'Embodiment',
+      description:
+        'Specific work for leaders and creators — power that is felt, not performed.',
+    },
+    {
+      label: 'Integration',
+      description:
+        'The work after the work — translating insight into the textures of an everyday life.',
+    },
+  ],
+} = Astro.props;
+---
+
+<section class="private-pillars">
+  <div class="private-pillars__inner">
+    <header class="private-pillars__header reveal">
+      <p class="private-pillars__eyebrow">{eyebrow}</p>
+      <h2 class="private-pillars__heading">{heading}</h2>
+    </header>
+
+    <div class="private-pillars__grid">
+      {pillars.map((p, i) => (
+        <article class="private-pillars__card reveal-stagger">
+          <span class="private-pillars__card-index" aria-hidden="true">{String(i + 1).padStart(2, '0')}</span>
+          <h3 class="private-pillars__card-label">{p.label}</h3>
+          <p class="private-pillars__card-desc">{p.description}</p>
+        </article>
+      ))}
+    </div>
+  </div>
+</section>
+
+<style lang="scss">
+  @use '../styles/variables' as *;
+
+  .private-pillars {
+    background-color: $color-bg-warm;
+    padding: $section-padding;
+
+    &__inner {
+      max-width: $max-width;
+      margin: 0 auto;
+    }
+
+    &__header {
+      text-align: center;
+      max-width: $max-width-narrow;
+      margin: 0 auto $space-4xl;
+    }
+
+    &__eyebrow {
+      @include label-text;
+      color: $color-accent;
+      margin-bottom: $space-md;
+    }
+
+    &__heading {
+      font-family: $font-heading;
+      font-size: $text-3xl;
+      font-style: italic;
+      font-weight: $weight-regular;
+      color: $color-text-primary;
+      line-height: $leading-snug;
+    }
+
+    &__grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: $space-xl;
+
+      @include breakpoint-down($bp-lg) {
+        grid-template-columns: repeat(2, 1fr);
+      }
+
+      @include breakpoint-down($bp-md) {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    &__card {
+      position: relative;
+      padding: $space-2xl $space-xl $space-xl;
+      background: rgba($color-cream, 0.85);
+      border: 1px solid rgba($color-charcoal, 0.08);
+      border-radius: $radius-md;
+      transition:
+        transform $transition-base,
+        border-color $transition-base,
+        box-shadow $transition-base;
+
+      &:hover {
+        transform: translateY(-2px);
+        border-color: rgba($color-accent, 0.4);
+        box-shadow: $shadow-md;
+      }
+    }
+
+    &__card-index {
+      position: absolute;
+      top: $space-lg;
+      right: $space-lg;
+      font-family: $font-heading;
+      font-size: $text-base;
+      font-style: italic;
+      color: $color-accent;
+      opacity: 0.7;
+    }
+
+    &__card-label {
+      font-family: $font-heading;
+      font-size: $text-xl;
+      font-weight: $weight-medium;
+      color: $color-text-primary;
+      line-height: $leading-snug;
+      margin-bottom: $space-sm;
+    }
+
+    &__card-desc {
+      font-family: $font-body;
+      font-size: $text-sm;
+      color: $color-text-body;
+      line-height: $leading-relaxed;
+    }
+
+    @include breakpoint-down($bp-md) {
+      padding: $section-padding-mobile;
+    }
+  }
+</style>

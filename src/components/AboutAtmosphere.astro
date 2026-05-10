@@ -1,0 +1,125 @@
+---
+import ImagePlaceholder from './ImagePlaceholder.astro';
+
+interface AtmosphereImage {
+  src?: string;
+  alt?: string;
+  label?: string;
+  aspectRatio?: string;
+}
+
+interface Props {
+  eyebrow?: string;
+  heading?: string;
+  caption?: string;
+  images?: AtmosphereImage[];
+}
+
+const {
+  eyebrow = 'The Atmosphere',
+  heading = 'Place, pacing, and presence.',
+  caption = 'A glimpse of the environments we curate — the sanctuary, the rituals, the slow rhythms of Bali.',
+  images = [
+    { label: 'Sanctuary', aspectRatio: '4 / 5' },
+    { label: 'Ritual', aspectRatio: '4 / 5' },
+    { label: 'Landscape', aspectRatio: '4 / 5' },
+  ],
+} = Astro.props;
+---
+
+<section class="atmosphere">
+  <div class="atmosphere__inner">
+    <header class="atmosphere__header reveal">
+      <p class="atmosphere__eyebrow">{eyebrow}</p>
+      <h2 class="atmosphere__heading">{heading}</h2>
+      {caption && <p class="atmosphere__caption">{caption}</p>}
+    </header>
+
+    <div class="atmosphere__grid">
+      {images.map((img, i) => (
+        <div
+          class:list={[
+            'atmosphere__cell reveal-stagger',
+            { 'atmosphere__cell--lifted': i === 1 },
+          ]}
+        >
+          <ImagePlaceholder
+            src={img.src}
+            alt={img.alt ?? ''}
+            label={img.label ?? 'Image'}
+            aspectRatio={img.aspectRatio ?? '4 / 5'}
+          />
+        </div>
+      ))}
+    </div>
+  </div>
+</section>
+
+<style lang="scss">
+  @use '../styles/variables' as *;
+
+  .atmosphere {
+    background-color: $color-bg-light;
+    padding: $section-padding;
+
+    &__inner {
+      max-width: $max-width;
+      margin: 0 auto;
+    }
+
+    &__header {
+      text-align: center;
+      max-width: $max-width-narrow;
+      margin: 0 auto $space-4xl;
+    }
+
+    &__eyebrow {
+      @include label-text;
+      color: $color-accent;
+      margin-bottom: $space-md;
+    }
+
+    &__heading {
+      font-family: $font-heading;
+      font-size: $text-3xl;
+      font-style: italic;
+      font-weight: $weight-regular;
+      color: $color-text-primary;
+      line-height: $leading-snug;
+      margin-bottom: $space-md;
+    }
+
+    &__caption {
+      font-family: $font-body;
+      font-size: $text-md;
+      font-weight: $weight-regular;
+      color: $color-text-body;
+      opacity: 0.8;
+      line-height: $leading-relaxed;
+    }
+
+    &__grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: $space-xl;
+      align-items: center;
+
+      @include breakpoint-down($bp-md) {
+        grid-template-columns: 1fr;
+        gap: $space-lg;
+      }
+    }
+
+    &__cell {
+      &--lifted {
+        @include breakpoint-up($bp-md) {
+          transform: translateY(-#{$space-2xl});
+        }
+      }
+    }
+
+    @include breakpoint-down($bp-md) {
+      padding: $section-padding-mobile;
+    }
+  }
+</style>

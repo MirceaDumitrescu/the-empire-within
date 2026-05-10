@@ -1,0 +1,25 @@
+---
+import Layout from '../layouts/Layout.astro';
+import Header from '../components/Header.astro';
+import PageHero from '../components/PageHero.astro';
+import ContactInfo from '../components/ContactInfo.astro';
+import ContactForm from '../components/ContactForm.astro';
+import Footer from '../components/Footer.astro';
+---
+
+<Layout
+  title="Contact — The Empire Within"
+  description="Reach out for retreat applications, 1:1 immersion inquiries, press, or general questions. We respond personally."
+>
+  <Header />
+  <main>
+    <PageHero
+      eyebrow="Contact"
+      title="Get in touch."
+      tagline="A short note is enough. We read every message and respond personally."
+    />
+    <ContactInfo />
+    <ContactForm />
+  </main>
+  <Footer />
+</Layout>

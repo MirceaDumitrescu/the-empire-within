@@ -1,0 +1,133 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import Header from '../../components/Header.astro';
+import Footer from '../../components/Footer.astro';
+import RetreatHero from '../../components/RetreatHero.astro';
+import RetreatOverview from '../../components/RetreatOverview.astro';
+import PrivatePillars from '../../components/PrivatePillars.astro';
+import RetreatSchedule from '../../components/RetreatSchedule.astro';
+import RetreatGallery from '../../components/RetreatGallery.astro';
+import RetreatInclusions from '../../components/RetreatInclusions.astro';
+import PrivateAudience from '../../components/PrivateAudience.astro';
+import RetreatPricing from '../../components/RetreatPricing.astro';
+import Testimonials from '../../components/Testimonials.astro';
+import Faq from '../../components/Faq.astro';
+import BookingCta from '../../components/BookingCta.astro';
+import { retreats, type Retreat } from '../../data/retreats';
+
+export function getStaticPaths() {
+  return retreats.map((r) => ({
+    params: { slug: r.slug },
+    props: { retreat: r },
+  }));
+}
+
+interface Props {
+  retreat: Retreat;
+}
+
+const { retreat } = Astro.props;
+
+const heroImage = retreat.images?.[0];
+const overviewImage = retreat.images?.[1] ?? heroImage;
+const heroImageLabel = heroImage?.label ?? 'Sanctuary';
+const overviewImageLabel = overviewImage?.label ?? heroImageLabel;
+---
+
+<Layout
+  title={`${retreat.title} — The Empire Within`}
+  description={retreat.shortDescription}
+>
+  <Header />
+  <main>
+    <RetreatHero
+      category={retreat.category}
+      title={retreat.title}
+      subtitle={retreat.subtitle}
+      duration={retreat.duration}
+      location={retreat.location}
+      groupSize={retreat.groupSize}
+      nextSession={retreat.nextSession}
+      imageSrc={heroImage?.src}
+      imageLabel={heroImageLabel}
+      videoPoster={heroImage?.src}
+      ctaHref="#pricing"
+      ctaLabel="See Pricing & Apply"
+    />
+
+    <RetreatOverview
+      paragraphs={retreat.overview}
+      imageSrc={overviewImage?.src}
+      imageLabel={overviewImageLabel}
+    />
+
+    <PrivatePillars
+      eyebrow="What We Work With"
+      heading="The pillars at the core of this retreat."
+      pillars={retreat.pillars}
+    />
+
+    <RetreatSchedule schedule={retreat.schedule} />
+
+    {retreat.images && retreat.images.length > 0 && (
+      <RetreatGallery images={retreat.images} />
+    )}
+
+    <RetreatInclusions
+      includes={retreat.includes}
+      notIncluded={retreat.notIncluded}
+    />
+
+    <PrivateAudience
+      eyebrow="Suitability"
+      heading="Who this retreat is for."
+      description="Each of our retreats is small and contained — meaning fit matters. Here is who tends to thrive in this container, and who would be better served elsewhere."
+      bullets={retreat.whoFor}
+      notFor={retreat.whoNotFor}
+    />
+
+    <RetreatPricing
+      priceFrom={retreat.price.from}
+      priceUnit={retreat.price.unit}
+      priceNote={retreat.price.note}
+      ctaLabel={retreat.ctaLabel ?? 'Begin a Conversation'}
+      ctaHref={retreat.ctaHref ?? '#inquire'}
+    />
+
+    {retreat.testimonials && retreat.testimonials.length > 0 && (
+      <Testimonials
+        eyebrow="Voices"
+        heading="From past practitioners."
+        testimonials={retreat.testimonials}
+      />
+    )}
+
+    {retreat.faqs && retreat.faqs.length > 0 && (
+      <Faq
+        eyebrow="Questions"
+        heading="Frequently asked."
+        items={retreat.faqs}
+      />
+    )}
+
+    <div id="inquire">
+      <BookingCta
+        id="booking"
+        eyebrow="Apply"
+        heading={`Inquire about ${retreat.title}.`}
+        description="A short note is enough. Tell us a little about timing and what is drawing you here, and we will respond personally — usually within a few days."
+        ctaLabel="Open the Form"
+        ctaHref="/contact"
+        secondaryLabel="Email Us"
+        secondaryHref="mailto:apply@theempirewithin.com"
+      />
+    </div>
+  </main>
+  <Footer />
+</Layout>
+
+<style lang="scss">
+  #inquire {
+    scroll-margin-top: 6rem;
+  }
+</style>

@@ -1,0 +1,381 @@
+---
+interface InterestOption {
+  value: string;
+  label: string;
+}
+
+interface Props {
+  eyebrow?: string;
+  heading?: string;
+  description?: string;
+  interests?: InterestOption[];
+  action?: string;
+}
+
+const {
+  eyebrow = 'Apply',
+  heading = 'Write to us.',
+  description = 'A short note is enough. Tell us a little about what is drawing you here, and we will respond personally.',
+  interests = [
+    { value: '', label: 'Select what fits' },
+    { value: 'retreat', label: 'A seasonal retreat in Bali' },
+    { value: 'one-on-one', label: 'A 1:1 immersion' },
+    { value: 'press', label: 'Press, media, or interviews' },
+    { value: 'partnership', label: 'Partnership or collaboration' },
+    { value: 'general', label: 'General inquiry' },
+  ],
+  action = '',
+} = Astro.props;
+---
+
+<section class="contact-form" id="form">
+  <div class="contact-form__inner">
+    <header class="contact-form__header reveal">
+      <p class="contact-form__eyebrow">{eyebrow}</p>
+      <h2 class="contact-form__heading">{heading}</h2>
+      <p class="contact-form__description">{description}</p>
+    </header>
+
+    <form
+      class="contact-form__form reveal"
+      action={action}
+      method="POST"
+      novalidate
+      data-contact-form
+    >
+      <div class="contact-form__row contact-form__row--two">
+        <label class="contact-form__field">
+          <span class="contact-form__label">First Name</span>
+          <input type="text" name="first_name" autocomplete="given-name" required />
+        </label>
+        <label class="contact-form__field">
+          <span class="contact-form__label">Last Name</span>
+          <input type="text" name="last_name" autocomplete="family-name" required />
+        </label>
+      </div>
+
+      <label class="contact-form__field">
+        <span class="contact-form__label">Email</span>
+        <input type="email" name="email" autocomplete="email" required />
+      </label>
+
+      <label class="contact-form__field">
+        <span class="contact-form__label">What brings you here?</span>
+        <span class="contact-form__select-wrap">
+          <select name="interest" required>
+            {interests.map((opt) => (
+              <option value={opt.value} disabled={opt.value === ''} selected={opt.value === ''}>
+                {opt.label}
+              </option>
+            ))}
+          </select>
+          <svg width="12" height="8" viewBox="0 0 12 8" fill="none" aria-hidden="true">
+            <path d="M1 1.5L6 6.5L11 1.5" stroke="currentColor" stroke-width="1.25" stroke-linecap="round" stroke-linejoin="round" />
+          </svg>
+        </span>
+      </label>
+
+      <label class="contact-form__field">
+        <span class="contact-form__label">Tell us a little about what is drawing you here</span>
+        <textarea name="message" rows="5" required></textarea>
+      </label>
+
+      <label class="contact-form__field">
+        <span class="contact-form__label contact-form__label--optional">When are you ideally looking to begin? <em>(optional)</em></span>
+        <input type="text" name="timing" placeholder="e.g. Spring 2027, or as soon as possible" />
+      </label>
+
+      <label class="contact-form__checkbox">
+        <input type="checkbox" name="agreement" required />
+        <span>I have read and agree to the <a href="/terms">Terms</a> and <a href="/privacy">Privacy Policy</a>.</span>
+      </label>
+
+      <div class="contact-form__actions">
+        <button type="submit" class="contact-form__submit">Send Message</button>
+        <p class="contact-form__hint">We respond personally, usually within a few days.</p>
+      </div>
+
+      <div class="contact-form__feedback" data-feedback aria-live="polite"></div>
+    </form>
+  </div>
+</section>
+
+<script>
+  const forms = document.querySelectorAll<HTMLFormElement>('[data-contact-form]');
+
+  forms.forEach((form) => {
+    const feedback = form.querySelector<HTMLDivElement>('[data-feedback]');
+    const submitBtn = form.querySelector<HTMLButtonElement>('button[type="submit"]');
+
+    form.addEventListener('submit', (e) => {
+      e.preventDefault();
+
+      if (!form.checkValidity()) {
+        form.reportValidity();
+        return;
+      }
+
+      submitBtn?.setAttribute('disabled', 'true');
+
+      // TODO: wire to backend (Appwrite / Formspree / Netlify forms / etc.)
+      // For now we simulate a successful send so the UX is complete.
+      window.setTimeout(() => {
+        if (feedback) {
+          feedback.classList.add('is-visible');
+          feedback.textContent =
+            'Thank you. Your message has been received — we will reply personally, usually within a few days.';
+        }
+        form.reset();
+        submitBtn?.removeAttribute('disabled');
+      }, 600);
+    });
+  });
+</script>
+
+<style lang="scss">
+  @use '../styles/variables' as *;
+
+  .contact-form {
+    background-color: $color-bg-warm;
+    padding: $section-padding;
+    scroll-margin-top: 6rem;
+
+    &__inner {
+      max-width: 760px;
+      margin: 0 auto;
+    }
+
+    &__header {
+      text-align: center;
+      margin-bottom: $space-4xl;
+    }
+
+    &__eyebrow {
+      @include label-text;
+      color: $color-accent;
+      margin-bottom: $space-md;
+    }
+
+    &__heading {
+      font-family: $font-heading;
+      font-size: $text-3xl;
+      font-style: italic;
+      font-weight: $weight-regular;
+      color: $color-text-primary;
+      line-height: $leading-snug;
+      margin-bottom: $space-md;
+    }
+
+    &__description {
+      font-family: $font-body;
+      font-size: $text-md;
+      color: $color-text-body;
+      line-height: $leading-relaxed;
+      max-width: 36rem;
+      margin: 0 auto;
+    }
+
+    &__form {
+      display: flex;
+      flex-direction: column;
+      gap: $space-lg;
+    }
+
+    &__row {
+      display: grid;
+      gap: $space-lg;
+
+      &--two {
+        grid-template-columns: 1fr 1fr;
+
+        @include breakpoint-down($bp-md) {
+          grid-template-columns: 1fr;
+        }
+      }
+    }
+
+    &__field {
+      display: flex;
+      flex-direction: column;
+      gap: $space-xs;
+    }
+
+    &__label {
+      @include label-text;
+      color: $color-text-primary;
+      letter-spacing: $tracking-wider;
+
+      &--optional em {
+        font-style: normal;
+        text-transform: none;
+        letter-spacing: normal;
+        opacity: 0.6;
+        font-size: 0.85em;
+        margin-left: 0.25rem;
+      }
+    }
+
+    input[type='text'],
+    input[type='email'],
+    select,
+    textarea {
+      font-family: $font-body;
+      font-size: $text-base;
+      font-weight: $weight-regular;
+      color: $color-text-primary;
+      background: rgba($color-cream, 0.7);
+      border: 1px solid rgba($color-charcoal, 0.18);
+      border-radius: $radius-sm;
+      padding: 0.85rem $space-md;
+      width: 100%;
+      outline: none;
+      transition:
+        border-color $transition-base,
+        background $transition-base,
+        box-shadow $transition-base;
+
+      &::placeholder {
+        color: rgba($color-text-body, 0.5);
+      }
+
+      &:focus {
+        border-color: $color-accent;
+        background: $color-white;
+        box-shadow: 0 0 0 3px rgba($color-gold, 0.18);
+      }
+    }
+
+    textarea {
+      resize: vertical;
+      min-height: 7rem;
+      line-height: $leading-relaxed;
+    }
+
+    &__select-wrap {
+      position: relative;
+      display: block;
+
+      svg {
+        position: absolute;
+        right: $space-md;
+        top: 50%;
+        transform: translateY(-50%);
+        color: $color-text-muted;
+        pointer-events: none;
+      }
+
+      select {
+        appearance: none;
+        -webkit-appearance: none;
+        padding-right: $space-2xl;
+        cursor: pointer;
+      }
+    }
+
+    &__checkbox {
+      display: flex;
+      align-items: flex-start;
+      gap: $space-sm;
+      font-family: $font-body;
+      font-size: $text-sm;
+      color: $color-text-body;
+      line-height: $leading-relaxed;
+      cursor: pointer;
+
+      input {
+        margin-top: 0.3rem;
+        accent-color: $color-accent;
+        width: 1rem;
+        height: 1rem;
+        flex-shrink: 0;
+      }
+
+      a {
+        color: $color-text-primary;
+        text-decoration: underline;
+        text-underline-offset: 2px;
+
+        &:hover {
+          color: $color-accent;
+        }
+      }
+    }
+
+    &__actions {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: $space-sm;
+      margin-top: $space-md;
+    }
+
+    &__submit {
+      font-family: $font-accent;
+      font-size: $text-sm;
+      font-weight: $weight-medium;
+      letter-spacing: $tracking-wide;
+      text-transform: uppercase;
+      padding: 1rem $space-3xl;
+      border-radius: $radius-full;
+      background: $color-accent;
+      color: $color-bg-dark;
+      border: none;
+      cursor: pointer;
+      transition:
+        background $transition-base,
+        transform $transition-fast,
+        opacity $transition-base;
+
+      &:hover:not(:disabled) {
+        background: $color-gold-light;
+        transform: translateY(-2px);
+      }
+
+      &:disabled {
+        opacity: 0.55;
+        cursor: progress;
+      }
+    }
+
+    &__hint {
+      font-family: $font-accent;
+      font-size: $text-xs;
+      letter-spacing: $tracking-wide;
+      text-transform: uppercase;
+      color: $color-text-muted;
+      opacity: 0.7;
+    }
+
+    &__feedback {
+      opacity: 0;
+      transform: translateY(6px);
+      transition:
+        opacity $transition-base,
+        transform $transition-base;
+      text-align: center;
+      font-family: $font-body;
+      font-size: $text-sm;
+      color: $color-text-primary;
+      padding: $space-md $space-lg;
+      border: 1px solid rgba($color-accent, 0.3);
+      border-radius: $radius-md;
+      background: rgba($color-gold, 0.08);
+      margin-top: $space-md;
+      pointer-events: none;
+
+      &.is-visible {
+        opacity: 1;
+        transform: translateY(0);
+        pointer-events: auto;
+      }
+
+      &:empty {
+        display: none;
+      }
+    }
+
+    @include breakpoint-down($bp-md) {
+      padding: $section-padding-mobile;
+    }
+  }
+</style>

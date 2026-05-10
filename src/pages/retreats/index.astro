@@ -1,0 +1,346 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import Header from '../../components/Header.astro';
+import PageHero from '../../components/PageHero.astro';
+import Footer from '../../components/Footer.astro';
+import ImagePlaceholder from '../../components/ImagePlaceholder.astro';
+import { retreats } from '../../data/retreats';
+
+const immersive = retreats.filter((r) => r.category === 'Immersive Retreat');
+const privateOfferings = retreats.filter((r) => r.category === 'Private Offering');
+
+// The 1:1 Immersion lives at /one-on-one (its own dedicated page).
+// We surface it here in the Private Offerings list so visitors browsing
+// retreats see the full set in one place.
+const oneOnOneCard = {
+  slug: 'one-on-one',
+  href: '/one-on-one',
+  category: 'Private Offering' as const,
+  title: 'Private 1:1 Immersion',
+  shortDescription:
+    'A fully private container — Single Day, Three-Day, or Seven-Day arc shaped to one practitioner.',
+  duration: 'One to seven days',
+  location: 'Bali',
+  imageLabel: '1:1',
+  imageSrc: '/ulamas/Zpct2h5LeNNTxOAy_skyvilla.avif',
+};
+---
+
+<Layout
+  title="Retreats & Services — The Empire Within"
+  description="Our seasonal retreats, private offerings, and 1:1 immersions in Bali — built for emotional and somatic mastery."
+>
+  <Header />
+  <main>
+    <PageHero
+      eyebrow="Offerings"
+      title="Retreats & Private Offerings"
+      tagline="A small set of deliberate containers — group cohorts in season, private offerings year-round."
+      size="md"
+    />
+
+    <section class="retreat-listing">
+      <div class="retreat-listing__inner">
+        <header class="retreat-listing__group-header reveal">
+          <p class="retreat-listing__group-label">Immersive Retreats</p>
+          <h2 class="retreat-listing__group-heading">Group cohorts in season.</h2>
+          <p class="retreat-listing__group-desc">
+            Small, contained group containers held in Bali. Each follows a defined arc and a tightly held cohort size.
+          </p>
+        </header>
+
+        <div class="retreat-listing__grid">
+          {immersive.map((r) => (
+            <a class="retreat-card reveal-stagger" href={`/retreats/${r.slug}`}>
+              <div class="retreat-card__media">
+                <ImagePlaceholder
+                  src={r.images?.[0]?.src}
+                  alt={r.images?.[0]?.alt ?? r.title}
+                  label={r.images?.[0]?.label ?? r.title}
+                  aspectRatio="4 / 3"
+                  rounded={false}
+                />
+              </div>
+              <div class="retreat-card__body">
+                <p class="retreat-card__category">{r.category}</p>
+                <h3 class="retreat-card__title">{r.title}</h3>
+                <p class="retreat-card__desc">{r.shortDescription}</p>
+                <dl class="retreat-card__meta">
+                  <div>
+                    <dt>Duration</dt>
+                    <dd>{r.duration}</dd>
+                  </div>
+                  <div>
+                    <dt>Location</dt>
+                    <dd>{r.location}</dd>
+                  </div>
+                </dl>
+                <span class="retreat-card__more">
+                  View retreat
+                  <svg width="14" height="10" viewBox="0 0 14 10" fill="none" aria-hidden="true">
+                    <path d="M1 5H12.5M12.5 5L8.5 1M12.5 5L8.5 9" stroke="currentColor" stroke-width="1.25" stroke-linecap="round" stroke-linejoin="round" />
+                  </svg>
+                </span>
+              </div>
+            </a>
+          ))}
+        </div>
+
+        <header class="retreat-listing__group-header retreat-listing__group-header--spaced reveal">
+          <p class="retreat-listing__group-label">Private Offerings</p>
+          <h2 class="retreat-listing__group-heading">Containers built for one — or for a few.</h2>
+          <p class="retreat-listing__group-desc">
+            Year-round private retreats: solo, paired, or for small invited cohorts. By application.
+          </p>
+        </header>
+
+        <div class="retreat-listing__grid">
+          <a class="retreat-card reveal-stagger" href={oneOnOneCard.href}>
+            <div class="retreat-card__media">
+              <ImagePlaceholder
+                src={oneOnOneCard.imageSrc}
+                alt="Private 1:1 immersion setting"
+                label={oneOnOneCard.imageLabel}
+                aspectRatio="4 / 3"
+                rounded={false}
+              />
+            </div>
+            <div class="retreat-card__body">
+              <p class="retreat-card__category">{oneOnOneCard.category}</p>
+              <h3 class="retreat-card__title">{oneOnOneCard.title}</h3>
+              <p class="retreat-card__desc">{oneOnOneCard.shortDescription}</p>
+              <dl class="retreat-card__meta">
+                <div>
+                  <dt>Duration</dt>
+                  <dd>{oneOnOneCard.duration}</dd>
+                </div>
+                <div>
+                  <dt>Location</dt>
+                  <dd>{oneOnOneCard.location}</dd>
+                </div>
+              </dl>
+              <span class="retreat-card__more">
+                View offering
+                <svg width="14" height="10" viewBox="0 0 14 10" fill="none" aria-hidden="true">
+                  <path d="M1 5H12.5M12.5 5L8.5 1M12.5 5L8.5 9" stroke="currentColor" stroke-width="1.25" stroke-linecap="round" stroke-linejoin="round" />
+                </svg>
+              </span>
+            </div>
+          </a>
+
+          {privateOfferings.map((r) => (
+            <a class="retreat-card reveal-stagger" href={`/retreats/${r.slug}`}>
+              <div class="retreat-card__media">
+                <ImagePlaceholder
+                  src={r.images?.[0]?.src}
+                  alt={r.images?.[0]?.alt ?? r.title}
+                  label={r.images?.[0]?.label ?? r.title}
+                  aspectRatio="4 / 3"
+                  rounded={false}
+                />
+              </div>
+              <div class="retreat-card__body">
+                <p class="retreat-card__category">{r.category}</p>
+                <h3 class="retreat-card__title">{r.title}</h3>
+                <p class="retreat-card__desc">{r.shortDescription}</p>
+                <dl class="retreat-card__meta">
+                  <div>
+                    <dt>Duration</dt>
+                    <dd>{r.duration}</dd>
+                  </div>
+                  <div>
+                    <dt>Location</dt>
+                    <dd>{r.location}</dd>
+                  </div>
+                </dl>
+                <span class="retreat-card__more">
+                  View offering
+                  <svg width="14" height="10" viewBox="0 0 14 10" fill="none" aria-hidden="true">
+                    <path d="M1 5H12.5M12.5 5L8.5 1M12.5 5L8.5 9" stroke="currentColor" stroke-width="1.25" stroke-linecap="round" stroke-linejoin="round" />
+                  </svg>
+                </span>
+              </div>
+            </a>
+          ))}
+        </div>
+      </div>
+    </section>
+  </main>
+  <Footer />
+</Layout>
+
+<style lang="scss" is:global>
+  @use '../../styles/variables' as *;
+
+  .retreat-listing {
+    background-color: $color-bg-light;
+    padding: $section-padding;
+
+    &__inner {
+      max-width: $max-width;
+      margin: 0 auto;
+    }
+
+    &__group-header {
+      max-width: $max-width-narrow;
+      margin: 0 auto $space-3xl;
+      text-align: center;
+
+      &--spaced {
+        margin-top: $space-5xl;
+      }
+    }
+
+    &__group-label {
+      @include label-text;
+      color: $color-accent;
+      margin-bottom: $space-md;
+    }
+
+    &__group-heading {
+      font-family: $font-heading;
+      font-size: $text-3xl;
+      font-style: italic;
+      font-weight: $weight-regular;
+      color: $color-text-primary;
+      line-height: $leading-snug;
+      margin-bottom: $space-md;
+    }
+
+    &__group-desc {
+      font-family: $font-body;
+      font-size: $text-md;
+      color: $color-text-body;
+      line-height: $leading-relaxed;
+    }
+
+    &__grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: $space-2xl $space-xl;
+
+      @include breakpoint-down($bp-lg) {
+        grid-template-columns: repeat(2, 1fr);
+      }
+
+      @include breakpoint-down($bp-md) {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    @include breakpoint-down($bp-md) {
+      padding: $section-padding-mobile;
+    }
+  }
+
+  .retreat-card {
+    display: flex;
+    flex-direction: column;
+    background: $color-white;
+    border: 1px solid rgba($color-charcoal, 0.08);
+    border-radius: $radius-md;
+    overflow: hidden;
+    text-decoration: none;
+    color: inherit;
+    transition:
+      transform $transition-base,
+      border-color $transition-base,
+      box-shadow $transition-base;
+
+    &:hover {
+      transform: translateY(-3px);
+      border-color: rgba($color-accent, 0.4);
+      box-shadow: $shadow-md;
+
+      .retreat-card__title {
+        color: $color-accent;
+      }
+
+      .retreat-card__more svg {
+        transform: translateX(3px);
+      }
+    }
+
+    &__media {
+      width: 100%;
+    }
+
+    &__body {
+      display: flex;
+      flex-direction: column;
+      gap: $space-sm;
+      padding: $space-xl;
+      flex: 1;
+    }
+
+    &__category {
+      @include label-text;
+      color: $color-accent;
+      margin: 0;
+    }
+
+    &__title {
+      font-family: $font-heading;
+      font-size: $text-xl;
+      font-weight: $weight-medium;
+      color: $color-text-primary;
+      line-height: $leading-snug;
+      margin: 0;
+      transition: color $transition-base;
+    }
+
+    &__desc {
+      font-family: $font-body;
+      font-size: $text-sm;
+      color: $color-text-body;
+      line-height: $leading-relaxed;
+      margin: 0 0 $space-sm;
+    }
+
+    &__meta {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: $space-md;
+      margin: 0 0 $space-md;
+      padding: $space-md 0;
+      border-top: 1px solid rgba($color-charcoal, 0.08);
+      border-bottom: 1px solid rgba($color-charcoal, 0.08);
+
+      div {
+        display: flex;
+        flex-direction: column;
+        gap: 0.2rem;
+      }
+
+      dt {
+        @include label-text;
+        font-size: 0.65rem;
+        color: $color-text-muted;
+      }
+
+      dd {
+        font-family: $font-body;
+        font-size: $text-sm;
+        color: $color-text-body;
+        margin: 0;
+      }
+    }
+
+    &__more {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.4rem;
+      font-family: $font-accent;
+      font-size: $text-xs;
+      font-weight: $weight-medium;
+      letter-spacing: $tracking-wide;
+      text-transform: uppercase;
+      color: $color-text-primary;
+      margin-top: auto;
+
+      svg {
+        transition: transform $transition-base;
+      }
+    }
+  }
+</style>

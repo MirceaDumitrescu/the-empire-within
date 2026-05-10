@@ -1,0 +1,170 @@
+---
+interface ExpertiseItem {
+  title: string;
+  description: string;
+}
+
+interface Props {
+  eyebrow?: string;
+  heading?: string;
+  items?: ExpertiseItem[];
+}
+
+const {
+  eyebrow = 'Areas of Expertise',
+  heading = 'A practice woven from many disciplines.',
+  items = [
+    {
+      title: 'Somatic Mastery',
+      description:
+        'Nervous-system regulation, embodied awareness, and the slow art of feeling without flinching.',
+    },
+    {
+      title: 'Breathwork',
+      description:
+        'Conscious breath as ritual — used to open, regulate, and integrate states throughout the retreat.',
+    },
+    {
+      title: 'Water Temple Rituals',
+      description:
+        'Ancient Balinese ceremonies offered with local elders, held with reverence and full context.',
+    },
+    {
+      title: 'Sanctuary Design',
+      description:
+        'Curating environments — the architecture, sound, scent, and pacing that allow deep work to occur.',
+    },
+    {
+      title: 'Emotional Intelligence',
+      description:
+        'Tools and language for meeting feeling clearly, in service of clearer relationships and decisions.',
+    },
+    {
+      title: 'Leadership Embodiment',
+      description:
+        'Specific work for leaders, founders, and creators carrying the weight of consequential choices.',
+    },
+    {
+      title: 'Ceremony & Ritual',
+      description:
+        'Held space for the practices that mark transitions — entrance, integration, and return.',
+    },
+    {
+      title: 'Integration Coaching',
+      description:
+        'Post-retreat work that translates insight into the textures of an everyday life.',
+    },
+    {
+      title: 'Stillness Practices',
+      description:
+        'Silence, sensory centering, and the deliberate cultivation of inner quiet.',
+    },
+  ],
+} = Astro.props;
+---
+
+<section class="expertise">
+  <div class="expertise__inner">
+    <header class="expertise__header reveal">
+      <p class="expertise__eyebrow">{eyebrow}</p>
+      <h2 class="expertise__heading">{heading}</h2>
+    </header>
+
+    <div class="expertise__grid">
+      {items.map((item) => (
+        <article class="expertise__card reveal-stagger">
+          <h3 class="expertise__card-title">{item.title}</h3>
+          <p class="expertise__card-desc">{item.description}</p>
+        </article>
+      ))}
+    </div>
+  </div>
+</section>
+
+<style lang="scss">
+  @use '../styles/variables' as *;
+
+  .expertise {
+    background-color: $color-bg-warm;
+    padding: $section-padding;
+
+    &__inner {
+      max-width: $max-width;
+      margin: 0 auto;
+    }
+
+    &__header {
+      text-align: center;
+      max-width: $max-width-narrow;
+      margin: 0 auto $space-4xl;
+    }
+
+    &__eyebrow {
+      @include label-text;
+      color: $color-accent;
+      margin-bottom: $space-md;
+    }
+
+    &__heading {
+      font-family: $font-heading;
+      font-size: $text-3xl;
+      font-style: italic;
+      font-weight: $weight-regular;
+      color: $color-text-primary;
+      line-height: $leading-snug;
+    }
+
+    &__grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: $space-xl;
+
+      @include breakpoint-down($bp-lg) {
+        grid-template-columns: repeat(2, 1fr);
+      }
+
+      @include breakpoint-down($bp-md) {
+        grid-template-columns: 1fr;
+        gap: $space-md;
+      }
+    }
+
+    &__card {
+      background-color: rgba($color-cream, 0.85);
+      border: 1px solid rgba($color-charcoal, 0.08);
+      border-radius: $radius-md;
+      padding: $space-xl;
+      transition:
+        transform $transition-base,
+        border-color $transition-base,
+        box-shadow $transition-base;
+
+      &:hover {
+        transform: translateY(-2px);
+        border-color: rgba($color-accent, 0.4);
+        box-shadow: $shadow-md;
+      }
+    }
+
+    &__card-title {
+      font-family: $font-heading;
+      font-size: $text-xl;
+      font-weight: $weight-medium;
+      color: $color-text-primary;
+      line-height: $leading-snug;
+      margin-bottom: $space-sm;
+    }
+
+    &__card-desc {
+      font-family: $font-body;
+      font-size: $text-sm;
+      font-weight: $weight-regular;
+      color: $color-text-body;
+      line-height: $leading-relaxed;
+    }
+
+    @include breakpoint-down($bp-md) {
+      padding: $section-padding-mobile;
+    }
+  }
+</style>

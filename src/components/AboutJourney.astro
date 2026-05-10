@@ -1,0 +1,172 @@
+---
+interface JourneyStep {
+  label: string;
+  title: string;
+  description: string;
+}
+
+interface Props {
+  eyebrow?: string;
+  heading?: string;
+  steps?: JourneyStep[];
+}
+
+const {
+  eyebrow = 'How the Practice Took Shape',
+  heading = 'From a private container to a deliberate sanctuary.',
+  steps = [
+    {
+      label: 'An origin in stillness',
+      title: 'Quiet study, quiet practice',
+      description:
+        'A long apprenticeship in somatic intelligence, breathwork, and ceremony — the disciplines that take years to inhabit before they can be offered to others.',
+    },
+    {
+      label: 'Shaped by Bali',
+      title: 'Method anchored in place',
+      description:
+        'Sustained time in Bali, with its water temples, volcanic waters, and ceremonial heritage, shaped the form the work takes today — held with full context and the right elders.',
+    },
+    {
+      label: 'The sanctuary',
+      title: 'A contained retreat',
+      description:
+        'Designed as a restoration chamber, not a programme. Small cohorts, a defined arc, and an environment built so the inner work has room to occur.',
+    },
+    {
+      label: 'A wider field',
+      title: 'Cohorts and 1:1 immersions',
+      description:
+        'The practice now extends through seasonal retreats and a limited number of private 1:1 immersions held each season for those ready for tailored work.',
+    },
+  ],
+} = Astro.props;
+---
+
+<section class="journey">
+  <div class="journey__inner">
+    <header class="journey__header reveal">
+      <p class="journey__eyebrow">{eyebrow}</p>
+      <h2 class="journey__heading">{heading}</h2>
+    </header>
+
+    <ol class="journey__steps">
+      {steps.map((step, index) => (
+        <li class="journey__step reveal-stagger">
+          <div class="journey__step-marker" aria-hidden="true">
+            <span class="journey__step-number">{String(index + 1).padStart(2, '0')}</span>
+          </div>
+          <div class="journey__step-body">
+            <p class="journey__step-label">{step.label}</p>
+            <h3 class="journey__step-title">{step.title}</h3>
+            <p class="journey__step-desc">{step.description}</p>
+          </div>
+        </li>
+      ))}
+    </ol>
+  </div>
+</section>
+
+<style lang="scss">
+  @use '../styles/variables' as *;
+
+  .journey {
+    background-color: $color-bg-light;
+    padding: $section-padding;
+
+    &__inner {
+      max-width: $max-width;
+      margin: 0 auto;
+    }
+
+    &__header {
+      text-align: center;
+      max-width: $max-width-narrow;
+      margin: 0 auto $space-4xl;
+    }
+
+    &__eyebrow {
+      @include label-text;
+      color: $color-accent;
+      margin-bottom: $space-md;
+    }
+
+    &__heading {
+      font-family: $font-heading;
+      font-size: $text-3xl;
+      font-style: italic;
+      font-weight: $weight-regular;
+      color: $color-text-primary;
+      line-height: $leading-snug;
+    }
+
+    &__steps {
+      list-style: none;
+      margin: 0;
+      padding: 0;
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: $space-xl;
+
+      @include breakpoint-down($bp-lg) {
+        grid-template-columns: repeat(2, 1fr);
+        gap: $space-2xl;
+      }
+
+      @include breakpoint-down($bp-md) {
+        grid-template-columns: 1fr;
+        gap: $space-2xl;
+      }
+    }
+
+    &__step {
+      display: flex;
+      flex-direction: column;
+      gap: $space-lg;
+      padding-top: $space-md;
+      border-top: 1px solid rgba($color-charcoal, 0.15);
+    }
+
+    &__step-marker {
+      display: flex;
+      align-items: baseline;
+      gap: $space-sm;
+    }
+
+    &__step-number {
+      font-family: $font-heading;
+      font-size: $text-2xl;
+      font-style: italic;
+      font-weight: $weight-regular;
+      color: $color-accent;
+      line-height: 1;
+    }
+
+    &__step-label {
+      @include label-text;
+      color: $color-text-muted;
+      margin-bottom: $space-xs;
+    }
+
+    &__step-title {
+      font-family: $font-heading;
+      font-size: $text-xl;
+      font-weight: $weight-medium;
+      color: $color-text-primary;
+      line-height: $leading-snug;
+      margin-bottom: $space-sm;
+    }
+
+    &__step-desc {
+      font-family: $font-body;
+      font-size: $text-sm;
+      font-weight: $weight-regular;
+      color: $color-text-body;
+      line-height: $leading-relaxed;
+    }
+
+    @include breakpoint-down($bp-md) {
+      padding: $section-padding-mobile;
+    }
+  }
+</style>

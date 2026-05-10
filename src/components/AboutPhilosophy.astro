@@ -1,0 +1,229 @@
+---
+import ImagePlaceholder from './ImagePlaceholder.astro';
+
+interface Principle {
+  label: string;
+  description: string;
+}
+
+interface Props {
+  eyebrow?: string;
+  heading?: string;
+  principles?: Principle[];
+  paragraphs?: string[];
+  pullQuote?: string;
+  imageSrc?: string;
+  imageAlt?: string;
+  imageLabel?: string;
+}
+
+const {
+  eyebrow = 'Our Philosophy',
+  heading = 'A practice of deliberate stillness.',
+  principles = [
+    {
+      label: 'Slow.',
+      description: 'Time is the medium. Days are unhurried by design.',
+    },
+    {
+      label: 'Contained.',
+      description: 'A small cohort, a defined arc, a clear container.',
+    },
+    {
+      label: 'Deliberate.',
+      description: 'Every detail chosen — sound, scent, pacing, ceremony.',
+    },
+  ],
+  paragraphs = [
+    'The Empire Within is not a programme. It is a contained environment in which the conditions for inner work are made possible: silence, ceremony, somatic intelligence, and the slow restoration of the nervous system through the rhythms of Bali — its waters, its temples, its quiet.',
+    'The practice draws from somatic modalities, breathwork, the lineages of the Balinese water temples, and a long study of how power is lost and reclaimed. The premise is simple: external power is sustained by internal coherence. When the internal architecture is rebuilt, the rest follows.',
+    'Cohorts are small. The work is not for everyone, and that is by design. Those who come are leaders, founders, and creators who hold great worlds in their hands and wish to reclaim their own center.',
+  ],
+  pullQuote = 'When the mind rests, the empire rises.',
+  imageSrc,
+  imageAlt = 'A quiet detail from the sanctuary',
+  imageLabel = 'Sanctuary',
+} = Astro.props;
+---
+
+<section class="about-philosophy">
+  <div class="about-philosophy__inner">
+    <aside class="about-philosophy__principles reveal">
+      <p class="about-philosophy__eyebrow">{eyebrow}</p>
+      <ul class="about-philosophy__principles-list">
+        {principles.map((p) => (
+          <li class="about-philosophy__principle">
+            <span class="about-philosophy__principle-label">{p.label}</span>
+            <span class="about-philosophy__principle-desc">{p.description}</span>
+          </li>
+        ))}
+      </ul>
+    </aside>
+
+    <div class="about-philosophy__copy">
+      <h2 class="about-philosophy__heading reveal">{heading}</h2>
+      <div class="about-philosophy__paragraphs">
+        {paragraphs.map((p, i) => (
+          <>
+            <p class="reveal-stagger">{p}</p>
+            {pullQuote && i === 0 && (
+              <blockquote class="about-philosophy__quote reveal">
+                <p>{pullQuote}</p>
+              </blockquote>
+            )}
+          </>
+        ))}
+      </div>
+    </div>
+  </div>
+
+  <div class="about-philosophy__feature reveal">
+    <ImagePlaceholder
+      src={imageSrc}
+      alt={imageAlt}
+      label={imageLabel}
+      aspectRatio="21 / 9"
+    />
+  </div>
+</section>
+
+<style lang="scss">
+  @use '../styles/variables' as *;
+
+  .about-philosophy {
+    background-color: $color-bg-light;
+    padding: $section-padding;
+
+    &__inner {
+      display: grid;
+      grid-template-columns: 4fr 7fr;
+      gap: $space-4xl;
+      align-items: start;
+      max-width: $max-width;
+      margin: 0 auto;
+
+      @include breakpoint-down($bp-md) {
+        grid-template-columns: 1fr;
+        gap: $space-2xl;
+      }
+    }
+
+    &__principles {
+      position: sticky;
+      top: 6rem;
+      padding: $space-2xl;
+      border: 1px solid rgba($color-charcoal, 0.12);
+      border-radius: $radius-md;
+      background: rgba($color-cream, 0.6);
+
+      @include breakpoint-down($bp-md) {
+        position: static;
+      }
+    }
+
+    &__eyebrow {
+      @include label-text;
+      color: $color-accent;
+      margin-bottom: $space-xl;
+    }
+
+    &__principles-list {
+      list-style: none;
+      margin: 0;
+      padding: 0;
+      display: flex;
+      flex-direction: column;
+      gap: $space-lg;
+    }
+
+    &__principle {
+      display: flex;
+      flex-direction: column;
+      gap: 0.25rem;
+      padding-bottom: $space-lg;
+      border-bottom: 1px solid rgba($color-charcoal, 0.1);
+
+      &:last-child {
+        padding-bottom: 0;
+        border-bottom: none;
+      }
+    }
+
+    &__principle-label {
+      font-family: $font-heading;
+      font-size: $text-xl;
+      font-style: italic;
+      font-weight: $weight-regular;
+      color: $color-text-primary;
+      line-height: $leading-tight;
+    }
+
+    &__principle-desc {
+      font-family: $font-body;
+      font-size: $text-sm;
+      color: $color-text-body;
+      line-height: $leading-relaxed;
+    }
+
+    &__heading {
+      font-family: $font-heading;
+      font-size: $text-3xl;
+      font-style: italic;
+      font-weight: $weight-regular;
+      color: $color-text-primary;
+      line-height: $leading-snug;
+      margin-bottom: $space-2xl;
+    }
+
+    &__paragraphs {
+      display: flex;
+      flex-direction: column;
+      gap: $space-lg;
+
+      p {
+        font-family: $font-body;
+        font-size: $text-md;
+        font-weight: $weight-regular;
+        color: $color-text-body;
+        line-height: $leading-relaxed;
+      }
+    }
+
+    &__quote {
+      margin: $space-lg 0;
+      padding: $space-xl $space-2xl;
+      border-left: 2px solid $color-accent;
+      background: rgba($color-gold, 0.06);
+
+      p {
+        font-family: $font-heading;
+        font-size: $text-2xl;
+        font-style: italic;
+        font-weight: $weight-regular;
+        color: $color-text-primary;
+        line-height: $leading-snug;
+      }
+    }
+
+    &__feature {
+      max-width: $max-width;
+      margin: $space-4xl auto 0;
+    }
+
+    @include breakpoint-down($bp-md) {
+      padding: $section-padding-mobile;
+
+      &__quote {
+        padding: $space-lg;
+
+        p {
+          font-size: $text-xl;
+        }
+      }
+
+      &__feature {
+        margin-top: $space-2xl;
+      }
+    }
+  }
+</style>

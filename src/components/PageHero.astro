@@ -1,0 +1,110 @@
+---
+interface Props {
+  eyebrow?: string;
+  title: string;
+  tagline?: string;
+  size?: 'sm' | 'md' | 'lg';
+}
+
+const {
+  eyebrow,
+  title,
+  tagline,
+  size = 'md',
+} = Astro.props;
+---
+
+<section class:list={['page-hero', `page-hero--${size}`]}>
+  <div class="page-hero__bg" aria-hidden="true"></div>
+  <div class="page-hero__overlay" aria-hidden="true"></div>
+  <div class="page-hero__content reveal">
+    {eyebrow && <p class="page-hero__eyebrow">{eyebrow}</p>}
+    <h1 class="page-hero__title">{title}</h1>
+    {tagline && <p class="page-hero__tagline">{tagline}</p>}
+  </div>
+</section>
+
+<style lang="scss">
+  @use '../styles/variables' as *;
+
+  .page-hero {
+    position: relative;
+    background-color: $color-bg-dark;
+    padding: 9rem $space-xl $space-5xl;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+
+    &--sm {
+      min-height: 40vh;
+    }
+
+    &--md {
+      min-height: 50vh;
+    }
+
+    &--lg {
+      min-height: 60vh;
+    }
+
+    &__bg {
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(180deg, $color-bg-dark 0%, $color-charcoal 100%);
+    }
+
+    &__overlay {
+      position: absolute;
+      inset: 0;
+      background:
+        radial-gradient(ellipse at top, rgba($color-gold, 0.1) 0%, transparent 60%),
+        radial-gradient(ellipse at bottom, rgba($color-charcoal, 0.6) 0%, transparent 70%);
+      pointer-events: none;
+    }
+
+    &__content {
+      position: relative;
+      z-index: $z-base;
+      text-align: center;
+      max-width: $max-width-narrow;
+    }
+
+    &__eyebrow {
+      @include label-text;
+      color: $color-accent;
+      opacity: 0.85;
+      margin-bottom: $space-lg;
+    }
+
+    &__title {
+      font-family: $font-heading;
+      font-size: $text-5xl;
+      font-weight: $weight-regular;
+      font-style: italic;
+      color: $color-text-on-dark;
+      line-height: $leading-tight;
+      letter-spacing: $tracking-tight;
+      margin-bottom: $space-lg;
+    }
+
+    &__tagline {
+      font-family: $font-body;
+      font-size: $text-lg;
+      font-weight: $weight-light;
+      color: $color-text-on-dark;
+      opacity: 0.75;
+      line-height: $leading-relaxed;
+      max-width: 36rem;
+      margin: 0 auto;
+    }
+
+    @include breakpoint-down($bp-md) {
+      padding: 7rem $space-lg $space-4xl;
+
+      &--lg {
+        min-height: 50vh;
+      }
+    }
+  }
+</style>

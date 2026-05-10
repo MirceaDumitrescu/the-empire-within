@@ -1,0 +1,358 @@
+---
+export interface LegalSection {
+  id: string;
+  title: string;
+  paragraphs?: string[];
+  list?: { intro?: string; items: string[]; ordered?: boolean };
+  subSections?: {
+    title: string;
+    paragraphs?: string[];
+    list?: { intro?: string; items: string[]; ordered?: boolean };
+  }[];
+}
+
+interface Props {
+  eyebrow?: string;
+  title: string;
+  lastUpdated?: string;
+  intro?: string[];
+  sections: LegalSection[];
+  contactEmail?: string;
+}
+
+const {
+  eyebrow = 'Legal',
+  title,
+  lastUpdated,
+  intro = [],
+  sections,
+  contactEmail = 'hello@theempirewithin.com',
+} = Astro.props;
+---
+
+<section class="legal">
+  <div class="legal__inner">
+    <header class="legal__header reveal">
+      <p class="legal__eyebrow">{eyebrow}</p>
+      <h1 class="legal__title">{title}</h1>
+      {lastUpdated && (
+        <p class="legal__updated">Last updated: {lastUpdated}</p>
+      )}
+    </header>
+
+    <div class="legal__layout">
+      <aside class="legal__toc-wrap" aria-label="Table of contents">
+        <nav class="legal__toc">
+          <p class="legal__toc-label">On this page</p>
+          <ol class="legal__toc-list">
+            {sections.map((section) => (
+              <li>
+                <a href={`#${section.id}`}>{section.title}</a>
+              </li>
+            ))}
+          </ol>
+        </nav>
+      </aside>
+
+      <article class="legal__article">
+        {intro.length > 0 && (
+          <div class="legal__intro reveal">
+            {intro.map((p) => <p>{p}</p>)}
+          </div>
+        )}
+
+        {sections.map((section) => (
+          <section class="legal__section" id={section.id}>
+            <h2 class="legal__section-title">{section.title}</h2>
+
+            {section.paragraphs?.map((p) => (
+              <p class="legal__paragraph">{p}</p>
+            ))}
+
+            {section.list && (
+              <>
+                {section.list.intro && (
+                  <p class="legal__paragraph">{section.list.intro}</p>
+                )}
+                {section.list.ordered ? (
+                  <ol class="legal__list">
+                    {section.list.items.map((item) => (
+                      <li>{item}</li>
+                    ))}
+                  </ol>
+                ) : (
+                  <ul class="legal__list">
+                    {section.list.items.map((item) => (
+                      <li>{item}</li>
+                    ))}
+                  </ul>
+                )}
+              </>
+            )}
+
+            {section.subSections?.map((sub) => (
+              <div class="legal__sub-section">
+                <h3 class="legal__sub-title">{sub.title}</h3>
+                {sub.paragraphs?.map((p) => (
+                  <p class="legal__paragraph">{p}</p>
+                ))}
+                {sub.list && (
+                  <>
+                    {sub.list.intro && <p class="legal__paragraph">{sub.list.intro}</p>}
+                    {sub.list.ordered ? (
+                      <ol class="legal__list">
+                        {sub.list.items.map((item) => (
+                          <li>{item}</li>
+                        ))}
+                      </ol>
+                    ) : (
+                      <ul class="legal__list">
+                        {sub.list.items.map((item) => (
+                          <li>{item}</li>
+                        ))}
+                      </ul>
+                    )}
+                  </>
+                )}
+              </div>
+            ))}
+          </section>
+        ))}
+
+        <footer class="legal__footer">
+          <p>
+            For questions about this document, write to
+            <a href={`mailto:${contactEmail}`}>{contactEmail}</a>.
+          </p>
+        </footer>
+      </article>
+    </div>
+  </div>
+</section>
+
+<style lang="scss">
+  @use '../styles/variables' as *;
+
+  .legal {
+    background-color: $color-bg-light;
+    padding: $space-4xl $space-xl $space-5xl;
+
+    &__inner {
+      max-width: $max-width;
+      margin: 0 auto;
+    }
+
+    &__header {
+      text-align: center;
+      max-width: $max-width-narrow;
+      margin: 0 auto $space-3xl;
+      padding-bottom: $space-2xl;
+      border-bottom: 1px solid rgba($color-charcoal, 0.12);
+    }
+
+    &__eyebrow {
+      @include label-text;
+      color: $color-accent;
+      margin-bottom: $space-md;
+    }
+
+    &__title {
+      font-family: $font-heading;
+      font-size: $text-4xl;
+      font-style: italic;
+      font-weight: $weight-regular;
+      color: $color-text-primary;
+      line-height: $leading-snug;
+      margin-bottom: $space-md;
+    }
+
+    &__updated {
+      font-family: $font-accent;
+      font-size: $text-xs;
+      letter-spacing: $tracking-wide;
+      text-transform: uppercase;
+      color: $color-text-muted;
+    }
+
+    &__layout {
+      display: grid;
+      grid-template-columns: 240px minmax(0, 1fr);
+      gap: $space-3xl;
+
+      @include breakpoint-down($bp-lg) {
+        grid-template-columns: 1fr;
+        gap: $space-xl;
+      }
+    }
+
+    &__toc-wrap {
+      @include breakpoint-down($bp-lg) {
+        order: -1;
+      }
+    }
+
+    &__toc {
+      position: sticky;
+      top: 6rem;
+      padding: $space-lg;
+      background: rgba($color-cream, 0.6);
+      border: 1px solid rgba($color-charcoal, 0.1);
+      border-radius: $radius-md;
+
+      @include breakpoint-down($bp-lg) {
+        position: static;
+      }
+    }
+
+    &__toc-label {
+      @include label-text;
+      color: $color-accent;
+      margin-bottom: $space-md;
+    }
+
+    &__toc-list {
+      list-style: none;
+      margin: 0;
+      padding: 0;
+      counter-reset: toc;
+      display: flex;
+      flex-direction: column;
+      gap: 0.4rem;
+
+      li {
+        counter-increment: toc;
+        font-family: $font-body;
+        font-size: $text-sm;
+        line-height: $leading-snug;
+
+        &::before {
+          content: counter(toc, decimal-leading-zero) '.  ';
+          color: $color-accent;
+          opacity: 0.7;
+          font-family: $font-accent;
+          font-size: $text-xs;
+          letter-spacing: 0.05em;
+        }
+      }
+
+      a {
+        color: $color-text-body;
+        text-decoration: none;
+        transition: color $transition-base;
+
+        &:hover {
+          color: $color-accent;
+        }
+      }
+    }
+
+    &__article {
+      max-width: 68ch;
+    }
+
+    &__intro {
+      font-family: $font-body;
+      font-size: $text-md;
+      color: $color-text-body;
+      line-height: $leading-relaxed;
+      margin-bottom: $space-2xl;
+      padding-bottom: $space-xl;
+      border-bottom: 1px solid rgba($color-charcoal, 0.08);
+
+      p {
+        margin-bottom: $space-md;
+
+        &:last-child {
+          margin-bottom: 0;
+        }
+      }
+    }
+
+    &__section {
+      margin-bottom: $space-3xl;
+      scroll-margin-top: 6rem;
+    }
+
+    &__section-title {
+      font-family: $font-heading;
+      font-size: $text-xl;
+      font-weight: $weight-medium;
+      color: $color-text-primary;
+      line-height: $leading-snug;
+      margin-bottom: $space-md;
+      padding-bottom: $space-sm;
+      border-bottom: 1px solid rgba($color-accent, 0.4);
+    }
+
+    &__paragraph {
+      font-family: $font-body;
+      font-size: $text-base;
+      color: $color-text-body;
+      line-height: $leading-relaxed;
+      margin-bottom: $space-md;
+
+      &:last-child {
+        margin-bottom: 0;
+      }
+    }
+
+    &__list {
+      margin: 0 0 $space-md;
+      padding-left: $space-lg;
+
+      li {
+        font-family: $font-body;
+        font-size: $text-base;
+        color: $color-text-body;
+        line-height: $leading-relaxed;
+        margin-bottom: $space-xs;
+
+        &::marker {
+          color: $color-accent;
+        }
+      }
+    }
+
+    &__sub-section {
+      margin-top: $space-lg;
+    }
+
+    &__sub-title {
+      font-family: $font-heading;
+      font-size: $text-md;
+      font-weight: $weight-medium;
+      color: $color-text-primary;
+      line-height: $leading-snug;
+      margin-bottom: $space-sm;
+      font-style: italic;
+    }
+
+    &__footer {
+      margin-top: $space-3xl;
+      padding-top: $space-xl;
+      border-top: 1px solid rgba($color-charcoal, 0.12);
+
+      p {
+        font-family: $font-body;
+        font-size: $text-sm;
+        color: $color-text-muted;
+        line-height: $leading-relaxed;
+      }
+
+      a {
+        color: $color-accent;
+        text-decoration: underline;
+        text-underline-offset: 2px;
+        margin-left: 0.25rem;
+
+        &:hover {
+          opacity: 0.85;
+        }
+      }
+    }
+
+    @include breakpoint-down($bp-md) {
+      padding: $space-3xl $space-lg $space-4xl;
+    }
+  }
+</style>

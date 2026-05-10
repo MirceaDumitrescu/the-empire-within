@@ -1,78 +1,286 @@
 ---
-const features = [
-  'Daily Morning Breath & Somatic Flow Sessions — reset circadian rhythm, regulate nervous system',
-  'Deep Dialogue Modules — patterns, identity, power, emotional mastery',
-  'Bali\'s Purest Healing Modalities — water temples, Balinese cleansing, volcanic hot springs',
-  'Curated Environments — botanically designed for deepening inner work',
-  'Studio Sessions for Capturing Your Vision',
+/**
+ * Featured Retreat — homepage section.
+ *
+ * Surfaces a single curated retreat (default: the flagship) with a four-image
+ * strip and a tight summary that links to the detail page. Driven entirely
+ * from src/data/retreats.ts so updating the flagship copy or images updates
+ * the homepage automatically.
+ */
+import { retreats, getRetreatBySlug, type Retreat } from '../data/retreats';
+
+interface Props {
+  /** Slug of the retreat to feature. Defaults to the flagship. */
+  slug?: string;
+  eyebrow?: string;
+  /** Optional override for the kicker line above the title. */
+  kicker?: string;
+}
+
+const { slug = 'empire-within-bali', eyebrow = 'This Season', kicker } = Astro.props;
+
+const retreat: Retreat = getRetreatBySlug(slug) ?? retreats[0];
+
+// Pick four images for the strip; cycle if the retreat has fewer.
+const stripImages = Array.from({ length: 4 }, (_, i) => {
+  const pool = retreat.images ?? [];
+  return pool[i % Math.max(pool.length, 1)];
+}).filter(Boolean);
+
+const facts = [
+  { label: 'Duration', value: retreat.duration },
+  { label: 'Location', value: retreat.location },
+  { label: 'Cohort', value: retreat.groupSize },
+  { label: 'Next Session', value: retreat.nextSession },
 ];
+
+const detailHref = `/retreats/${retreat.slug}`;
 ---
 
-<section class="gallery">
-  <div class="gallery__strip reveal-fade">
-    <div class="gallery__image"><div class="gallery__placeholder"></div></div>
-    <div class="gallery__image"><div class="gallery__placeholder"></div></div>
-    <div class="gallery__image gallery__image--wide"><div class="gallery__placeholder"></div></div>
-    <div class="gallery__image"><div class="gallery__placeholder"></div></div>
-  </div>
+<section class="featured-retreat">
+  <div class="featured-retreat__inner">
+    <header class="featured-retreat__header reveal">
+      <p class="featured-retreat__eyebrow">{eyebrow}</p>
+      <h2 class="featured-retreat__title">{retreat.title}</h2>
+      <p class="featured-retreat__subtitle">{kicker ?? retreat.subtitle}</p>
+    </header>
 
-  <div class="gallery__features reveal">
-    {features.map((feature) => (
-      <p class="gallery__feature">{feature}</p>
-    ))}
+    <div class="featured-retreat__strip reveal-fade">
+      {stripImages.map((img) => (
+        <a
+          class="featured-retreat__image"
+          href={detailHref}
+          aria-label={`View ${retreat.title}`}
+        >
+          {img?.src ? (
+            <img
+              class="featured-retreat__img"
+              src={img.src}
+              alt={img.alt ?? ''}
+              loading="lazy"
+              decoding="async"
+              width="800"
+              height="1000"
+            />
+          ) : (
+            <div class="featured-retreat__placeholder" aria-hidden="true"></div>
+          )}
+        </a>
+      ))}
+    </div>
+
+    <div class="featured-retreat__body reveal">
+      <p class="featured-retreat__excerpt">{retreat.shortDescription}</p>
+
+      <dl class="featured-retreat__facts">
+        {facts.map((f) => (
+          <div>
+            <dt>{f.label}</dt>
+            <dd>{f.value}</dd>
+          </div>
+        ))}
+      </dl>
+
+      <div class="featured-retreat__actions">
+        <a class="featured-retreat__cta" href={detailHref}>View this retreat</a>
+        <a class="featured-retreat__secondary" href="/retreats">See all offerings</a>
+      </div>
+    </div>
   </div>
 </section>
 
 <style lang="scss">
   @use '../styles/variables' as *;
 
-  .gallery {
+  .featured-retreat {
     background-color: $color-bg-light;
-    padding: 0 $space-xl $space-4xl;
+    padding: $space-4xl $space-xl;
+
+    &__inner {
+      max-width: $max-width;
+      margin: 0 auto;
+    }
+
+    &__header {
+      max-width: $max-width-narrow;
+      margin: 0 auto $space-3xl;
+      text-align: center;
+    }
+
+    &__eyebrow {
+      @include label-text;
+      color: $color-accent;
+      margin-bottom: $space-md;
+    }
+
+    &__title {
+      font-family: $font-heading;
+      font-size: $text-3xl;
+      font-style: italic;
+      font-weight: $weight-regular;
+      color: $color-text-primary;
+      line-height: $leading-snug;
+      margin-bottom: $space-sm;
+    }
+
+    &__subtitle {
+      font-family: $font-body;
+      font-size: $text-md;
+      color: $color-text-body;
+      opacity: 0.85;
+      line-height: $leading-relaxed;
+    }
 
     &__strip {
       display: grid;
-      grid-template-columns: 1fr 1fr 1.5fr 1fr;
+      grid-template-columns: repeat(4, 1fr);
       gap: $grid-gap-sm;
-      max-width: $max-width;
-      margin: 0 auto $space-3xl;
+      margin-bottom: $space-3xl;
+    }
+
+    &__image {
+      display: block;
+      position: relative;
+      overflow: hidden;
+      border-radius: $radius-md;
+      aspect-ratio: 4 / 5;
+      background: $color-warm-gray;
+      transition: transform $transition-base, box-shadow $transition-base;
+
+      &:hover {
+        transform: translateY(-3px);
+        box-shadow: $shadow-md;
+
+        .featured-retreat__img {
+          transform: scale(1.04);
+        }
+      }
+    }
+
+    &__img {
+      display: block;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      object-position: center;
+      transition: transform $transition-slow;
     }
 
     &__placeholder {
       width: 100%;
-      height: 200px;
+      height: 100%;
       background: linear-gradient(135deg, $color-warm-gray 0%, #6b5d4b 100%);
-      border-radius: $radius-md;
     }
 
-    &__features {
-      max-width: $max-width-narrow;
+    &__body {
+      max-width: 720px;
       margin: 0 auto;
       text-align: center;
       display: flex;
       flex-direction: column;
-      gap: $space-xs;
+      gap: $space-xl;
+      align-items: center;
     }
 
-    &__feature {
+    &__excerpt {
       font-family: $font-body;
-      font-size: $text-base;
-      font-weight: $weight-regular;
+      font-size: $text-md;
       color: $color-text-body;
-      font-style: italic;
       line-height: $leading-relaxed;
+      max-width: 56ch;
+    }
+
+    &__facts {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: $space-lg;
+      width: 100%;
+      padding: $space-lg 0;
+      border-top: 1px solid rgba($color-charcoal, 0.12);
+      border-bottom: 1px solid rgba($color-charcoal, 0.12);
+
+      div {
+        display: flex;
+        flex-direction: column;
+        gap: 0.3rem;
+        text-align: center;
+      }
+
+      dt {
+        @include label-text;
+        font-size: 0.65rem;
+        color: $color-text-muted;
+      }
+
+      dd {
+        font-family: $font-body;
+        font-size: $text-sm;
+        color: $color-text-primary;
+        margin: 0;
+      }
+    }
+
+    &__actions {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      align-items: center;
+      gap: $space-lg;
+    }
+
+    &__cta {
+      display: inline-block;
+      font-family: $font-accent;
+      font-size: $text-sm;
+      font-weight: $weight-medium;
+      letter-spacing: $tracking-wide;
+      text-transform: uppercase;
+      padding: 0.95rem $space-3xl;
+      border-radius: $radius-full;
+      background: $color-accent;
+      color: $color-bg-dark;
+      transition: background $transition-base, transform $transition-fast;
+
+      &:hover {
+        background: $color-gold-light;
+        transform: translateY(-2px);
+      }
+    }
+
+    &__secondary {
+      font-family: $font-accent;
+      font-size: $text-sm;
+      font-weight: $weight-regular;
+      letter-spacing: $tracking-wide;
+      text-transform: uppercase;
+      color: $color-text-primary;
+      opacity: 0.75;
+      border-bottom: 1px solid rgba($color-charcoal, 0.3);
+      padding-bottom: 2px;
+      transition: opacity $transition-base, border-color $transition-base;
+
+      &:hover {
+        opacity: 1;
+        border-color: $color-accent;
+      }
     }
 
     @include breakpoint-down($bp-md) {
-      padding: 0 $space-lg $space-3xl;
+      padding: $space-3xl $space-lg;
 
       &__strip {
         grid-template-columns: 1fr 1fr;
         gap: $space-xs;
       }
 
-      &__placeholder {
-        height: 140px;
+      &__facts {
+        grid-template-columns: repeat(2, 1fr);
+        gap: $space-md;
+      }
+
+      &__actions {
+        flex-direction: column;
+        gap: $space-md;
       }
     }
   }

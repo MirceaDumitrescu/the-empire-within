@@ -1,0 +1,209 @@
+---
+// LEGAL TEMPLATE — review with a qualified lawyer in your jurisdiction
+// before relying on this document. The clauses below are a reasonable
+// starting point for a Bali-based retreat company but are not a substitute
+// for legal advice. Pay particular attention to the cancellation, refund,
+// liability, and governing-law sections, which are jurisdiction-sensitive.
+
+import Layout from '../layouts/Layout.astro';
+import Header from '../components/Header.astro';
+import Footer from '../components/Footer.astro';
+import LegalDocument from '../components/LegalDocument.astro';
+import type { LegalSection } from '../components/LegalDocument.astro';
+
+const sections: LegalSection[] = [
+  {
+    id: 'acceptance',
+    title: 'Acceptance of Terms',
+    paragraphs: [
+      'These Terms & Conditions ("Terms") govern your use of theempirewithin.com (the "Website") and any retreat, programme, session, or service offered by The Empire Within ("we", "us", or "our"). By using the Website, submitting an application, or booking any service, you confirm that you have read, understood, and agreed to be bound by these Terms.',
+      'If you do not agree to these Terms, please do not use the Website or our services.',
+    ],
+  },
+  {
+    id: 'definitions',
+    title: 'Definitions',
+    list: {
+      intro: 'In these Terms, the following words have the following meanings:',
+      items: [
+        '"Retreat" means any group programme, residential or non-residential, hosted by us in Bali or elsewhere.',
+        '"1:1 Immersion" means any private programme delivered to a single participant or pair.',
+        '"Participant" means any person who has applied for, booked, or is taking part in a Retreat or 1:1 Immersion.',
+        '"Booking" means a confirmed reservation for a Retreat or 1:1 Immersion, evidenced by payment of a deposit or full fee.',
+        '"Website" means theempirewithin.com and any associated subdomains.',
+      ],
+    },
+  },
+  {
+    id: 'use-of-website',
+    title: 'Use of the Website',
+    paragraphs: [
+      'The Website is provided for personal, non-commercial use. You agree to use it lawfully and not to attempt to disrupt, reverse-engineer, or gain unauthorised access to any part of it.',
+      'We may update, modify, or remove content on the Website at any time without notice.',
+    ],
+  },
+  {
+    id: 'bookings',
+    title: 'Applications, Bookings & Payments',
+    subSections: [
+      {
+        title: 'Applications',
+        paragraphs: [
+          'Retreats and 1:1 Immersions are offered by application. Submitting an application does not constitute a Booking. Acceptance is at our discretion based on suitability and availability.',
+        ],
+      },
+      {
+        title: 'Bookings & Deposits',
+        paragraphs: [
+          'A Booking is confirmed only when an application has been accepted in writing and a non-refundable deposit has been received. The remaining balance is due on the date specified in the Booking confirmation, typically no later than thirty (30) days before the Retreat or 1:1 Immersion start date.',
+        ],
+      },
+      {
+        title: 'Pricing & Currency',
+        paragraphs: [
+          'All prices are quoted in the currency specified at the time of booking. We reserve the right to amend pricing for future Retreats; confirmed Bookings are not affected by subsequent price changes.',
+        ],
+      },
+    ],
+  },
+  {
+    id: 'cancellation',
+    title: 'Cancellation, Rescheduling & Refunds',
+    subSections: [
+      {
+        title: 'Cancellation by the Participant',
+        list: {
+          intro: 'If you cancel your Booking, the following terms apply unless otherwise agreed in writing:',
+          items: [
+            'More than sixty (60) days before the start date: deposit forfeited; balance, if paid, refunded.',
+            'Between thirty (30) and sixty (60) days before the start date: 50% of the total fee forfeited; balance refunded.',
+            'Fewer than thirty (30) days before the start date: no refund.',
+          ],
+        },
+      },
+      {
+        title: 'Cancellation by Us',
+        paragraphs: [
+          'In the unlikely event we cancel a Retreat or 1:1 Immersion, you will be offered a credit toward a future date, transfer of your Booking to another participant, or a full refund of fees paid (excluding any non-refundable third-party costs).',
+        ],
+      },
+      {
+        title: 'Travel & Insurance',
+        paragraphs: [
+          'You are solely responsible for your own travel arrangements, visas, and travel insurance. We strongly recommend insurance that covers cancellation, medical care, and repatriation.',
+        ],
+      },
+    ],
+  },
+  {
+    id: 'health',
+    title: 'Health, Wellness & Personal Responsibility',
+    paragraphs: [
+      'Our Retreats and 1:1 Immersions are wellness experiences and are not a substitute for medical, psychological, or psychiatric care. By booking, you confirm that you are physically and mentally able to participate and that you have disclosed any relevant health conditions in writing in advance.',
+      'You acknowledge that participation involves activities that carry inherent risks, including but not limited to physical movement, breathwork, ceremony, and travel in Bali. You participate at your own risk.',
+      'If at any time we reasonably believe that participation is not in your best interest, we may modify, suspend, or end your participation. Refunds in such circumstances are at our sole discretion.',
+    ],
+  },
+  {
+    id: 'conduct',
+    title: 'Conduct on Retreat',
+    paragraphs: [
+      'Participants are expected to treat all staff, hosts, fellow participants, local elders, and the broader community with respect. Behaviour that endangers others, disrupts the container, or breaches our Code of Conduct (provided in your Booking confirmation) may result in removal from the Retreat without refund.',
+    ],
+  },
+  {
+    id: 'ip',
+    title: 'Intellectual Property',
+    paragraphs: [
+      'All content on the Website and within our materials — including text, photography, recordings, methods, and curriculum — is the intellectual property of The Empire Within or its licensors. You may not reproduce, distribute, or use any of it for commercial purposes without prior written permission.',
+      'A limited, non-transferable licence is granted for personal use of materials provided to you as part of a Booking.',
+    ],
+  },
+  {
+    id: 'user-content',
+    title: 'User Content',
+    paragraphs: [
+      'If you submit feedback, testimonials, or images to us, you grant us a non-exclusive, worldwide, royalty-free licence to use, reproduce, and display that content in connection with our services. You may withdraw this licence at any time by writing to us; we will remove the content from active use within a reasonable period.',
+    ],
+  },
+  {
+    id: 'liability',
+    title: 'Disclaimers & Limitation of Liability',
+    paragraphs: [
+      'The Website and our services are provided "as is" without warranties of any kind, express or implied, except as required by applicable law.',
+      'To the fullest extent permitted by law, our total liability to you for any claim arising from your use of the Website or any service is limited to the fees paid by you for the relevant service. We are not liable for indirect, incidental, special, consequential, or punitive damages.',
+      'Nothing in these Terms limits our liability for fraud, gross negligence, or any other liability that cannot lawfully be excluded.',
+    ],
+  },
+  {
+    id: 'indemnification',
+    title: 'Indemnification',
+    paragraphs: [
+      'You agree to indemnify and hold us harmless from any claim, loss, or expense (including reasonable legal fees) arising from your breach of these Terms or your conduct during a Retreat or 1:1 Immersion.',
+    ],
+  },
+  {
+    id: 'force-majeure',
+    title: 'Force Majeure',
+    paragraphs: [
+      'We are not liable for any failure or delay in performance caused by circumstances beyond our reasonable control, including natural disasters, pandemics, government action, civil unrest, or transport disruption. In such circumstances we will work with you in good faith to reschedule or provide credit toward a future Retreat.',
+    ],
+  },
+  {
+    id: 'third-party',
+    title: 'Third-Party Services & Links',
+    paragraphs: [
+      'The Website may include links to or integrations with third-party services (for example, scheduling, payment, or analytics providers). We are not responsible for the content, policies, or practices of those third parties. Your use of those services is subject to their own terms.',
+    ],
+  },
+  {
+    id: 'termination',
+    title: 'Termination',
+    paragraphs: [
+      'We may suspend or terminate your access to the Website or any service at any time for breach of these Terms or for any reason we reasonably consider necessary to protect our staff, participants, or the integrity of our work.',
+    ],
+  },
+  {
+    id: 'governing-law',
+    title: 'Governing Law & Jurisdiction',
+    paragraphs: [
+      'These Terms are governed by the laws of [JURISDICTION TO BE CONFIRMED]. Any dispute arising from or relating to these Terms or your use of our services will be subject to the exclusive jurisdiction of the courts of that jurisdiction, except where applicable consumer-protection law grants you the right to bring proceedings in your country of residence.',
+    ],
+  },
+  {
+    id: 'changes',
+    title: 'Changes to These Terms',
+    paragraphs: [
+      'We may update these Terms from time to time. The date at the top of this page reflects the latest revision. Material changes will be communicated via the Website or by email where appropriate. Continued use of the Website or our services after a change constitutes acceptance of the revised Terms.',
+    ],
+  },
+  {
+    id: 'contact',
+    title: 'Contact',
+    paragraphs: [
+      'For questions about these Terms, please write to hello@theempirewithin.com.',
+    ],
+  },
+];
+---
+
+<Layout
+  title="Terms & Conditions — The Empire Within"
+  description="The terms and conditions governing the use of theempirewithin.com and our retreat services."
+>
+  <Header />
+  <main>
+    <LegalDocument
+      eyebrow="Legal"
+      title="Terms & Conditions"
+      lastUpdated="May 10, 2026"
+      intro={[
+        'These Terms describe the rules for using our Website and the conditions that apply to applications, bookings, and participation in our Retreats and 1:1 Immersions.',
+        'They are written to be as plain as possible, but they are still a legal document. Please read them carefully and ask if anything is unclear.',
+      ]}
+      sections={sections}
+      contactEmail="hello@theempirewithin.com"
+    />
+  </main>
+  <Footer />
+</Layout>

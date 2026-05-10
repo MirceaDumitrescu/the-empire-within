@@ -1,0 +1,155 @@
+---
+interface Props {
+  id?: string;
+  eyebrow?: string;
+  heading?: string;
+  description?: string;
+  ctaLabel?: string;
+  ctaHref?: string;
+  secondaryLabel?: string;
+  secondaryHref?: string;
+}
+
+const {
+  id = 'booking',
+  eyebrow = 'Private Sessions',
+  heading = 'Book a 1:1 Call',
+  description = 'A short, private conversation to explore alignment, timing, and what your body is asking for. We hold a limited number of these each season.',
+  ctaLabel = 'Book a Call',
+  ctaHref = 'https://calendly.com/',
+  secondaryLabel = 'Email Us Instead',
+  secondaryHref = '/contact',
+} = Astro.props;
+---
+
+<section class="booking-cta" id={id}>
+  <div class="booking-cta__overlay" aria-hidden="true"></div>
+  <div class="booking-cta__inner reveal">
+    <p class="booking-cta__eyebrow">{eyebrow}</p>
+    <h2 class="booking-cta__heading">{heading}</h2>
+    <p class="booking-cta__description">{description}</p>
+    <div class="booking-cta__actions">
+      <a class="booking-cta__primary" href={ctaHref} target={ctaHref.startsWith('http') ? '_blank' : undefined} rel={ctaHref.startsWith('http') ? 'noopener noreferrer' : undefined}>
+        {ctaLabel}
+      </a>
+      {secondaryLabel && secondaryHref && (
+        <a class="booking-cta__secondary" href={secondaryHref}>{secondaryLabel}</a>
+      )}
+    </div>
+  </div>
+</section>
+
+<style lang="scss">
+  @use '../styles/variables' as *;
+
+  .booking-cta {
+    position: relative;
+    background-color: $color-bg-dark;
+    color: $color-text-on-dark;
+    padding: $section-padding;
+    overflow: hidden;
+    scroll-margin-top: 6rem;
+
+    &__overlay {
+      position: absolute;
+      inset: 0;
+      background:
+        radial-gradient(ellipse at center, rgba($color-gold, 0.1) 0%, transparent 60%),
+        linear-gradient(180deg, $color-bg-dark 0%, $color-charcoal 100%);
+      pointer-events: none;
+    }
+
+    &__inner {
+      position: relative;
+      z-index: $z-base;
+      max-width: $max-width-narrow;
+      margin: 0 auto;
+      text-align: center;
+    }
+
+    &__eyebrow {
+      @include label-text;
+      color: $color-accent;
+      margin-bottom: $space-md;
+    }
+
+    &__heading {
+      font-family: $font-heading;
+      font-size: $text-4xl;
+      font-style: italic;
+      font-weight: $weight-regular;
+      color: $color-text-on-dark;
+      line-height: $leading-snug;
+      margin-bottom: $space-lg;
+    }
+
+    &__description {
+      font-family: $font-body;
+      font-size: $text-md;
+      font-weight: $weight-light;
+      color: $color-text-on-dark;
+      opacity: 0.75;
+      line-height: $leading-relaxed;
+      max-width: 36rem;
+      margin: 0 auto $space-2xl;
+    }
+
+    &__actions {
+      display: inline-flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      align-items: center;
+      gap: $space-lg;
+    }
+
+    &__primary {
+      display: inline-block;
+      font-family: $font-accent;
+      font-size: $text-sm;
+      font-weight: $weight-medium;
+      letter-spacing: $tracking-wide;
+      text-transform: uppercase;
+      padding: 1rem $space-2xl;
+      border-radius: $radius-full;
+      background: $color-accent;
+      color: $color-bg-dark;
+      transition:
+        background $transition-base,
+        transform $transition-fast;
+
+      &:hover {
+        background: $color-gold-light;
+        transform: translateY(-2px);
+      }
+    }
+
+    &__secondary {
+      font-family: $font-accent;
+      font-size: $text-sm;
+      font-weight: $weight-regular;
+      letter-spacing: $tracking-wide;
+      text-transform: uppercase;
+      color: $color-text-on-dark;
+      opacity: 0.75;
+      border-bottom: 1px solid rgba($color-text-on-dark, 0.3);
+      padding-bottom: 2px;
+      transition:
+        opacity $transition-base,
+        border-color $transition-base;
+
+      &:hover {
+        opacity: 1;
+        border-color: $color-accent;
+      }
+    }
+
+    @include breakpoint-down($bp-md) {
+      padding: $section-padding-mobile;
+
+      &__actions {
+        flex-direction: column;
+        gap: $space-md;
+      }
+    }
+  }
+</style>

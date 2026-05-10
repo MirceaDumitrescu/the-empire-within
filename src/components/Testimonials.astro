@@ -1,0 +1,157 @@
+---
+interface Testimonial {
+  quote: string;
+  attribution: string;
+  context?: string;
+}
+
+interface Props {
+  eyebrow?: string;
+  heading?: string;
+  testimonials?: Testimonial[];
+}
+
+const {
+  eyebrow = 'Voices',
+  heading = 'From past practitioners.',
+  testimonials = [
+    {
+      quote:
+        'I came expecting to be pushed. Instead I was met with a slowness I had forgotten was possible — and that slowness changed something I could not name on my own.',
+      attribution: '— A founder',
+      context: 'Three-day container, last season',
+    },
+    {
+      quote:
+        'It was the first week in a decade where I was not asked to perform anything. I went home with a clarity I am still working with months later.',
+      attribution: '— A creative director',
+      context: 'Seven-day immersion',
+    },
+    {
+      quote:
+        'The water temple ceremony alone would have been enough. The rest of the week was simply the careful preparation for it.',
+      attribution: '— A long-time practitioner',
+      context: 'Returning, second season',
+    },
+  ],
+} = Astro.props;
+---
+
+<section class="testimonials">
+  <div class="testimonials__inner">
+    <header class="testimonials__header reveal">
+      <p class="testimonials__eyebrow">{eyebrow}</p>
+      <h2 class="testimonials__heading">{heading}</h2>
+    </header>
+
+    <div class="testimonials__grid">
+      {testimonials.map((t) => (
+        <figure class="testimonials__card reveal-stagger">
+          <svg class="testimonials__quote-mark" width="32" height="24" viewBox="0 0 32 24" aria-hidden="true">
+            <path d="M0 24V14C0 6.268 5.373 0 12 0V4C7.582 4 4 8.582 4 14H8V24H0ZM18 24V14C18 6.268 23.373 0 30 0V4C25.582 4 22 8.582 22 14H26V24H18Z" fill="currentColor" />
+          </svg>
+          <blockquote class="testimonials__quote">{t.quote}</blockquote>
+          <figcaption class="testimonials__attribution">
+            <p class="testimonials__name">{t.attribution}</p>
+            {t.context && <p class="testimonials__context">{t.context}</p>}
+          </figcaption>
+        </figure>
+      ))}
+    </div>
+  </div>
+</section>
+
+<style lang="scss">
+  @use '../styles/variables' as *;
+
+  .testimonials {
+    background-color: $color-bg-warm;
+    padding: $section-padding;
+
+    &__inner {
+      max-width: $max-width;
+      margin: 0 auto;
+    }
+
+    &__header {
+      text-align: center;
+      max-width: $max-width-narrow;
+      margin: 0 auto $space-4xl;
+    }
+
+    &__eyebrow {
+      @include label-text;
+      color: $color-accent;
+      margin-bottom: $space-md;
+    }
+
+    &__heading {
+      font-family: $font-heading;
+      font-size: $text-3xl;
+      font-style: italic;
+      font-weight: $weight-regular;
+      color: $color-text-primary;
+      line-height: $leading-snug;
+    }
+
+    &__grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: $space-xl;
+
+      @include breakpoint-down($bp-md) {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    &__card {
+      display: flex;
+      flex-direction: column;
+      gap: $space-lg;
+      padding: $space-2xl;
+      background: rgba($color-cream, 0.95);
+      border: 1px solid rgba($color-charcoal, 0.08);
+      border-radius: $radius-md;
+      margin: 0;
+    }
+
+    &__quote-mark {
+      color: $color-accent;
+      opacity: 0.5;
+    }
+
+    &__quote {
+      font-family: $font-heading;
+      font-size: $text-lg;
+      font-style: italic;
+      font-weight: $weight-regular;
+      color: $color-text-primary;
+      line-height: $leading-snug;
+      margin: 0;
+      flex: 1;
+    }
+
+    &__attribution {
+      border-top: 1px solid rgba($color-charcoal, 0.12);
+      padding-top: $space-md;
+    }
+
+    &__name {
+      @include label-text;
+      color: $color-text-primary;
+      letter-spacing: $tracking-wider;
+      margin-bottom: 0.25rem;
+    }
+
+    &__context {
+      font-family: $font-body;
+      font-size: $text-xs;
+      color: $color-text-muted;
+      letter-spacing: 0.02em;
+    }
+
+    @include breakpoint-down($bp-md) {
+      padding: $section-padding-mobile;
+    }
+  }
+</style>

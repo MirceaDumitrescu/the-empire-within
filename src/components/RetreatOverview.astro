@@ -1,0 +1,104 @@
+---
+import ImagePlaceholder from './ImagePlaceholder.astro';
+
+interface Props {
+  eyebrow?: string;
+  heading?: string;
+  paragraphs: string[];
+  imageSrc?: string;
+  imageLabel?: string;
+}
+
+const {
+  eyebrow = 'The Container',
+  heading = 'About this retreat',
+  paragraphs,
+  imageSrc,
+  imageLabel = 'Sanctuary',
+} = Astro.props;
+---
+
+<section class="retreat-overview">
+  <div class="retreat-overview__inner">
+    <div class="retreat-overview__copy">
+      <p class="retreat-overview__eyebrow reveal">{eyebrow}</p>
+      <h2 class="retreat-overview__heading reveal">{heading}</h2>
+      <div class="retreat-overview__paragraphs">
+        {paragraphs.map((p) => (
+          <p class="reveal-stagger">{p}</p>
+        ))}
+      </div>
+    </div>
+
+    <div class="retreat-overview__media reveal">
+      <ImagePlaceholder src={imageSrc} label={imageLabel} aspectRatio="4 / 5" />
+    </div>
+  </div>
+</section>
+
+<style lang="scss">
+  @use '../styles/variables' as *;
+
+  .retreat-overview {
+    background-color: $color-bg-light;
+    padding: $section-padding;
+
+    &__inner {
+      display: grid;
+      grid-template-columns: 7fr 5fr;
+      gap: $space-4xl;
+      align-items: start;
+      max-width: $max-width;
+      margin: 0 auto;
+
+      @include breakpoint-down($bp-md) {
+        grid-template-columns: 1fr;
+        gap: $space-2xl;
+      }
+    }
+
+    &__eyebrow {
+      @include label-text;
+      color: $color-accent;
+      margin-bottom: $space-md;
+    }
+
+    &__heading {
+      font-family: $font-heading;
+      font-size: $text-3xl;
+      font-style: italic;
+      font-weight: $weight-regular;
+      color: $color-text-primary;
+      line-height: $leading-snug;
+      margin-bottom: $space-xl;
+    }
+
+    &__paragraphs {
+      display: flex;
+      flex-direction: column;
+      gap: $space-lg;
+
+      p {
+        font-family: $font-body;
+        font-size: $text-md;
+        color: $color-text-body;
+        line-height: $leading-relaxed;
+      }
+    }
+
+    &__media {
+      position: sticky;
+      top: 6rem;
+
+      @include breakpoint-down($bp-md) {
+        position: static;
+        max-width: 480px;
+        margin: 0 auto;
+      }
+    }
+
+    @include breakpoint-down($bp-md) {
+      padding: $section-padding-mobile;
+    }
+  }
+</style>

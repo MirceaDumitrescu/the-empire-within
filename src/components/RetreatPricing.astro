@@ -1,0 +1,205 @@
+---
+interface Props {
+  id?: string;
+  eyebrow?: string;
+  heading?: string;
+  priceFrom: string;
+  priceUnit?: string;
+  priceNote?: string;
+  ctaLabel?: string;
+  ctaHref?: string;
+  secondaryLabel?: string;
+  secondaryHref?: string;
+  trust?: string;
+}
+
+const {
+  id = 'pricing',
+  eyebrow = 'Investment',
+  heading = 'A small group, by application.',
+  priceFrom,
+  priceUnit,
+  priceNote,
+  ctaLabel = 'Begin a Conversation',
+  ctaHref = '#inquire',
+  secondaryLabel = 'Email Us',
+  secondaryHref = 'mailto:apply@theempirewithin.com',
+  trust = 'Bookings are confirmed only after a discovery call.',
+} = Astro.props;
+---
+
+<section class="pricing" id={id}>
+  <div class="pricing__inner reveal">
+    <p class="pricing__eyebrow">{eyebrow}</p>
+    <h2 class="pricing__heading">{heading}</h2>
+
+    <div class="pricing__card">
+      <div class="pricing__amount">
+        <span class="pricing__from">From</span>
+        <span class="pricing__value">{priceFrom}</span>
+        {priceUnit && <span class="pricing__unit">{priceUnit}</span>}
+      </div>
+      {priceNote && <p class="pricing__note">{priceNote}</p>}
+
+      <div class="pricing__actions">
+        <a class="pricing__cta" href={ctaHref}>{ctaLabel}</a>
+        {secondaryLabel && secondaryHref && (
+          <a class="pricing__secondary" href={secondaryHref}>{secondaryLabel}</a>
+        )}
+      </div>
+
+      {trust && <p class="pricing__trust">{trust}</p>}
+    </div>
+  </div>
+</section>
+
+<style lang="scss">
+  @use '../styles/variables' as *;
+
+  .pricing {
+    background-color: $color-bg-light;
+    padding: $section-padding;
+    scroll-margin-top: 6rem;
+
+    &__inner {
+      max-width: 640px;
+      margin: 0 auto;
+      text-align: center;
+    }
+
+    &__eyebrow {
+      @include label-text;
+      color: $color-accent;
+      margin-bottom: $space-md;
+    }
+
+    &__heading {
+      font-family: $font-heading;
+      font-size: $text-3xl;
+      font-style: italic;
+      font-weight: $weight-regular;
+      color: $color-text-primary;
+      line-height: $leading-snug;
+      margin-bottom: $space-2xl;
+    }
+
+    &__card {
+      padding: $space-3xl $space-2xl;
+      background: $color-white;
+      border: 1px solid rgba($color-accent, 0.3);
+      border-radius: $radius-md;
+      box-shadow: $shadow-md;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: $space-md;
+    }
+
+    &__amount {
+      display: flex;
+      align-items: baseline;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 0.4rem;
+    }
+
+    &__from {
+      @include label-text;
+      color: $color-text-muted;
+    }
+
+    &__value {
+      font-family: $font-heading;
+      font-size: clamp(2.2rem, 5vw, 3rem);
+      font-style: italic;
+      font-weight: $weight-regular;
+      color: $color-text-primary;
+      line-height: 1;
+    }
+
+    &__unit {
+      font-family: $font-body;
+      font-size: $text-sm;
+      color: $color-text-muted;
+      letter-spacing: 0.02em;
+    }
+
+    &__note {
+      font-family: $font-body;
+      font-size: $text-sm;
+      color: $color-text-body;
+      line-height: $leading-relaxed;
+      max-width: 32rem;
+      margin-top: $space-xs;
+    }
+
+    &__actions {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      align-items: center;
+      gap: $space-lg;
+      margin-top: $space-md;
+    }
+
+    &__cta {
+      display: inline-block;
+      font-family: $font-accent;
+      font-size: $text-sm;
+      font-weight: $weight-medium;
+      letter-spacing: $tracking-wide;
+      text-transform: uppercase;
+      padding: 1rem $space-3xl;
+      border-radius: $radius-full;
+      background: $color-accent;
+      color: $color-bg-dark;
+      transition:
+        background $transition-base,
+        transform $transition-fast;
+
+      &:hover {
+        background: $color-gold-light;
+        transform: translateY(-2px);
+      }
+    }
+
+    &__secondary {
+      font-family: $font-accent;
+      font-size: $text-sm;
+      font-weight: $weight-regular;
+      letter-spacing: $tracking-wide;
+      text-transform: uppercase;
+      color: $color-text-primary;
+      opacity: 0.75;
+      border-bottom: 1px solid rgba($color-charcoal, 0.3);
+      padding-bottom: 2px;
+      transition:
+        opacity $transition-base,
+        border-color $transition-base;
+
+      &:hover {
+        opacity: 1;
+        border-color: $color-accent;
+      }
+    }
+
+    &__trust {
+      font-family: $font-accent;
+      font-size: $text-xs;
+      letter-spacing: $tracking-wide;
+      text-transform: uppercase;
+      color: $color-text-muted;
+      opacity: 0.75;
+      margin-top: $space-xs;
+    }
+
+    @include breakpoint-down($bp-md) {
+      padding: $section-padding-mobile;
+
+      &__actions {
+        flex-direction: column;
+        gap: $space-md;
+      }
+    }
+  }
+</style>

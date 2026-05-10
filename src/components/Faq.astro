@@ -1,0 +1,145 @@
+---
+interface FaqItem {
+  question: string;
+  answer: string;
+}
+
+interface Props {
+  eyebrow?: string;
+  heading?: string;
+  items?: FaqItem[];
+}
+
+const {
+  eyebrow = 'Frequently Asked',
+  heading = 'Questions, plainly answered.',
+  items = [],
+} = Astro.props;
+---
+
+<section class="faq">
+  <div class="faq__inner">
+    <header class="faq__header reveal">
+      <p class="faq__eyebrow">{eyebrow}</p>
+      <h2 class="faq__heading">{heading}</h2>
+    </header>
+
+    <div class="faq__list">
+      {items.map((item) => (
+        <details class="faq__item reveal-stagger">
+          <summary class="faq__question">
+            <span>{item.question}</span>
+            <svg class="faq__icon" width="14" height="14" viewBox="0 0 14 14" fill="none" aria-hidden="true">
+              <path d="M3.5 5.5L7 9L10.5 5.5" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round" />
+            </svg>
+          </summary>
+          <div class="faq__answer">
+            <p>{item.answer}</p>
+          </div>
+        </details>
+      ))}
+    </div>
+  </div>
+</section>
+
+<style lang="scss">
+  @use '../styles/variables' as *;
+
+  .faq {
+    background-color: $color-bg-light;
+    padding: $section-padding;
+
+    &__inner {
+      max-width: $max-width-content;
+      margin: 0 auto;
+    }
+
+    &__header {
+      text-align: center;
+      max-width: $max-width-narrow;
+      margin: 0 auto $space-3xl;
+    }
+
+    &__eyebrow {
+      @include label-text;
+      color: $color-accent;
+      margin-bottom: $space-md;
+    }
+
+    &__heading {
+      font-family: $font-heading;
+      font-size: $text-3xl;
+      font-style: italic;
+      font-weight: $weight-regular;
+      color: $color-text-primary;
+      line-height: $leading-snug;
+    }
+
+    &__list {
+      display: flex;
+      flex-direction: column;
+    }
+
+    &__item {
+      border-bottom: 1px solid rgba($color-charcoal, 0.12);
+
+      &[open] .faq__icon {
+        transform: rotate(180deg);
+      }
+
+      &[open] summary {
+        color: $color-accent;
+      }
+    }
+
+    &__question {
+      list-style: none;
+      cursor: pointer;
+      padding: $space-lg 0;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: $space-lg;
+      font-family: $font-heading;
+      font-size: $text-lg;
+      font-weight: $weight-medium;
+      color: $color-text-primary;
+      line-height: $leading-snug;
+      transition: color $transition-base;
+
+      &::-webkit-details-marker {
+        display: none;
+      }
+
+      &:hover {
+        color: $color-accent;
+      }
+    }
+
+    &__icon {
+      flex-shrink: 0;
+      color: currentColor;
+      transition: transform $transition-base;
+    }
+
+    &__answer {
+      padding: 0 0 $space-lg;
+
+      p {
+        font-family: $font-body;
+        font-size: $text-md;
+        color: $color-text-body;
+        line-height: $leading-relaxed;
+        max-width: 56ch;
+      }
+    }
+
+    @include breakpoint-down($bp-md) {
+      padding: $section-padding-mobile;
+
+      &__question {
+        font-size: $text-base;
+      }
+    }
+  }
+</style>

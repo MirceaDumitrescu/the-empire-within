@@ -1,0 +1,118 @@
+---
+interface Props {
+  aspectRatio?: string;
+  label?: string;
+  src?: string;
+  alt?: string;
+  rounded?: boolean;
+  tone?: 'dark' | 'light';
+}
+
+const {
+  aspectRatio = '16 / 9',
+  label = 'Image',
+  src,
+  alt = '',
+  rounded = true,
+  tone = 'dark',
+} = Astro.props;
+---
+
+<figure
+  class:list={[
+    'image-ph',
+    { 'image-ph--rounded': rounded, 'image-ph--light': tone === 'light' },
+  ]}
+  style={`--aspect: ${aspectRatio};`}
+>
+  {src ? (
+    <img src={src} alt={alt} loading="lazy" decoding="async" />
+  ) : (
+    <div class="image-ph__placeholder" aria-hidden="true">
+      <svg
+        class="image-ph__icon"
+        width="36"
+        height="36"
+        viewBox="0 0 24 24"
+        fill="none"
+        xmlns="http://www.w3.org/2000/svg"
+      >
+        <rect
+          x="3"
+          y="5"
+          width="18"
+          height="14"
+          rx="1.5"
+          stroke="currentColor"
+          stroke-width="1.2"
+        />
+        <circle cx="8.5" cy="10.5" r="1.5" stroke="currentColor" stroke-width="1.2" />
+        <path
+          d="M3.5 17.5L9 12.5L13 16.5L16 14L20.5 18.5"
+          stroke="currentColor"
+          stroke-width="1.2"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+        />
+      </svg>
+      <span class="image-ph__label">{label}</span>
+    </div>
+  )}
+</figure>
+
+<style lang="scss">
+  @use '../styles/variables' as *;
+
+  .image-ph {
+    position: relative;
+    width: 100%;
+    aspect-ratio: var(--aspect, 16 / 9);
+    margin: 0;
+    overflow: hidden;
+    background: $color-charcoal;
+
+    &--rounded {
+      border-radius: $radius-lg;
+    }
+
+    img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+    }
+  }
+
+  .image-ph__placeholder {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: $space-sm;
+    background:
+      linear-gradient(135deg, rgba($color-gold, 0.12), rgba($color-charcoal, 0.4)),
+      $color-charcoal;
+    color: rgba($color-text-on-dark, 0.45);
+    border: 1px solid rgba($color-text-on-dark, 0.06);
+  }
+
+  .image-ph--light .image-ph__placeholder {
+    background:
+      linear-gradient(135deg, rgba($color-gold, 0.18), rgba($color-warm-gray, 0.18)),
+      rgba($color-cream, 0.6);
+    color: rgba($color-charcoal, 0.5);
+    border-color: rgba($color-charcoal, 0.1);
+  }
+
+  .image-ph__icon {
+    opacity: 0.6;
+  }
+
+  .image-ph__label {
+    @include label-text;
+    letter-spacing: $tracking-widest;
+    font-weight: $weight-regular;
+  }
+</style>

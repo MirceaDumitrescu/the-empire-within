@@ -1,0 +1,212 @@
+---
+import ImagePlaceholder from './ImagePlaceholder.astro';
+
+interface Props {
+  title: string;
+  excerpt?: string;
+  category?: string;
+  date?: string;
+  href?: string;
+  imageSrc?: string;
+  imageAlt?: string;
+  imageLabel?: string;
+  featured?: boolean;
+}
+
+const {
+  title,
+  excerpt,
+  category,
+  date,
+  href = '#',
+  imageSrc,
+  imageAlt = '',
+  imageLabel = 'Image',
+  featured = false,
+} = Astro.props;
+---
+
+<article class:list={['blog-card', { 'blog-card--featured': featured }]}>
+  <a href={href} class="blog-card__link" aria-label={title}>
+    <div class="blog-card__media">
+      <ImagePlaceholder
+        src={imageSrc}
+        alt={imageAlt}
+        label={imageLabel}
+        aspectRatio={featured ? '16 / 9' : '4 / 3'}
+        rounded={false}
+      />
+    </div>
+
+    <div class="blog-card__body">
+      {category && <p class="blog-card__category">{category}</p>}
+      <h3 class="blog-card__title">{title}</h3>
+      {excerpt && <p class="blog-card__excerpt">{excerpt}</p>}
+      <div class="blog-card__meta">
+        {date && <time class="blog-card__date">{date}</time>}
+        <span class="blog-card__read-more">
+          Read more
+          <svg
+            width="14"
+            height="10"
+            viewBox="0 0 14 10"
+            fill="none"
+            xmlns="http://www.w3.org/2000/svg"
+            aria-hidden="true"
+          >
+            <path
+              d="M1 5H12.5M12.5 5L8.5 1M12.5 5L8.5 9"
+              stroke="currentColor"
+              stroke-width="1.25"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            />
+          </svg>
+        </span>
+      </div>
+    </div>
+  </a>
+</article>
+
+<style lang="scss">
+  @use '../styles/variables' as *;
+
+  .blog-card {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+
+    &__link {
+      display: flex;
+      flex-direction: column;
+      height: 100%;
+      text-decoration: none;
+      color: inherit;
+      overflow: hidden;
+      border-radius: $radius-md;
+      background-color: $color-white;
+      border: 1px solid rgba($color-charcoal, 0.08);
+      transition:
+        transform $transition-base,
+        border-color $transition-base,
+        box-shadow $transition-base;
+
+      &:hover {
+        transform: translateY(-3px);
+        border-color: rgba($color-accent, 0.4);
+        box-shadow: $shadow-md;
+
+        .blog-card__title {
+          color: $color-accent;
+        }
+
+        .blog-card__read-more svg {
+          transform: translateX(3px);
+        }
+      }
+    }
+
+    &__media {
+      position: relative;
+      width: 100%;
+    }
+
+    &__body {
+      display: flex;
+      flex-direction: column;
+      gap: $space-sm;
+      padding: $space-xl;
+      flex: 1;
+    }
+
+    &__category {
+      @include label-text;
+      color: $color-accent;
+      margin: 0;
+    }
+
+    &__title {
+      font-family: $font-heading;
+      font-size: $text-xl;
+      font-weight: $weight-medium;
+      color: $color-text-primary;
+      line-height: $leading-snug;
+      margin: 0;
+      transition: color $transition-base;
+    }
+
+    &__excerpt {
+      font-family: $font-body;
+      font-size: $text-sm;
+      font-weight: $weight-regular;
+      color: $color-text-body;
+      line-height: $leading-relaxed;
+      margin: 0;
+      display: -webkit-box;
+      -webkit-line-clamp: 3;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
+    }
+
+    &__meta {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: $space-md;
+      margin-top: auto;
+      padding-top: $space-md;
+    }
+
+    &__date {
+      font-family: $font-accent;
+      font-size: $text-xs;
+      font-weight: $weight-regular;
+      letter-spacing: $tracking-wide;
+      text-transform: uppercase;
+      color: $color-text-muted;
+    }
+
+    &__read-more {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.4rem;
+      font-family: $font-accent;
+      font-size: $text-xs;
+      font-weight: $weight-medium;
+      letter-spacing: $tracking-wide;
+      text-transform: uppercase;
+      color: $color-text-primary;
+
+      svg {
+        transition: transform $transition-base;
+      }
+    }
+
+    &--featured {
+      grid-column: span 2;
+
+      .blog-card__title {
+        font-size: $text-3xl;
+        font-style: italic;
+        font-weight: $weight-regular;
+      }
+
+      .blog-card__excerpt {
+        font-size: $text-md;
+        -webkit-line-clamp: 4;
+      }
+
+      .blog-card__body {
+        padding: $space-2xl;
+      }
+
+      @include breakpoint-down($bp-lg) {
+        grid-column: span 1;
+
+        .blog-card__title {
+          font-size: $text-2xl;
+        }
+      }
+    }
+  }
+</style>

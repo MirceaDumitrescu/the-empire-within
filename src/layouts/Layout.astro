@@ -92,6 +92,9 @@ const {
     smoothWheel: true,
   });
 
+  // Expose so other scripts (e.g. Footer newsletter link) can drive smooth scroll.
+  (window as unknown as { lenis?: Lenis }).lenis = lenis;
+
   function raf(time: number) {
     lenis.raf(time);
     requestAnimationFrame(raf);

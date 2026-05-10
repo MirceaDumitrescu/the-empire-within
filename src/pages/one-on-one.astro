@@ -1,0 +1,107 @@
+---
+import Layout from '../layouts/Layout.astro';
+import Header from '../components/Header.astro';
+import PrivateHero from '../components/PrivateHero.astro';
+import PrivateOffering from '../components/PrivateOffering.astro';
+import PrivatePillars from '../components/PrivatePillars.astro';
+import PrivateFeatures from '../components/PrivateFeatures.astro';
+import PrivateAudience from '../components/PrivateAudience.astro';
+import Testimonials from '../components/Testimonials.astro';
+import Faq from '../components/Faq.astro';
+import CtaBanner from '../components/CtaBanner.astro';
+import BookingCta from '../components/BookingCta.astro';
+import Footer from '../components/Footer.astro';
+
+const faqItems = [
+  {
+    question: 'Who is the 1:1 immersion for?',
+    answer:
+      'Practitioners who want a private container instead of a group cohort — typically leaders, founders, and creators in seasons of consequential transition. It is for those who already know that intensity is not the same as depth, and who can give the work a full week of attention.',
+  },
+  {
+    question: 'I am new to somatic work — is this suitable?',
+    answer:
+      'It can be, but the pre-arrival call is where we decide together. Newer practitioners sometimes do better with a Single Day or Three-Day Container before the full week. We will not place you in a container that does not fit.',
+  },
+  {
+    question: 'How is the immersion delivered?',
+    answer:
+      'In-person at our Bali sanctuary. The location and accommodation are confirmed once your application is accepted and the container is set. Online-only work is not part of this offering — the placement is intentional.',
+  },
+  {
+    question: 'How does the application process work?',
+    answer:
+      'Begin a conversation through the form below. We respond personally — usually within a few days — and from there we set a discovery call. The container is only confirmed after that call, so we can both make sure it is the right fit.',
+  },
+  {
+    question: 'What about discretion and confidentiality?',
+    answer:
+      'Total. We do not name our 1:1 practitioners publicly, share testimonials with identifying details, or discuss the work outside of the container. Many of those we work with require this.',
+  },
+  {
+    question: 'How are payments and cancellations handled?',
+    answer:
+      'A deposit secures the container after the discovery call; the balance is due before arrival. Specific terms are shared during application. Cancellations are handled case by case, with the conditions agreed in writing before deposit.',
+  },
+  {
+    question: 'How is this different from your group retreats?',
+    answer:
+      'The arc shares a common architecture. The 1:1 strips away group dynamics, paces the schedule to one nervous system, and lets us tune every session to the practitioner in front of us. If group containers feel right to you, our seasonal retreats may be a better fit.',
+  },
+  {
+    question: 'Is there an integration call after the immersion?',
+    answer:
+      'Yes — a follow-up integration call is included for the Three-Day Container and Seven-Day Immersion. The Single Day option can add one optionally. The follow-up is where most of the lasting work actually lands.',
+  },
+];
+---
+
+<Layout
+  title="Private 1:1 Immersion — The Empire Within"
+  description="A private retreat in Bali designed around a single life. Held one-to-one, paced to the body, and shaped to the work that is actually present."
+>
+  <Header />
+  <main>
+    <PrivateHero />
+    <PrivateOffering />
+    <PrivatePillars />
+    <PrivateFeatures />
+
+    <CtaBanner
+      eyebrow="The Next Step"
+      heading="Begin your immersion."
+      description="A short note is enough to start. We respond personally and set a discovery call from there."
+      ctaLabel="Begin a Conversation"
+      ctaHref="#inquire"
+      variant="dark"
+    />
+
+    <PrivateAudience />
+    <Testimonials />
+    <Faq
+      eyebrow="Frequently Asked"
+      heading="Questions, plainly answered."
+      items={faqItems}
+    />
+
+    <div id="inquire">
+      <BookingCta
+        id="booking"
+        eyebrow="Apply"
+        heading="Inquire about a 1:1 container."
+        description="A short note is enough. Tell us a little about timing and what is drawing you here, and we will respond personally — usually within a few days."
+        ctaLabel="Open the Form"
+        ctaHref="/contact"
+        secondaryLabel="Email Us"
+        secondaryHref="mailto:apply@theempirewithin.com"
+      />
+    </div>
+  </main>
+  <Footer />
+</Layout>
+
+<style lang="scss">
+  #inquire {
+    scroll-margin-top: 6rem;
+  }
+</style>

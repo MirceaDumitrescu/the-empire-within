@@ -1,0 +1,90 @@
+---
+import Layout from '../layouts/Layout.astro';
+import Header from '../components/Header.astro';
+import PageHero from '../components/PageHero.astro';
+import BlogGrid from '../components/BlogGrid.astro';
+import Footer from '../components/Footer.astro';
+
+const posts = [
+  {
+    title: 'On the discipline of stillness',
+    excerpt:
+      'Why the slowest practices ask the most of us — and what changes when the body finally lets go of urgency.',
+    category: 'Reflection',
+    date: 'Coming Soon',
+    href: '#',
+    imageLabel: 'Reflection',
+    featured: true,
+  },
+  {
+    title: 'Notes from the water temples',
+    excerpt:
+      'Field notes on the ceremonies we hold in Bali, the elders who guide them, and the protocol that earns the right to step into the water.',
+    category: 'Field Notes',
+    date: 'Coming Soon',
+    href: '#',
+    imageLabel: 'Field Notes',
+  },
+  {
+    title: 'Why we keep cohorts small',
+    excerpt:
+      'The case for tight containers — what intimate group size makes possible that scale never can.',
+    category: 'Practice',
+    date: 'Coming Soon',
+    href: '#',
+    imageLabel: 'Practice',
+  },
+  {
+    title: 'The architecture of a retreat day',
+    excerpt:
+      'A look at how a single day is shaped — from the morning silence through the evening close — and why every transition is intentional.',
+    category: 'Practice',
+    date: 'Coming Soon',
+    href: '#',
+    imageLabel: 'Practice',
+  },
+  {
+    title: 'Power, peace, and the quiet between',
+    excerpt:
+      'A short essay on what we mean by deliberate power — and the kind of peace that has to be chosen, not waited for.',
+    category: 'Reflection',
+    date: 'Coming Soon',
+    href: '#',
+    imageLabel: 'Reflection',
+  },
+  {
+    title: 'What integration actually looks like',
+    excerpt:
+      'The work after the work — how participants carry the retreat home, and the practices that make insight stick.',
+    category: 'Practice',
+    date: 'Coming Soon',
+    href: '#',
+    imageLabel: 'Practice',
+  },
+  {
+    title: 'On returning, again and again',
+    excerpt:
+      'A meditation on cycles — why some practitioners come back season after season, and what each return offers that the first cannot.',
+    category: 'Reflection',
+    date: 'Coming Soon',
+    href: '#',
+    imageLabel: 'Reflection',
+  },
+];
+---
+
+<Layout
+  title="Blog — The Empire Within"
+  description="Reflections, field notes, and writings on somatic mastery, ceremony, and the slow practice of returning to center."
+>
+  <Header />
+  <main>
+    <PageHero
+      eyebrow="Journal"
+      title="Field Notes & Reflections"
+      tagline="Writings from the practice — on stillness, ceremony, and the slow work of returning to center."
+    />
+    <BlogGrid posts={posts} loadMore />
+  </main>
+  <Footer />
+</Layout>

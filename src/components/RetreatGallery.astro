@@ -1,0 +1,113 @@
+---
+import ImagePlaceholder from './ImagePlaceholder.astro';
+import type { RetreatImage } from '../data/retreats';
+
+interface Props {
+  eyebrow?: string;
+  heading?: string;
+  caption?: string;
+  images: RetreatImage[];
+}
+
+const {
+  eyebrow = 'Place',
+  heading = 'Where the work is held.',
+  caption,
+  images,
+} = Astro.props;
+---
+
+<section class="retreat-gallery">
+  <div class="retreat-gallery__inner">
+    <header class="retreat-gallery__header reveal">
+      <p class="retreat-gallery__eyebrow">{eyebrow}</p>
+      <h2 class="retreat-gallery__heading">{heading}</h2>
+      {caption && <p class="retreat-gallery__caption">{caption}</p>}
+    </header>
+
+    <div class="retreat-gallery__grid">
+      {images.map((img, i) => (
+        <div
+          class:list={[
+            'retreat-gallery__cell reveal-stagger',
+            { 'retreat-gallery__cell--lifted': i % 3 === 1 },
+          ]}
+        >
+          <ImagePlaceholder
+            src={img.src}
+            alt={img.alt ?? ''}
+            label={img.label}
+            aspectRatio={img.aspectRatio ?? '4 / 5'}
+          />
+        </div>
+      ))}
+    </div>
+  </div>
+</section>
+
+<style lang="scss">
+  @use '../styles/variables' as *;
+
+  .retreat-gallery {
+    background-color: $color-bg-light;
+    padding: $section-padding;
+
+    &__inner {
+      max-width: $max-width;
+      margin: 0 auto;
+    }
+
+    &__header {
+      text-align: center;
+      max-width: $max-width-narrow;
+      margin: 0 auto $space-3xl;
+    }
+
+    &__eyebrow {
+      @include label-text;
+      color: $color-accent;
+      margin-bottom: $space-md;
+    }
+
+    &__heading {
+      font-family: $font-heading;
+      font-size: $text-3xl;
+      font-style: italic;
+      font-weight: $weight-regular;
+      color: $color-text-primary;
+      line-height: $leading-snug;
+      margin-bottom: $space-md;
+    }
+
+    &__caption {
+      font-family: $font-body;
+      font-size: $text-md;
+      color: $color-text-body;
+      line-height: $leading-relaxed;
+    }
+
+    &__grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: $space-xl;
+      align-items: center;
+
+      @include breakpoint-down($bp-md) {
+        grid-template-columns: 1fr;
+        gap: $space-lg;
+      }
+    }
+
+    &__cell {
+      &--lifted {
+        @include breakpoint-up($bp-md) {
+          transform: translateY(-#{$space-xl});
+        }
+      }
+    }
+
+    @include breakpoint-down($bp-md) {
+      padding: $section-padding-mobile;
+    }
+  }
+</style>

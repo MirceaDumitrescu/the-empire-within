@@ -1,0 +1,41 @@
+---
+import Layout from '../layouts/Layout.astro';
+import Header from '../components/Header.astro';
+import PageHero from '../components/PageHero.astro';
+import AboutPhilosophy from '../components/AboutPhilosophy.astro';
+import AboutAtmosphere from '../components/AboutAtmosphere.astro';
+import AboutExpertise from '../components/AboutExpertise.astro';
+import AboutJourney from '../components/AboutJourney.astro';
+import BookingCta from '../components/BookingCta.astro';
+import Footer from '../components/Footer.astro';
+---
+
+<Layout
+  title="About — The Empire Within"
+  description="Meet the founder, the philosophy behind The Empire Within, and book a private 1:1 appointment."
+>
+  <Header />
+  <main>
+    <PageHero
+      eyebrow="About"
+      title="A sanctuary, not a service."
+      tagline="The Empire Within is a small, deliberate retreat practice hosting immersive sanctuaries in Bali for emotional and somatic mastery."
+      size="lg"
+    />
+    <AboutPhilosophy
+      imageSrc="/ulamas/ZjNQMkMTzAJOCfIQ_best-resort-ulaman.avif"
+      imageAlt="The retreat sanctuary in Bali"
+    />
+    <AboutExpertise />
+    <AboutAtmosphere
+      images={[
+        { src: '/ulamas/ZjHaf0MTzAJOCdga_ulaman-eco-retreat.avif', alt: 'Sanctuary grounds', label: 'Sanctuary', aspectRatio: '4 / 5' },
+        { src: '/ulamas/Zlbe8aWtHYXtT4Qk_lakevillabali.avif', alt: 'Lake-side villa', label: 'Ritual', aspectRatio: '4 / 5' },
+        { src: '/ulamas/ZjeookMTzAJOCiqx_hotel-indonesia.avif', alt: 'Bali landscape', label: 'Landscape', aspectRatio: '4 / 5' },
+      ]}
+    />
+    <AboutJourney />
+    <BookingCta />
+  </main>
+  <Footer />
+</Layout>

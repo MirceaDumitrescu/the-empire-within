@@ -1,0 +1,130 @@
+---
+import BlogCard from './BlogCard.astro';
+
+interface Post {
+  title: string;
+  excerpt?: string;
+  category?: string;
+  date?: string;
+  href?: string;
+  imageSrc?: string;
+  imageAlt?: string;
+  imageLabel?: string;
+  featured?: boolean;
+}
+
+interface Props {
+  posts: Post[];
+  loadMore?: boolean;
+}
+
+const { posts, loadMore = false } = Astro.props;
+---
+
+<section class="blog-grid">
+  <div class="blog-grid__inner">
+    <div class="blog-grid__list">
+      {posts.map((post) => (
+        <div class:list={['blog-grid__cell reveal-stagger', { 'blog-grid__cell--featured': post.featured }]}>
+          <BlogCard
+            title={post.title}
+            excerpt={post.excerpt}
+            category={post.category}
+            date={post.date}
+            href={post.href}
+            imageSrc={post.imageSrc}
+            imageAlt={post.imageAlt}
+            imageLabel={post.imageLabel}
+            featured={post.featured}
+          />
+        </div>
+      ))}
+    </div>
+
+    {loadMore && (
+      <div class="blog-grid__more reveal">
+        <button type="button" class="blog-grid__more-btn" disabled>
+          Load more
+        </button>
+        <p class="blog-grid__more-note">More entries coming soon.</p>
+      </div>
+    )}
+  </div>
+</section>
+
+<style lang="scss">
+  @use '../styles/variables' as *;
+
+  .blog-grid {
+    background-color: $color-bg-light;
+    padding: $section-padding;
+
+    &__inner {
+      max-width: $max-width;
+      margin: 0 auto;
+    }
+
+    &__list {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: $space-2xl $space-xl;
+
+      @include breakpoint-down($bp-lg) {
+        grid-template-columns: repeat(2, 1fr);
+      }
+
+      @include breakpoint-down($bp-md) {
+        grid-template-columns: 1fr;
+        gap: $space-xl;
+      }
+    }
+
+    &__cell {
+      display: flex;
+
+      &--featured {
+        grid-column: span 2;
+
+        @include breakpoint-down($bp-lg) {
+          grid-column: span 1;
+        }
+      }
+    }
+
+    &__more {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: $space-sm;
+      margin-top: $space-4xl;
+    }
+
+    &__more-btn {
+      font-family: $font-accent;
+      font-size: $text-sm;
+      font-weight: $weight-medium;
+      letter-spacing: $tracking-wide;
+      text-transform: uppercase;
+      padding: 0.95rem $space-2xl;
+      border-radius: $radius-full;
+      background: transparent;
+      color: $color-text-primary;
+      border: 1px solid rgba($color-charcoal, 0.3);
+      cursor: not-allowed;
+      opacity: 0.5;
+    }
+
+    &__more-note {
+      font-family: $font-accent;
+      font-size: $text-xs;
+      letter-spacing: $tracking-wide;
+      text-transform: uppercase;
+      color: $color-text-muted;
+      opacity: 0.7;
+    }
+
+    @include breakpoint-down($bp-md) {
+      padding: $section-padding-mobile;
+    }
+  }
+</style>

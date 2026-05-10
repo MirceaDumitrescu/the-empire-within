@@ -1,0 +1,208 @@
+---
+import ImagePlaceholder from './ImagePlaceholder.astro';
+import VideoBackground from './VideoBackground.astro';
+
+interface Props {
+  category: string;
+  title: string;
+  subtitle: string;
+  duration: string;
+  location: string;
+  groupSize: string;
+  nextSession: string;
+  ctaLabel?: string;
+  ctaHref?: string;
+  imageSrc?: string;
+  imageLabel?: string;
+  videoPoster?: string;
+}
+
+const {
+  category,
+  title,
+  subtitle,
+  duration,
+  location,
+  groupSize,
+  nextSession,
+  ctaLabel = 'Begin a Conversation',
+  ctaHref = '#inquire',
+  imageSrc,
+  imageLabel = 'Sanctuary',
+  videoPoster,
+} = Astro.props;
+
+const facts = [
+  { label: 'Duration', value: duration },
+  { label: 'Location', value: location },
+  { label: 'Cohort', value: groupSize },
+  { label: 'Next Session', value: nextSession },
+];
+---
+
+<section class="retreat-hero">
+  <VideoBackground
+    videoId="pqkVOxt7Tk4"
+    poster={videoPoster ?? imageSrc}
+    title={`${title} — atmosphere`}
+  />
+  <div class="retreat-hero__overlay" aria-hidden="true"></div>
+
+  <div class="retreat-hero__inner">
+    <div class="retreat-hero__copy reveal">
+      <p class="retreat-hero__category">{category}</p>
+      <h1 class="retreat-hero__title">{title}</h1>
+      <p class="retreat-hero__subtitle">{subtitle}</p>
+
+      <dl class="retreat-hero__facts">
+        {facts.map((f) => (
+          <div class="retreat-hero__fact">
+            <dt>{f.label}</dt>
+            <dd>{f.value}</dd>
+          </div>
+        ))}
+      </dl>
+
+      <a href={ctaHref} class="retreat-hero__cta">{ctaLabel}</a>
+    </div>
+
+    <div class="retreat-hero__media reveal">
+      <ImagePlaceholder src={imageSrc} label={imageLabel} aspectRatio="4 / 5" />
+    </div>
+  </div>
+</section>
+
+<style lang="scss">
+  @use '../styles/variables' as *;
+
+  .retreat-hero {
+    position: relative;
+    background-color: $color-bg-dark;
+    color: $color-text-on-dark;
+    padding: 9rem $space-xl $space-5xl;
+    overflow: hidden;
+
+    &__overlay {
+      position: absolute;
+      inset: 0;
+      z-index: 1;
+      background:
+        linear-gradient(
+          180deg,
+          rgba($color-bg-dark, 0.62) 0%,
+          rgba($color-bg-dark, 0.45) 35%,
+          rgba($color-bg-dark, 0.55) 65%,
+          rgba($color-bg-dark, 0.85) 100%
+        ),
+        radial-gradient(ellipse at top right, rgba($color-gold, 0.12) 0%, transparent 60%),
+        radial-gradient(ellipse at bottom left, rgba($color-charcoal, 0.45) 0%, transparent 70%);
+      pointer-events: none;
+    }
+
+    &__inner {
+      position: relative;
+      z-index: $z-base;
+      max-width: $max-width;
+      margin: 0 auto;
+      display: grid;
+      grid-template-columns: 1.1fr 1fr;
+      gap: $space-4xl;
+      align-items: center;
+
+      @include breakpoint-down($bp-lg) {
+        grid-template-columns: 1fr;
+        gap: $space-2xl;
+      }
+    }
+
+    &__category {
+      @include label-text;
+      color: $color-accent;
+      opacity: 0.85;
+      margin-bottom: $space-md;
+    }
+
+    &__title {
+      font-family: $font-heading;
+      font-size: $text-5xl;
+      font-style: italic;
+      font-weight: $weight-regular;
+      color: $color-text-on-dark;
+      line-height: $leading-tight;
+      letter-spacing: $tracking-tight;
+      margin-bottom: $space-md;
+    }
+
+    &__subtitle {
+      font-family: $font-body;
+      font-size: $text-lg;
+      font-weight: $weight-light;
+      color: $color-text-on-dark;
+      opacity: 0.78;
+      line-height: $leading-relaxed;
+      margin-bottom: $space-2xl;
+      max-width: 32rem;
+    }
+
+    &__facts {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: $space-lg $space-xl;
+      margin-bottom: $space-2xl;
+      padding: $space-lg 0;
+      border-top: 1px solid rgba($color-text-on-dark, 0.12);
+      border-bottom: 1px solid rgba($color-text-on-dark, 0.12);
+    }
+
+    &__fact {
+      dt {
+        @include label-text;
+        color: $color-accent;
+        opacity: 0.8;
+        margin-bottom: 0.3rem;
+      }
+
+      dd {
+        font-family: $font-body;
+        font-size: $text-base;
+        font-weight: $weight-regular;
+        color: $color-text-on-dark;
+        margin: 0;
+      }
+    }
+
+    &__cta {
+      display: inline-block;
+      font-family: $font-accent;
+      font-size: $text-sm;
+      font-weight: $weight-medium;
+      letter-spacing: $tracking-wide;
+      text-transform: uppercase;
+      padding: 1rem $space-3xl;
+      border-radius: $radius-full;
+      background: $color-accent;
+      color: $color-bg-dark;
+      transition:
+        background $transition-base,
+        transform $transition-fast;
+
+      &:hover {
+        background: $color-gold-light;
+        transform: translateY(-2px);
+      }
+    }
+
+    &__media {
+      width: 100%;
+    }
+
+    @include breakpoint-down($bp-md) {
+      padding: 7rem $space-lg $space-4xl;
+
+      &__facts {
+        grid-template-columns: 1fr;
+        gap: $space-md;
+      }
+    }
+  }
+</style>

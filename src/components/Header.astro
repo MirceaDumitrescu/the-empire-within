@@ -1,27 +1,184 @@
 ---
+import NavDropdown from './NavDropdown.astro';
+
+type NavGroup = {
+  title: string;
+  items: { label: string; description?: string; href: string }[];
+};
+
+type NavCta = {
+  eyebrow?: string;
+  title: string;
+  description: string;
+  href: string;
+  cta: string;
+};
+
+type NavItemPlain = { label: string; href: string; dropdown?: undefined };
+type NavItemDropdown = {
+  label: string;
+  href: string;
+  dropdown: { id: string; triggerId: string; groups: NavGroup[]; cta?: NavCta };
+};
+type NavItem = NavItemPlain | NavItemDropdown;
+
+const navItems: NavItem[] = [
+  { label: 'About', href: '/about' },
+  {
+    label: 'Retreats',
+    href: '/retreats',
+    dropdown: {
+      id: 'nav-retreats-panel',
+      triggerId: 'nav-retreats-trigger',
+      groups: [
+        {
+          title: 'Immersive Retreats',
+          items: [
+            {
+              label: 'The Empire Within — Bali',
+              description: 'Our flagship seven-day immersive sanctuary.',
+              href: '/retreats/empire-within-bali',
+            },
+            {
+              label: 'Somatic Mastery Intensive',
+              description: 'Deep somatic work in a contained container.',
+              href: '/retreats/somatic-mastery-intensive',
+            },
+            {
+              label: 'Water Temple Journey',
+              description: 'Ocean and ritual-led renewal.',
+              href: '/retreats/water-temple-journey',
+            },
+          ],
+        },
+        {
+          title: 'Private Offerings',
+          items: [
+            {
+              label: '1:1 Immersion',
+              description: 'Tailored private retreat days.',
+              href: '/one-on-one',
+            },
+            {
+              label: "Couple's Sanctuary",
+              description: 'Shared space for two.',
+              href: '/retreats/couples-sanctuary',
+            },
+            {
+              label: 'Leadership Retreats',
+              description: 'Small cohorts for leaders & founders.',
+              href: '/retreats/leadership-retreats',
+            },
+          ],
+        },
+      ],
+      cta: {
+        eyebrow: 'Private sessions',
+        title: 'Book a 1:1 Call',
+        description:
+          'Speak with us about alignment, timing, and what your body is asking for.',
+        href: '/one-on-one',
+        cta: 'Book Now',
+      },
+    },
+  },
+  { label: 'Blog', href: '/blog' },
+  { label: 'Contact', href: '/contact' },
+];
+
+const pathname = Astro.url.pathname.replace(/\/+$/, '') || '/';
+
+function isActive(href: string) {
+  if (href === '/') return pathname === '/';
+  return pathname === href || pathname.startsWith(`${href}/`);
+}
+
+function itemIsActive(item: NavItem): boolean {
+  if (isActive(item.href)) return true;
+  return false;
+}
 ---
 
 <header class="header">
-  <nav class="header__nav">
-    <a href="/" class="header__logo">
+  <nav class="header__nav" aria-label="Main">
+    <a href="/" class="header__logo" aria-label="The Empire Within — Home">
       <span class="header__logo-text">The Empire Within</span>
     </a>
 
-    <button class="header__burger" aria-label="Toggle menu" aria-expanded="false">
+    <button type="button" class="header__burger" aria-label="Toggle menu" aria-expanded="false">
       <span></span>
       <span></span>
       <span></span>
     </button>
 
     <ul class="header__links">
-      <li><a href="#about">About</a></li>
-      <li><a href="#experience">Experience</a></li>
-      <li><a href="#contact">Contact</a></li>
+      {navItems.map((item) => (
+        <li
+          class:list={[
+            'header__item',
+            { 'header__item--dropdown': 'dropdown' in item && item.dropdown },
+          ]}
+        >
+          {'dropdown' in item && item.dropdown ? (
+            <div class="header__dropdown-wrap" data-dropdown-wrap>
+              <button
+                type="button"
+                class:list={[
+                  'header__nav-trigger',
+                  { 'is-active': itemIsActive(item) },
+                ]}
+                id={item.dropdown.triggerId}
+                aria-expanded="false"
+                aria-haspopup="true"
+                aria-controls={item.dropdown.id}
+                data-href={item.href}
+              >
+                <span>{item.label}</span>
+                <svg
+                  class="header__chevron"
+                  width="12"
+                  height="12"
+                  viewBox="0 0 12 12"
+                  fill="none"
+                  xmlns="http://www.w3.org/2000/svg"
+                  aria-hidden="true"
+                >
+                  <path
+                    d="M3 4.5L6 7.5L9 4.5"
+                    stroke="currentColor"
+                    stroke-width="1.25"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                  />
+                </svg>
+              </button>
+              <NavDropdown
+                id={item.dropdown.id}
+                groups={item.dropdown.groups}
+                cta={item.dropdown.cta}
+              />
+            </div>
+          ) : (
+            <a
+              href={item.href}
+              aria-current={isActive(item.href) ? 'page' : undefined}
+              class:list={[{ 'is-active': isActive(item.href) }]}
+            >
+              {item.label}
+            </a>
+          )}
+        </li>
+      ))}
     </ul>
   </nav>
 </header>
 
 <script>
+  import { bpLg } from '../scripts/nav-breakpoint';
+
+  const OPEN_DELAY_MS = 120;
+  const CLOSE_DELAY_MS = 200;
+
   const burger = document.querySelector('.header__burger');
   const links = document.querySelector('.header__links');
   const header = document.querySelector('.header');
@@ -31,29 +188,202 @@
     links?.classList.toggle('open', open);
     burger?.setAttribute('aria-expanded', String(open));
     document.body.style.overflow = open ? 'hidden' : '';
+
+    if (!open) {
+      document.querySelectorAll('[data-dropdown-wrap]').forEach((wrap) => {
+        closeDropdownImmediate(wrap as HTMLElement);
+      });
+    }
   }
 
   burger?.addEventListener('click', () => {
-    const isOpen = burger.classList.contains('open');
+    const isOpen = burger!.classList.contains('open');
     toggleMenu(!isOpen);
   });
 
-  // Close menu on link click
   links?.querySelectorAll('a').forEach((link) => {
     link.addEventListener('click', () => toggleMenu(false));
   });
 
-  // Sticky header on scroll
-  let lastScroll = 0;
-  window.addEventListener('scroll', () => {
-    const scrollY = window.scrollY;
-    if (scrollY > 100) {
-      header?.classList.add('sticky');
-    } else {
-      header?.classList.remove('sticky');
+  window.addEventListener(
+    'scroll',
+    () => {
+      const scrollY = window.scrollY;
+      if (scrollY > 100) {
+        header?.classList.add('sticky');
+      } else {
+        header?.classList.remove('sticky');
+      }
+    },
+    { passive: true }
+  );
+
+  function isMobileNav(): boolean {
+    return window.matchMedia(`(max-width: ${bpLg}px)`).matches;
+  }
+
+  function setDropdownOpen(wrap: HTMLElement, open: boolean) {
+    const trigger = wrap.querySelector('.header__nav-trigger');
+    const panel = wrap.querySelector('.nav-dropdown') as HTMLElement | null;
+
+    trigger?.setAttribute('aria-expanded', String(open));
+    panel?.setAttribute('data-open', open ? 'true' : 'false');
+    panel?.setAttribute('aria-hidden', open ? 'false' : 'true');
+    wrap.classList.toggle('is-dropdown-open', open);
+    trigger?.classList.toggle('is-trigger-open', open);
+  }
+
+  function closeDropdownImmediate(wrap: HTMLElement) {
+    const timers = dropdownTimers.get(wrap);
+    if (timers) {
+      window.clearTimeout(timers.open);
+      window.clearTimeout(timers.close);
+      timers.open = null;
+      timers.close = null;
     }
-    lastScroll = scrollY;
-  }, { passive: true });
+    setDropdownOpen(wrap, false);
+  }
+
+  function openDropdownImmediate(wrap: HTMLElement) {
+    const timers = dropdownTimers.get(wrap);
+    if (timers) {
+      window.clearTimeout(timers.open);
+      window.clearTimeout(timers.close);
+      timers.open = null;
+      timers.close = null;
+    }
+
+    document.querySelectorAll('[data-dropdown-wrap]').forEach((other) => {
+      if (other !== wrap) closeDropdownImmediate(other as HTMLElement);
+    });
+
+    setDropdownOpen(wrap, true);
+  }
+
+  type Timers = { open: number | null; close: number | null };
+  const dropdownTimers = new WeakMap<HTMLElement, Timers>();
+
+  function getTimers(wrap: HTMLElement): Timers {
+    let t = dropdownTimers.get(wrap);
+    if (!t) {
+      t = { open: null, close: null };
+      dropdownTimers.set(wrap, t);
+    }
+    return t;
+  }
+
+  document.querySelectorAll('[data-dropdown-wrap]').forEach((el) => {
+    const wrap = el as HTMLElement;
+    const trigger = wrap.querySelector('.header__nav-trigger') as HTMLButtonElement | null;
+
+    wrap.addEventListener('mouseenter', () => {
+      if (isMobileNav()) return;
+      const timers = getTimers(wrap);
+      if (timers.close) {
+        window.clearTimeout(timers.close);
+        timers.close = null;
+      }
+      if (timers.open) window.clearTimeout(timers.open);
+      timers.open = window.setTimeout(() => {
+        openDropdownImmediate(wrap);
+        timers.open = null;
+      }, OPEN_DELAY_MS);
+    });
+
+    wrap.addEventListener('mouseleave', () => {
+      if (isMobileNav()) return;
+      const timers = getTimers(wrap);
+      if (timers.open) {
+        window.clearTimeout(timers.open);
+        timers.open = null;
+      }
+      if (timers.close) window.clearTimeout(timers.close);
+      timers.close = window.setTimeout(() => {
+        closeDropdownImmediate(wrap);
+        timers.close = null;
+      }, CLOSE_DELAY_MS);
+    });
+
+    trigger?.addEventListener('click', (e) => {
+      e.stopPropagation();
+      const expanded = trigger.getAttribute('aria-expanded') === 'true';
+
+      if (isMobileNav()) {
+        if (expanded) closeDropdownImmediate(wrap);
+        else openDropdownImmediate(wrap);
+        return;
+      }
+
+      const href = trigger.getAttribute('data-href');
+      if (href) {
+        closeDropdownImmediate(wrap);
+        window.location.href = href;
+        return;
+      }
+
+      if (expanded) closeDropdownImmediate(wrap);
+      else openDropdownImmediate(wrap);
+    });
+
+    trigger?.addEventListener('keydown', (e) => {
+      if (e.key === 'ArrowDown') {
+        e.preventDefault();
+        openDropdownImmediate(wrap);
+        const firstLink = wrap.querySelector('.nav-dropdown__link') as HTMLAnchorElement | null;
+        firstLink?.focus();
+        return;
+      }
+      if (e.key === 'Enter' || e.key === ' ') {
+        if (isMobileNav() || !trigger.getAttribute('data-href')) {
+          e.preventDefault();
+          trigger.click();
+        }
+      }
+    });
+
+    wrap.addEventListener('focusin', () => {
+      if (isMobileNav()) return;
+      openDropdownImmediate(wrap);
+    });
+
+    wrap.addEventListener('focusout', (e) => {
+      if (isMobileNav()) return;
+      const next = e.relatedTarget as Node | null;
+      if (next && wrap.contains(next)) return;
+      closeDropdownImmediate(wrap);
+    });
+  });
+
+  document.addEventListener('click', (e) => {
+    const target = e.target as Node;
+    document.querySelectorAll('[data-dropdown-wrap]').forEach((el) => {
+      const wrap = el as HTMLElement;
+      if (!wrap.contains(target)) closeDropdownImmediate(wrap);
+    });
+  });
+
+  document.addEventListener('keydown', (e) => {
+    if (e.key !== 'Escape') return;
+    document.querySelectorAll('[data-dropdown-wrap]').forEach((el) => {
+      const wrap = el as HTMLElement;
+      const trigger = wrap.querySelector('.header__nav-trigger') as HTMLButtonElement | null;
+      if (trigger?.getAttribute('aria-expanded') === 'true') {
+        closeDropdownImmediate(wrap);
+        trigger.focus();
+      }
+    });
+  });
+
+  let resizeDebounce: number | null = null;
+  window.addEventListener('resize', () => {
+    if (resizeDebounce) window.clearTimeout(resizeDebounce);
+    resizeDebounce = window.setTimeout(() => {
+      resizeDebounce = null;
+      document.querySelectorAll('[data-dropdown-wrap]').forEach((el) => {
+        closeDropdownImmediate(el as HTMLElement);
+      });
+    }, 150);
+  });
 </script>
 
 <style lang="scss">
@@ -66,7 +396,9 @@
     right: 0;
     z-index: $z-header;
     padding: $space-lg $space-xl;
-    transition: background $transition-base, padding $transition-base;
+    transition:
+      background $transition-base,
+      padding $transition-base;
 
     &.sticky {
       position: fixed;
@@ -105,7 +437,9 @@
         width: 24px;
         height: 1.5px;
         background: $color-text-on-dark;
-        transition: transform $transition-base, opacity $transition-base;
+        transition:
+          transform $transition-base,
+          opacity $transition-base;
       }
 
       &.open span:nth-child(1) {
@@ -121,19 +455,70 @@
 
     &__links {
       display: flex;
+      align-items: center;
       gap: $space-2xl;
 
-      a {
+      a,
+      .header__nav-trigger {
         @include label-text;
         font-weight: $weight-regular;
         letter-spacing: $tracking-wider;
         color: $color-text-on-dark;
-        opacity: 0.8;
-        transition: opacity $transition-base;
+        opacity: 0.7;
+        transition:
+          opacity $transition-base,
+          color $transition-base;
+        position: relative;
+        background: none;
+        border: none;
+        cursor: pointer;
+        font-family: inherit;
+        padding: 0;
+        display: inline-flex;
+        align-items: center;
+        gap: 0.35rem;
 
-        &:hover {
+        &:hover,
+        &.is-active,
+        &.is-trigger-open {
           opacity: 1;
+          color: $color-accent;
         }
+
+        &.is-active::after {
+          content: '';
+          position: absolute;
+          left: 50%;
+          bottom: -6px;
+          transform: translateX(-50%);
+          width: 18px;
+          height: 1px;
+          background: $color-accent;
+        }
+      }
+
+      .header__nav-trigger.is-trigger-open .header__chevron {
+        transform: rotate(180deg);
+      }
+
+      .header__chevron {
+        flex-shrink: 0;
+        color: currentColor;
+        transition: transform $transition-base;
+      }
+    }
+
+    &__dropdown-wrap {
+      position: relative;
+      display: inline-flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    &__item--dropdown .header__dropdown-wrap {
+      @include breakpoint-down($bp-lg) {
+        width: 100%;
+        align-items: stretch;
       }
     }
 
@@ -151,24 +536,48 @@
         width: 100%;
         height: 100vh;
         flex-direction: column;
-        justify-content: center;
-        align-items: center;
-        gap: $space-3xl;
+        justify-content: flex-start;
+        padding-top: 6rem;
+        gap: $space-xl;
         background: rgba($color-bg-dark, 0.95);
         backdrop-filter: blur(12px);
         opacity: 0;
         visibility: hidden;
-        transition: opacity $transition-base, visibility $transition-base;
+        transition:
+          opacity $transition-base,
+          visibility $transition-base;
+        overflow-y: auto;
+        align-items: stretch;
 
         &.open {
           opacity: 1;
           visibility: visible;
         }
 
-        a {
+        a,
+        .header__nav-trigger {
           font-size: $text-base;
           letter-spacing: $tracking-widest;
           opacity: 0.9;
+          justify-content: center;
+        }
+
+        .header__item {
+          width: 100%;
+          max-width: 340px;
+          margin-left: auto;
+          margin-right: auto;
+          display: flex;
+          flex-direction: column;
+          align-items: stretch;
+        }
+
+        .header__dropdown-wrap {
+          align-items: stretch;
+        }
+
+        .header__nav-trigger::after {
+          display: none;
         }
       }
     }

@@ -1,0 +1,255 @@
+---
+interface Tier {
+  label: string;
+  duration: string;
+  description: string;
+  active?: boolean;
+}
+
+interface Props {
+  eyebrow?: string;
+  title?: string;
+  description?: string;
+  tiers?: Tier[];
+  ctaLabel?: string;
+  ctaHref?: string;
+  trustLine?: string;
+}
+
+const {
+  eyebrow = 'Private 1:1 Immersion',
+  title = 'A container built for one.',
+  description = 'A private retreat in Bali designed around a single life — held one-to-one, paced to the body, and shaped to the work that is actually present.',
+  tiers = [
+    {
+      label: 'Single Day',
+      duration: 'One day',
+      description: 'A focused private day in the sanctuary — for those who want to step in once.',
+    },
+    {
+      label: 'Three-Day Container',
+      duration: 'Three days',
+      description: 'An extended container with arrival, depth, and integration.',
+      active: true,
+    },
+    {
+      label: 'Seven-Day Immersion',
+      duration: 'Seven days',
+      description: 'Our flagship arc, fully private — a full week shaped to one practitioner.',
+    },
+  ],
+  ctaLabel = 'Begin a Conversation',
+  ctaHref = '#inquire',
+  trustLine = 'Limited capacity each season. Inquiry first, by application.',
+} = Astro.props;
+---
+
+<section class="private-hero">
+  <div class="private-hero__bg" aria-hidden="true"></div>
+  <div class="private-hero__overlay" aria-hidden="true"></div>
+  <div class="private-hero__content">
+    <p class="private-hero__eyebrow reveal-fade">{eyebrow}</p>
+    <h1 class="private-hero__title reveal">{title}</h1>
+    <p class="private-hero__description reveal">{description}</p>
+
+    <div class="private-hero__tiers reveal">
+      {tiers.map((tier) => (
+        <article class:list={['private-hero__tier', { 'private-hero__tier--active': tier.active }]}>
+          <p class="private-hero__tier-duration">{tier.duration}</p>
+          <h3 class="private-hero__tier-label">{tier.label}</h3>
+          <p class="private-hero__tier-desc">{tier.description}</p>
+        </article>
+      ))}
+    </div>
+
+    <div class="private-hero__actions reveal">
+      <a href={ctaHref} class="private-hero__cta">{ctaLabel}</a>
+      {trustLine && <p class="private-hero__trust">{trustLine}</p>}
+    </div>
+  </div>
+</section>
+
+<style lang="scss">
+  @use '../styles/variables' as *;
+
+  .private-hero {
+    position: relative;
+    background-color: $color-bg-dark;
+    color: $color-text-on-dark;
+    padding: 9rem $space-xl $space-5xl;
+    min-height: 80vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+
+    &__bg {
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(180deg, $color-bg-dark 0%, $color-charcoal 100%);
+    }
+
+    &__overlay {
+      position: absolute;
+      inset: 0;
+      background:
+        radial-gradient(ellipse at top, rgba($color-gold, 0.12) 0%, transparent 60%),
+        radial-gradient(ellipse at bottom, rgba($color-charcoal, 0.6) 0%, transparent 70%);
+      pointer-events: none;
+    }
+
+    &__content {
+      position: relative;
+      z-index: $z-base;
+      text-align: center;
+      max-width: $max-width-content;
+      width: 100%;
+    }
+
+    &__eyebrow {
+      @include label-text;
+      color: $color-accent;
+      opacity: 0.85;
+      margin-bottom: $space-lg;
+    }
+
+    &__title {
+      font-family: $font-heading;
+      font-size: $text-5xl;
+      font-weight: $weight-regular;
+      font-style: italic;
+      color: $color-text-on-dark;
+      line-height: $leading-tight;
+      letter-spacing: $tracking-tight;
+      margin-bottom: $space-lg;
+    }
+
+    &__description {
+      font-family: $font-body;
+      font-size: $text-lg;
+      font-weight: $weight-light;
+      color: $color-text-on-dark;
+      opacity: 0.78;
+      line-height: $leading-relaxed;
+      max-width: 38rem;
+      margin: 0 auto $space-3xl;
+    }
+
+    &__tiers {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: $space-lg;
+      margin-bottom: $space-3xl;
+      text-align: left;
+
+      @include breakpoint-down($bp-md) {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    &__tier {
+      padding: $space-xl;
+      border-radius: $radius-md;
+      background: rgba($color-charcoal, 0.5);
+      border: 1px solid rgba($color-text-on-dark, 0.08);
+      backdrop-filter: blur(8px);
+      transition:
+        border-color $transition-base,
+        transform $transition-base,
+        background $transition-base;
+
+      &:hover {
+        border-color: rgba($color-accent, 0.4);
+        transform: translateY(-2px);
+      }
+
+      &--active {
+        background: rgba($color-charcoal, 0.7);
+        border-color: rgba($color-accent, 0.5);
+        position: relative;
+
+        &::before {
+          content: 'Most chosen';
+          position: absolute;
+          top: -0.7rem;
+          left: 50%;
+          transform: translateX(-50%);
+          @include label-text;
+          padding: 0.3rem $space-md;
+          background: $color-accent;
+          color: $color-bg-dark;
+          border-radius: $radius-full;
+          font-size: 0.65rem;
+          letter-spacing: $tracking-wider;
+          white-space: nowrap;
+        }
+      }
+    }
+
+    &__tier-duration {
+      @include label-text;
+      color: $color-accent;
+      margin-bottom: $space-sm;
+    }
+
+    &__tier-label {
+      font-family: $font-heading;
+      font-size: $text-xl;
+      font-style: italic;
+      font-weight: $weight-regular;
+      color: $color-text-on-dark;
+      line-height: $leading-snug;
+      margin-bottom: $space-sm;
+    }
+
+    &__tier-desc {
+      font-family: $font-body;
+      font-size: $text-sm;
+      color: $color-text-on-dark;
+      opacity: 0.7;
+      line-height: $leading-relaxed;
+    }
+
+    &__actions {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: $space-md;
+    }
+
+    &__cta {
+      display: inline-block;
+      font-family: $font-accent;
+      font-size: $text-sm;
+      font-weight: $weight-medium;
+      letter-spacing: $tracking-wide;
+      text-transform: uppercase;
+      padding: 1rem $space-3xl;
+      border-radius: $radius-full;
+      background: $color-accent;
+      color: $color-bg-dark;
+      transition:
+        background $transition-base,
+        transform $transition-fast;
+
+      &:hover {
+        background: $color-gold-light;
+        transform: translateY(-2px);
+      }
+    }
+
+    &__trust {
+      font-family: $font-accent;
+      font-size: $text-xs;
+      letter-spacing: $tracking-wide;
+      text-transform: uppercase;
+      color: $color-text-on-dark;
+      opacity: 0.55;
+    }
+
+    @include breakpoint-down($bp-md) {
+      padding: 7rem $space-lg $space-4xl;
+      min-height: 70vh;
+    }
+  }
+</style>

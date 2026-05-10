@@ -1,0 +1,130 @@
+---
+interface Props {
+  eyebrow?: string;
+  heading: string;
+  description?: string;
+  ctaLabel?: string;
+  ctaHref?: string;
+  variant?: 'light' | 'dark';
+}
+
+const {
+  eyebrow,
+  heading,
+  description,
+  ctaLabel = 'Begin a Conversation',
+  ctaHref = '#inquire',
+  variant = 'dark',
+} = Astro.props;
+---
+
+<section class:list={['cta-banner', `cta-banner--${variant}`]}>
+  <div class="cta-banner__overlay" aria-hidden="true"></div>
+  <div class="cta-banner__inner reveal">
+    {eyebrow && <p class="cta-banner__eyebrow">{eyebrow}</p>}
+    <h2 class="cta-banner__heading">{heading}</h2>
+    {description && <p class="cta-banner__description">{description}</p>}
+    <a href={ctaHref} class="cta-banner__cta">{ctaLabel}</a>
+  </div>
+</section>
+
+<style lang="scss">
+  @use '../styles/variables' as *;
+
+  .cta-banner {
+    position: relative;
+    padding: $space-5xl $space-xl;
+    overflow: hidden;
+    text-align: center;
+
+    &--dark {
+      background-color: $color-bg-dark;
+      color: $color-text-on-dark;
+
+      .cta-banner__overlay {
+        background:
+          radial-gradient(ellipse at center, rgba($color-gold, 0.12) 0%, transparent 60%),
+          linear-gradient(180deg, $color-bg-dark 0%, $color-charcoal 100%);
+      }
+
+      .cta-banner__heading {
+        color: $color-text-on-dark;
+      }
+
+      .cta-banner__description {
+        color: $color-text-on-dark;
+        opacity: 0.78;
+      }
+    }
+
+    &--light {
+      background-color: $color-bg-warm;
+      color: $color-text-primary;
+
+      .cta-banner__overlay {
+        background: radial-gradient(ellipse at center, rgba($color-gold, 0.18) 0%, transparent 60%);
+      }
+    }
+
+    &__overlay {
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+    }
+
+    &__inner {
+      position: relative;
+      z-index: $z-base;
+      max-width: $max-width-narrow;
+      margin: 0 auto;
+    }
+
+    &__eyebrow {
+      @include label-text;
+      color: $color-accent;
+      margin-bottom: $space-md;
+    }
+
+    &__heading {
+      font-family: $font-heading;
+      font-size: $text-4xl;
+      font-style: italic;
+      font-weight: $weight-regular;
+      line-height: $leading-snug;
+      margin-bottom: $space-lg;
+    }
+
+    &__description {
+      font-family: $font-body;
+      font-size: $text-md;
+      line-height: $leading-relaxed;
+      max-width: 36rem;
+      margin: 0 auto $space-2xl;
+    }
+
+    &__cta {
+      display: inline-block;
+      font-family: $font-accent;
+      font-size: $text-sm;
+      font-weight: $weight-medium;
+      letter-spacing: $tracking-wide;
+      text-transform: uppercase;
+      padding: 1rem $space-3xl;
+      border-radius: $radius-full;
+      background: $color-accent;
+      color: $color-bg-dark;
+      transition:
+        background $transition-base,
+        transform $transition-fast;
+
+      &:hover {
+        background: $color-gold-light;
+        transform: translateY(-2px);
+      }
+    }
+
+    @include breakpoint-down($bp-md) {
+      padding: $space-4xl $space-lg;
+    }
+  }
+</style>

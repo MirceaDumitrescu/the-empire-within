@@ -1,0 +1,164 @@
+---
+interface Props {
+  eyebrow?: string;
+  title: string;
+  description?: string;
+  comingSoon?: boolean;
+}
+
+const {
+  eyebrow,
+  title,
+  description,
+  comingSoon = true,
+} = Astro.props;
+---
+
+<section class="page-banner">
+  <div class="page-banner__overlay"></div>
+  <div class="page-banner__content">
+    {eyebrow && <p class="page-banner__eyebrow reveal-fade">{eyebrow}</p>}
+    <h1 class="page-banner__title reveal">{title}</h1>
+    {description && <p class="page-banner__description reveal">{description}</p>}
+  </div>
+</section>
+
+{comingSoon && (
+  <section class="page-body">
+    <div class="page-body__inner">
+      <p class="page-body__eyebrow reveal-fade">Soon</p>
+      <h2 class="page-body__heading reveal">This sanctuary is being prepared.</h2>
+      <p class="page-body__text reveal">
+        We are tending to every detail with the same intention you would expect of us.<br />
+        Return shortly &mdash; or write to us, and we will respond personally.
+      </p>
+      <a href="/contact" class="page-body__cta reveal">Contact Us</a>
+    </div>
+  </section>
+)}
+
+<slot />
+
+<style lang="scss">
+  @use '../styles/variables' as *;
+
+  .page-banner {
+    position: relative;
+    background: linear-gradient(180deg, $color-bg-dark 0%, $color-charcoal 100%);
+    color: $color-text-on-dark;
+    min-height: 60vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 9rem $space-xl $space-5xl;
+    overflow: hidden;
+
+    &__overlay {
+      position: absolute;
+      inset: 0;
+      background:
+        radial-gradient(ellipse at top, rgba($color-gold, 0.08) 0%, transparent 60%),
+        radial-gradient(ellipse at bottom, rgba($color-charcoal, 0.6) 0%, transparent 70%);
+      pointer-events: none;
+    }
+
+    &__content {
+      position: relative;
+      z-index: $z-base;
+      text-align: center;
+      max-width: $max-width-narrow;
+    }
+
+    &__eyebrow {
+      @include label-text;
+      color: $color-accent;
+      opacity: 0.85;
+      margin-bottom: $space-lg;
+    }
+
+    &__title {
+      font-family: $font-heading;
+      font-size: $text-5xl;
+      font-weight: $weight-regular;
+      font-style: italic;
+      color: $color-text-on-dark;
+      line-height: $leading-snug;
+      letter-spacing: $tracking-tight;
+      margin-bottom: $space-lg;
+    }
+
+    &__description {
+      font-family: $font-body;
+      font-size: $text-xl;
+      font-weight: $weight-light;
+      color: $color-text-on-dark;
+      opacity: 0.75;
+      line-height: $leading-relaxed;
+      max-width: 36rem;
+      margin: 0 auto;
+    }
+
+    @include breakpoint-down($bp-md) {
+      min-height: 50vh;
+      padding: 7rem $space-lg $space-4xl;
+    }
+  }
+
+  .page-body {
+    background-color: $color-bg-light;
+    padding: $section-padding;
+
+    &__inner {
+      max-width: $max-width-narrow;
+      margin: 0 auto;
+      text-align: center;
+    }
+
+    &__eyebrow {
+      @include label-text;
+      color: $color-accent;
+      margin-bottom: $space-md;
+    }
+
+    &__heading {
+      font-family: $font-heading;
+      font-size: $text-3xl;
+      font-weight: $weight-regular;
+      font-style: italic;
+      color: $color-text-primary;
+      margin-bottom: $space-xl;
+      line-height: $leading-snug;
+    }
+
+    &__text {
+      font-family: $font-body;
+      font-size: clamp(1.05rem, 1.6vw, 1.2rem);
+      color: $color-text-body;
+      line-height: $leading-loose;
+      margin-bottom: $space-3xl;
+    }
+
+    &__cta {
+      display: inline-block;
+      font-family: $font-accent;
+      font-size: $text-sm;
+      font-weight: $weight-medium;
+      letter-spacing: $tracking-wide;
+      text-transform: uppercase;
+      padding: 0.95rem $space-2xl;
+      border-radius: $radius-full;
+      background: $color-accent;
+      color: $color-bg-dark;
+      transition: background $transition-base, transform $transition-fast;
+
+      &:hover {
+        background: $color-gold-light;
+        transform: translateY(-2px);
+      }
+    }
+
+    @include breakpoint-down($bp-md) {
+      padding: $section-padding-mobile;
+    }
+  }
+</style>
