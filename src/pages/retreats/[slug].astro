@@ -7,11 +7,6 @@ import RetreatOverview from '../../components/RetreatOverview.astro';
 import PrivatePillars from '../../components/PrivatePillars.astro';
 import RetreatSchedule from '../../components/RetreatSchedule.astro';
 import RetreatGallery from '../../components/RetreatGallery.astro';
-import RetreatInclusions from '../../components/RetreatInclusions.astro';
-import PrivateAudience from '../../components/PrivateAudience.astro';
-import RetreatPricing from '../../components/RetreatPricing.astro';
-import Testimonials from '../../components/Testimonials.astro';
-import Faq from '../../components/Faq.astro';
 import BookingCta from '../../components/BookingCta.astro';
 import { retreats, type Retreat } from '../../data/retreats';
 
@@ -51,11 +46,13 @@ const overviewImageLabel = overviewImage?.label ?? heroImageLabel;
       imageSrc={heroImage?.src}
       imageLabel={heroImageLabel}
       videoPoster={heroImage?.src}
-      ctaHref="#pricing"
-      ctaLabel="See Pricing & Apply"
+      ctaHref="#inquire"
+      ctaLabel="Apply"
     />
 
     <RetreatOverview
+      eyebrow="The Empire Within"
+      heading="The retreat"
       paragraphs={retreat.overview}
       imageSrc={overviewImage?.src}
       imageLabel={overviewImageLabel}
@@ -63,50 +60,21 @@ const overviewImageLabel = overviewImage?.label ?? heroImageLabel;
 
     <PrivatePillars
       eyebrow="What We Work With"
-      heading="The pillars at the core of this retreat."
+      heading="Somatic rewiring, breath technologies, wealth frequency realignment."
       pillars={retreat.pillars}
     />
 
-    <RetreatSchedule schedule={retreat.schedule} />
+    <RetreatSchedule
+      eyebrow="The Immersion"
+      heading="The practices inside the sanctuary."
+      schedule={retreat.schedule}
+    />
 
     {retreat.images && retreat.images.length > 0 && (
-      <RetreatGallery images={retreat.images} />
-    )}
-
-    <RetreatInclusions
-      includes={retreat.includes}
-      notIncluded={retreat.notIncluded}
-    />
-
-    <PrivateAudience
-      eyebrow="Suitability"
-      heading="Who this retreat is for."
-      description="Each of our retreats is small and contained — meaning fit matters. Here is who tends to thrive in this container, and who would be better served elsewhere."
-      bullets={retreat.whoFor}
-      notFor={retreat.whoNotFor}
-    />
-
-    <RetreatPricing
-      priceFrom={retreat.price.from}
-      priceUnit={retreat.price.unit}
-      priceNote={retreat.price.note}
-      ctaLabel={retreat.ctaLabel ?? 'Begin a Conversation'}
-      ctaHref={retreat.ctaHref ?? '#inquire'}
-    />
-
-    {retreat.testimonials && retreat.testimonials.length > 0 && (
-      <Testimonials
-        eyebrow="Voices"
-        heading="From past practitioners."
-        testimonials={retreat.testimonials}
-      />
-    )}
-
-    {retreat.faqs && retreat.faqs.length > 0 && (
-      <Faq
-        eyebrow="Questions"
-        heading="Frequently asked."
-        items={retreat.faqs}
+      <RetreatGallery
+        eyebrow="Bali"
+        heading="The most secluded sanctuary in Bali."
+        images={retreat.images}
       />
     )}
 
@@ -115,7 +83,7 @@ const overviewImageLabel = overviewImage?.label ?? heroImageLabel;
         id="booking"
         eyebrow="Apply"
         heading={`Inquire about ${retreat.title}.`}
-        description="A short note is enough. Tell us a little about timing and what is drawing you here, and we will respond personally — usually within a few days."
+        description={retreat.shortDescription}
         ctaLabel="Open the Form"
         ctaHref="/contact"
         secondaryLabel="Email Us"

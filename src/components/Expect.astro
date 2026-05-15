@@ -1,33 +1,23 @@
 ---
-const pillars = [
-  {
-    title: 'Expect Seclusion',
-    description: 'No crowds, no timelines, only the private space to become. A gated sanctuary designed for those who need distance from the world they lead.',
-  },
-  {
-    title: 'Expect Depth',
-    description: 'Personally facilitated sessions, breathwork, somatic healing, and intentional silence. Every element is chosen to go beyond surface-level relaxation.',
-  },
-  {
-    title: 'Expect Yourself',
-    description: 'The Vessel Within Retreat is not Guidance. It\'s not Coaching. It\'s deep Emotional and Somatic Mastery. Everything We Pursue Passes Through Who We Are First.',
-  },
+const modules = [
+  'Daily Morning Breath & Somatic Flow Sessions to reset circadian rhythm & regulate nervous system.',
+  'Deep Dialogue Modules: patterns, identity, power, emotional mastery.',
+  'WPA (Water Presence Awareness) meditations.',
+  'Tantra-based Consciousness Techniques for dissolving mental noise.',
+  'Mystic Silence & Integration Ceremonies.',
 ];
 ---
 
 <section class="expect" id="experience">
   <h2 class="expect__heading reveal">
-    Expect Seclusion. Expect Depth. Expect Yourself
+    The Immersion
   </h2>
 
-  <div class="expect__pillars reveal">
-    {pillars.map((pillar) => (
-      <div class="expect__pillar reveal-stagger">
-        <h3 class="expect__pillar-title">{pillar.title}</h3>
-        <p class="expect__pillar-desc">{pillar.description}</p>
-      </div>
+  <ul class="expect__modules reveal">
+    {modules.map((module) => (
+      <li class="expect__module reveal-stagger">{module}</li>
     ))}
-  </div>
+  </ul>
 </section>
 
 <style lang="scss">
@@ -47,37 +37,42 @@ const pillars = [
       letter-spacing: 0.02em;
     }
 
-    &__pillars {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: $grid-gap-lg;
+    &__modules {
       max-width: $max-width-content;
       margin: 0 auto;
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: $space-lg $grid-gap-lg;
+      text-align: left;
     }
 
-    &__pillar-title {
-      font-family: $font-heading;
-      font-size: $text-xl;
-      font-weight: $weight-semibold;
-      color: $color-text-primary;
-      margin-bottom: $space-md;
-      font-style: italic;
-    }
-
-    &__pillar-desc {
+    &__module {
+      position: relative;
       font-family: $font-body;
       font-size: $text-md;
       font-weight: $weight-regular;
       color: $color-text-body;
       line-height: $leading-relaxed;
+      padding-left: $space-xl;
+
+      &::before {
+        content: '';
+        position: absolute;
+        top: 0.72em;
+        left: 0;
+        width: 0.45rem;
+        height: 0.45rem;
+        border-radius: 50%;
+        background: $color-accent;
+      }
     }
 
     @include breakpoint-down($bp-md) {
       padding: $section-padding-mobile;
 
-      &__pillars {
+      &__modules {
         grid-template-columns: 1fr;
-        gap: $space-2xl;
+        gap: $space-lg;
       }
     }
   }

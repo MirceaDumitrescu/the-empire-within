@@ -1,25 +1,17 @@
 ---
-/**
- * Featured Retreat — homepage section.
- *
- * Surfaces a single curated retreat (default: the flagship) with a four-image
- * strip and a tight summary that links to the detail page. Driven entirely
- * from src/data/retreats.ts so updating the flagship copy or images updates
- * the homepage automatically.
- */
 import { retreats, getRetreatBySlug, type Retreat } from '../data/retreats';
 
 interface Props {
-  /** Slug of the retreat to feature. Defaults to the flagship. */
   slug?: string;
   eyebrow?: string;
-  /** Optional override for the kicker line above the title. */
   kicker?: string;
 }
 
 const { slug = 'empire-within-bali', eyebrow = 'This Season', kicker } = Astro.props;
 
 const retreat: Retreat = getRetreatBySlug(slug) ?? retreats[0];
+
+const methods = retreat.pillars.map((pillar) => pillar.label.toLowerCase());
 
 // Pick four images for the strip; cycle if the retreat has fewer.
 const stripImages = Array.from({ length: 4 }, (_, i) => {
@@ -70,7 +62,15 @@ const detailHref = `/retreats/${retreat.slug}`;
     </div>
 
     <div class="featured-retreat__body reveal">
-      <p class="featured-retreat__excerpt">{retreat.shortDescription}</p>
+      <ul class="featured-retreat__methods">
+        {methods.map((method) => (
+          <li>{method}</li>
+        ))}
+      </ul>
+
+      <p class="featured-retreat__excerpt">
+        {retreat.overview[4] ?? retreat.shortDescription}
+      </p>
 
       <dl class="featured-retreat__facts">
         {facts.map((f) => (
@@ -83,7 +83,6 @@ const detailHref = `/retreats/${retreat.slug}`;
 
       <div class="featured-retreat__actions">
         <a class="featured-retreat__cta" href={detailHref}>View this retreat</a>
-        <a class="featured-retreat__secondary" href="/retreats">See all offerings</a>
       </div>
     </div>
   </div>
@@ -188,6 +187,18 @@ const detailHref = `/retreats/${retreat.slug}`;
       color: $color-text-body;
       line-height: $leading-relaxed;
       max-width: 56ch;
+    }
+
+    &__methods {
+      display: flex;
+      flex-direction: column;
+      gap: $space-xs;
+      align-items: center;
+      font-family: $font-body;
+      font-size: $text-md;
+      color: $color-text-body;
+      line-height: $leading-relaxed;
+      text-align: center;
     }
 
     &__facts {
